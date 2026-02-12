@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { ShoppingCart, Menu, X, Leaf, Phone, Mail } from "lucide-react";
+import { ShoppingCart, Menu, X, Package, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -10,6 +10,7 @@ import { useState } from "react";
 const navLinks = [
   { href: "/", label: "Startseite" },
   { href: "/produkte", label: "Produkte" },
+  { href: "/konfigurator", label: "3D Konfigurator" },
   { href: "/ueber-uns", label: "Ueber uns" },
   { href: "/kontakt", label: "Kontakt" },
 ];
@@ -30,19 +31,19 @@ export function Header() {
         <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between gap-4 text-sm flex-wrap">
           <div className="flex items-center gap-4 flex-wrap">
             <span className="flex items-center gap-1.5">
-              <Leaf className="w-3.5 h-3.5" />
+              <Package className="w-3.5 h-3.5" />
               Kostenloser Versand ab CHF 0
             </span>
-            <span className="hidden sm:inline">105% Preisgarantie</span>
+            <span className="hidden sm:inline">Premium Qualitaet</span>
           </div>
           <div className="flex items-center gap-4">
             <a href="tel:+41441234567" className="flex items-center gap-1.5" data-testid="link-phone">
               <Phone className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">+41 44 123 45 67</span>
             </a>
-            <a href="mailto:info@limepack.ch" className="flex items-center gap-1.5" data-testid="link-email">
+            <a href="mailto:info@ovexpack.ch" className="flex items-center gap-1.5" data-testid="link-email">
               <Mail className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">info@limepack.ch</span>
+              <span className="hidden md:inline">info@ovexpack.ch</span>
             </a>
           </div>
         </div>
@@ -53,10 +54,10 @@ export function Header() {
           <Link href="/" data-testid="link-logo">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-primary-foreground" />
+                <Package className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold tracking-tight">
-                lime<span className="text-primary">pack</span>
+                OVEX<span className="text-primary">PACK</span>
               </span>
             </div>
           </Link>

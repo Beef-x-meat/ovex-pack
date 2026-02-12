@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail, Clock, Send, Leaf } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Package } from "lucide-react";
 import { useSEO } from "@/hooks/use-seo";
 
 const contactSchema = z.object({
@@ -42,7 +42,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "E-Mail",
-    details: ["info@limepack.ch"],
+    details: ["info@ovexpack.ch"],
   },
   {
     icon: Clock,
@@ -54,7 +54,7 @@ const contactInfo = [
 export default function Contact() {
   useSEO({
     title: "Kontakt",
-    description: "Kontaktieren Sie Limepack - Wir helfen Ihnen gerne bei Fragen zu individuell bedruckten Verpackungen.",
+    description: "Kontaktieren Sie Ovex Pack - Wir helfen Ihnen gerne bei Fragen zu individuell bedruckten Verpackungen.",
   });
 
   const { toast } = useToast();
@@ -83,7 +83,7 @@ export default function Contact() {
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/20 py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Badge variant="secondary" className="mb-4">
-            <Leaf className="w-3 h-3 mr-1" />
+            <Package className="w-3 h-3 mr-1" />
             Wir sind fuer Sie da
           </Badge>
           <h1 className="text-3xl lg:text-4xl font-bold mb-4" data-testid="text-contact-title">

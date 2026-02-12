@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Category, Product } from "@shared/schema";
-import { Search, Leaf, Filter, X } from "lucide-react";
+import { Search, Recycle, Filter, X } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useSEO } from "@/hooks/use-seo";
 
@@ -173,7 +173,7 @@ export default function Products() {
                       <h3 className="font-semibold line-clamp-1">{product.name}</h3>
                       {product.eco && (
                         <Badge variant="secondary" className="shrink-0">
-                          <Leaf className="w-3 h-3 mr-1" />
+                          <Recycle className="w-3 h-3 mr-1" />
                           Eco
                         </Badge>
                       )}

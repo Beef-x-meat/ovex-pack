@@ -11,7 +11,8 @@ import {
   Truck,
   Star,
   ArrowRight,
-  Leaf,
+  Package,
+  Recycle,
   ChevronLeft,
   ChevronRight,
   Quote,
@@ -36,7 +37,7 @@ const features = [
     description: "Immer kostenloser Versand in die gesamte Schweiz. Beschleunigte Produktion verfuegbar.",
   },
   {
-    icon: Leaf,
+    icon: Package,
     title: "Nachhaltige Materialien",
     description: "Umweltfreundliche und biologisch abbaubare Optionen fuer Ihr Unternehmen.",
   },
@@ -84,8 +85,8 @@ function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <Badge variant="secondary" className="mb-4" data-testid="badge-hero">
-              <Leaf className="w-3 h-3 mr-1" />
-              Nr. 1 in der Schweiz
+              <Package className="w-3 h-3 mr-1" />
+              3D Vorschau & Personalisierung
             </Badge>
             <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-tight mb-6" data-testid="text-hero-title">
               To-Go Verpackung mit{" "}
@@ -93,7 +94,7 @@ function HeroSection() {
               bedrucken
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed" data-testid="text-hero-description">
-              Guenstige Verpackung in Topqualitaet mit Ihrem individuellen Design bedrucken. Kostenloser Versand und Designhilfe inklusive.
+              Gestalten Sie Verpackungen mit Ihrem Logo in unserer 3D-Vorschau. Kostenloser Versand und Designhilfe inklusive.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/produkte">
@@ -102,9 +103,9 @@ function HeroSection() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-              <Link href="/kontakt">
-                <Button variant="outline" size="lg" data-testid="button-hero-contact">
-                  Kostenlose Beratung
+              <Link href="/konfigurator">
+                <Button variant="outline" size="lg" data-testid="button-hero-configurator">
+                  3D Konfigurator
                 </Button>
               </Link>
             </div>
@@ -199,7 +200,7 @@ function FeaturesSection() {
     <section className="bg-card border-y" data-testid="section-features">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">Warum Limepack?</h2>
+          <h2 className="text-3xl font-bold mb-3">Warum Ovex Pack?</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Kostenlose Designhilfe, kostenloser Versand und Produkte von grossartiger Qualitaet.
           </p>
@@ -286,7 +287,7 @@ function FeaturedProducts() {
                   <h3 className="font-semibold">{product.name}</h3>
                   {product.eco && (
                     <Badge variant="secondary" className="shrink-0">
-                      <Leaf className="w-3 h-3 mr-1" />
+                      <Recycle className="w-3 h-3 mr-1" />
                       Eco
                     </Badge>
                   )}
@@ -404,7 +405,7 @@ function CTASection() {
 export default function Home() {
   useSEO({
     title: "Startseite",
-    description: "Limepack - Ihr Lieferant Nr. 1 fuer individuell bedruckte To-Go-Verpackungen in der Schweiz. Kostenloser Versand und Designhilfe.",
+    description: "Ovex Pack - Ihr Partner fuer individuell bedruckte Verpackungen mit 3D-Vorschau und Logo-Personalisierung. Kostenloser Versand und Designhilfe.",
   });
 
   return (

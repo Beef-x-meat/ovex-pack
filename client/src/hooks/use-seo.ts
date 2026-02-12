@@ -7,7 +7,7 @@ interface SEOProps {
 
 export function useSEO({ title, description }: SEOProps) {
   useEffect(() => {
-    document.title = `${title} | Limepack - Bedruckte Verpackungen`;
+    document.title = `${title} | Ovex Pack - Bedruckte Verpackungen`;
 
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {

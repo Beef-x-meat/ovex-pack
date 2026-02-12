@@ -17,7 +17,7 @@ export default function Cart() {
 
   useSEO({
     title: "Warenkorb",
-    description: "Ihr Warenkorb bei Limepack - Bedruckte Verpackungen bestellen.",
+    description: "Ihr Warenkorb bei Ovex Pack - Bedruckte Verpackungen bestellen.",
   });
 
   const { data: cartItems, isLoading } = useQuery<CartItemWithProduct[]>({

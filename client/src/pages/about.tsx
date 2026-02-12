@@ -1,11 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Leaf, Users, Globe, Award, Recycle, Heart } from "lucide-react";
+import { Package, Users, Globe, Award, Recycle, Heart } from "lucide-react";
 import { useSEO } from "@/hooks/use-seo";
 
 const values = [
   {
-    icon: Leaf,
+    icon: Recycle,
     title: "Nachhaltigkeit",
     description: "Wir setzen auf umweltfreundliche Materialien und nachhaltige Produktion fuer eine bessere Zukunft.",
   },
@@ -32,14 +32,14 @@ const values = [
   {
     icon: Users,
     title: "Partnerschaft",
-    description: "Ueber 6.900 zufriedene Unternehmen vertrauen auf Limepack.",
+    description: "Ueber 6.900 zufriedene Unternehmen vertrauen auf Ovex Pack.",
   },
 ];
 
 export default function About() {
   useSEO({
     title: "Ueber uns",
-    description: "Erfahren Sie mehr ueber Limepack - Ihr Lieferant fuer individuell bedruckte Verpackungen seit 2016.",
+    description: "Erfahren Sie mehr ueber Ovex Pack - Ihr Partner fuer individuell bedruckte Verpackungen seit 2016.",
   });
 
   return (
@@ -47,14 +47,14 @@ export default function About() {
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/20 py-16 lg:py-24">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Badge variant="secondary" className="mb-4">
-            <Leaf className="w-3 h-3 mr-1" />
+            <Package className="w-3 h-3 mr-1" />
             Seit 2016
           </Badge>
           <h1 className="text-3xl lg:text-4xl font-bold mb-4" data-testid="text-about-title">
-            Ueber Limepack
+            Ueber Ovex Pack
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Wir sind Ihr Lieferant Nr. 1 fuer individuell bedruckte To-Go-Verpackungen in der Schweiz. Qualitaet, Innovation und Nachhaltigkeit stehen bei uns an erster Stelle.
+            Wir sind Ihr Partner fuer individuell bedruckte To-Go-Verpackungen in der Schweiz. Qualitaet, Innovation und Nachhaltigkeit stehen bei uns an erster Stelle.
           </p>
         </div>
       </section>
@@ -65,13 +65,13 @@ export default function About() {
             <h2 className="text-2xl font-bold mb-4">Unsere Geschichte</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Limepack wurde 2016 gegruendet mit einer einfachen Mission: Unternehmen dabei zu helfen, ihre Marke durch hochwertige, individuell bedruckte Verpackungen zu staerken.
+                Ovex Pack wurde 2016 gegruendet mit einer einfachen Mission: Unternehmen dabei zu helfen, ihre Marke durch hochwertige, individuell bedruckte Verpackungen zu staerken.
               </p>
               <p>
                 Was als kleine Idee begann, ist heute zu einer fuehrenden Plattform fuer bedruckte To-Go-Verpackungen in Europa gewachsen. Wir arbeiten mit den besten Herstellern in Europa zusammen, um Ihnen die hoechste Qualitaet zu den besten Preisen zu bieten.
               </p>
               <p>
-                Heute vertrauen ueber 6.900 Unternehmen auf Limepack - von kleinen Cafes bis hin zu internationalen Ketten wie Delivery Hero und Vapiano.
+                Heute vertrauen ueber 6.900 Unternehmen auf Ovex Pack - von kleinen Cafes bis hin zu internationalen Ketten wie Delivery Hero und Vapiano.
               </p>
             </div>
           </div>

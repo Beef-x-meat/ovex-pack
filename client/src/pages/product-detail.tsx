@@ -11,7 +11,7 @@ import type { Product, Category } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Leaf,
+  Recycle,
   ShoppingCart,
   ArrowLeft,
   Truck,
@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useSEO } from "@/hooks/use-seo";
+import { ProductConfigurator3D } from "@/components/product-configurator-3d";
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -40,7 +41,7 @@ export default function ProductDetail() {
 
   useSEO({
     title: product?.name || "Produkt",
-    description: product?.shortDescription || "Individuell bedruckte Verpackungen bei Limepack",
+    description: product?.shortDescription || "Individuell bedruckte Verpackungen bei Ovex Pack",
   });
 
   const category = categories?.find((c) => c.id === product?.categoryId);
@@ -130,7 +131,7 @@ export default function ProductDetail() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-        <div>
+        <div className="space-y-6">
           <div className="rounded-md overflow-hidden bg-muted/30">
             <img
               src={product.imageUrl || ""}
@@ -139,13 +140,17 @@ export default function ProductDetail() {
               data-testid="img-product"
             />
           </div>
+
+          <ProductConfigurator3D
+            productName={product.name}
+          />
         </div>
 
         <div>
           <div className="flex items-start gap-2 mb-2 flex-wrap">
             {product.eco && (
               <Badge variant="secondary">
-                <Leaf className="w-3 h-3 mr-1" />
+                <Recycle className="w-3 h-3 mr-1" />
                 Umweltfreundlich
               </Badge>
             )}

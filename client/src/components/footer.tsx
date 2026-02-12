@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Leaf, Mail, Phone, MapPin } from "lucide-react";
+import { Package, Mail, Phone, MapPin } from "lucide-react";
 import { SiInstagram, SiFacebook, SiLinkedin } from "react-icons/si";
 import { Separator } from "@/components/ui/separator";
 
@@ -11,14 +11,14 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-primary-foreground" />
+                <Package className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-bold tracking-tight">
-                lime<span className="text-primary">pack</span>
+                OVEX<span className="text-primary">PACK</span>
               </span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Ihr Lieferant Nr. 1 fuer individuell bedruckte To-Go-Verpackungen in der Schweiz. Qualitaet, die Ihre Marke verdient.
+              Ihr Partner fuer individuell bedruckte Verpackungen mit 3D-Vorschau und Logo-Personalisierung.
             </p>
             <div className="flex items-center gap-3 mt-4">
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors" data-testid="link-instagram">
@@ -69,9 +69,9 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:info@limepack.ch" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                <a href="mailto:info@ovexpack.ch" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
                   <Mail className="w-4 h-4 shrink-0" />
-                  info@limepack.ch
+                  info@ovexpack.ch
                 </a>
               </li>
             </ul>
@@ -81,7 +81,7 @@ export function Footer() {
         <Separator className="my-8" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p data-testid="text-copyright">2025 Limepack. Alle Rechte vorbehalten.</p>
+          <p data-testid="text-copyright">2026 Ovex Pack. Alle Rechte vorbehalten.</p>
           <div className="flex items-center gap-4">
             <a href="#" className="hover:text-foreground transition-colors">AGB</a>
             <a href="#" className="hover:text-foreground transition-colors">Datenschutz</a>

@@ -1,21 +1,30 @@
-# Limepack Online Shop
+# Ovex Pack Online Shop
 
 ## Overview
-An online shop for custom-branded takeaway packaging inspired by limepack.ch. Built with React + Express + PostgreSQL.
+An online shop for custom-branded takeaway packaging with 3D product customization. Built with React + Express + PostgreSQL + Three.js.
 
 ## Architecture
 - **Frontend**: React with TanStack Query, wouter routing, shadcn/ui components
 - **Backend**: Express.js with session-based cart management
 - **Database**: PostgreSQL with Drizzle ORM
-- **Styling**: Tailwind CSS with lime-green primary theme
+- **3D**: React Three Fiber + Drei for 3D product configurator
+- **Styling**: Tailwind CSS with indigo/violet primary theme
 
 ## Key Pages
 - `/` - Home (hero, categories, features, testimonials, CTA)
 - `/produkte` - Products listing with filters (search, category, material)
-- `/produkt/:slug` - Product detail with size selection and cart
+- `/produkt/:slug` - Product detail with size selection, cart, and 3D configurator
+- `/konfigurator` - Standalone 3D configurator (choose product type, upload logo, change color)
 - `/warenkorb` - Shopping cart with quantity management
 - `/ueber-uns` - About page
 - `/kontakt` - Contact form
+
+## 3D Configurator Features
+- Logo upload (PNG, JPG, SVG) with live 3D preview
+- Color customization with presets + custom color picker
+- Custom text overlay
+- Multiple product types: Cup, Bag, Box
+- Interactive 3D rotation and zoom via OrbitControls
 
 ## Data Models
 - `categories` - Product categories (id, name, slug, description, imageUrl)
@@ -33,4 +42,6 @@ An online shop for custom-branded takeaway packaging inspired by limepack.ch. Bu
 - `DELETE /api/cart/:id` - Remove from cart
 
 ## Recent Changes
+- 2026-02-12: Rebranded from Limepack to Ovex Pack with indigo/violet color scheme
+- 2026-02-12: Added 3D product configurator with logo upload, color customization, and text overlay
 - 2026-02-12: Initial MVP build with full product catalog, cart system, and seed data
