@@ -89,12 +89,11 @@ function HeroSection() {
               3D Vorschau & Personalisierung
             </Badge>
             <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-tight mb-6" data-testid="text-hero-title">
-              To-Go Verpackung mit{" "}
-              <span className="text-primary">Ihrem Logo</span>{" "}
-              bedrucken
+              Verpackungen, die{" "}
+              <span className="text-primary">Eindruck hinterlassen</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed" data-testid="text-hero-description">
-              Gestalten Sie Verpackungen mit Ihrem Logo in unserer 3D-Vorschau. Kostenloser Versand und Designhilfe inklusive.
+              Bedruckt oder neutral – immer in Premium-Qualitaet. Ovexpack.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/produkte">
@@ -405,7 +404,7 @@ function CTASection() {
 export default function Home() {
   useSEO({
     title: "Startseite",
-    description: "Ovex Pack - Ihr Partner fuer individuell bedruckte Verpackungen mit 3D-Vorschau und Logo-Personalisierung. Kostenloser Versand und Designhilfe.",
+    description: "Ovex Pack - Verpackungen, die Eindruck hinterlassen. Bedruckt oder neutral, immer in Premium-Qualitaet. Kostenloser Versand und Designhilfe.",
   });
 
   return (

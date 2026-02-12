@@ -8,7 +8,7 @@ An online shop for custom-branded takeaway packaging with 3D product customizati
 - **Backend**: Express.js with session-based cart management
 - **Database**: PostgreSQL with Drizzle ORM
 - **3D**: React Three Fiber + Drei for 3D product configurator
-- **Styling**: Tailwind CSS with indigo/violet primary theme
+- **Styling**: Tailwind CSS with teal primary theme (HSL 172)
 
 ## Key Pages
 - `/` - Home (hero, categories, features, testimonials, CTA)
@@ -42,6 +42,8 @@ An online shop for custom-branded takeaway packaging with 3D product customizati
 - `DELETE /api/cart/:id` - Remove from cart
 
 ## Recent Changes
-- 2026-02-12: Rebranded from Limepack to Ovex Pack with indigo/violet color scheme
+- 2026-02-12: Changed color scheme from indigo/violet to teal (HSL 172) - premium packaging look
+- 2026-02-12: Updated hero tagline to "Verpackungen, die Eindruck hinterlassen"
+- 2026-02-12: Rebranded from Limepack to Ovex Pack
 - 2026-02-12: Added 3D product configurator with logo upload, color customization, and text overlay
 - 2026-02-12: Initial MVP build with full product catalog, cart system, and seed data
