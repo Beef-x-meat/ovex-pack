@@ -2,7 +2,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail, Clock, Send, Package } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { useSEO } from "@/hooks/use-seo";
 
 const contactSchema = z.object({
@@ -80,13 +79,10 @@ export default function Contact() {
 
   return (
     <div data-testid="page-contact">
-      <section className="bg-gradient-to-br from-primary/5 via-background to-accent/20 py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <Badge variant="secondary" className="mb-4">
-            <Package className="w-3 h-3 mr-1" />
-            Wir sind fuer Sie da
-          </Badge>
-          <h1 className="text-3xl lg:text-4xl font-bold mb-4" data-testid="text-contact-title">
+      <section className="py-20 lg:py-28">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-6">Wir sind fuer Sie da</p>
+          <h1 className="text-3xl lg:text-5xl font-bold tracking-tight mb-5" data-testid="text-contact-title">
             Kontaktieren Sie uns
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -95,7 +91,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <Card className="p-6 lg:p-8">

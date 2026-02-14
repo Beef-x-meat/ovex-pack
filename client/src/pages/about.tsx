@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Package, Users, Globe, Award, Recycle, Heart } from "lucide-react";
+import { Users, Globe, Award, Recycle, Heart } from "lucide-react";
 import { useSEO } from "@/hooks/use-seo";
 
 const values = [
@@ -44,22 +43,19 @@ export default function About() {
 
   return (
     <div data-testid="page-about">
-      <section className="bg-gradient-to-br from-primary/5 via-background to-accent/20 py-16 lg:py-24">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <Badge variant="secondary" className="mb-4">
-            <Package className="w-3 h-3 mr-1" />
-            Seit 2016
-          </Badge>
-          <h1 className="text-3xl lg:text-4xl font-bold mb-4" data-testid="text-about-title">
+      <section className="py-20 lg:py-28">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-6">Seit 2016</p>
+          <h1 className="text-3xl lg:text-5xl font-bold tracking-tight mb-5" data-testid="text-about-title">
             Ueber Ovex Pack
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Wir sind Ihr Partner fuer individuell bedruckte To-Go-Verpackungen in der Schweiz. Qualitaet, Innovation und Nachhaltigkeit stehen bei uns an erster Stelle.
+            Wir sind Ihr Partner fuer Premium-Verpackungen in der Schweiz. Qualitaet, Innovation und Nachhaltigkeit stehen bei uns an erster Stelle.
           </p>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <h2 className="text-2xl font-bold mb-4">Unsere Geschichte</h2>

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Category, Product } from "@shared/schema";
-import { Search, Recycle, Filter, X } from "lucide-react";
+import { Search, Recycle, X } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useSEO } from "@/hooks/use-seo";
 
@@ -67,17 +67,17 @@ export default function Products() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8" data-testid="page-products">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2" data-testid="text-products-title">
+    <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16" data-testid="page-products">
+      <div className="mb-12">
+        <h1 className="text-3xl lg:text-5xl font-bold tracking-tight mb-3" data-testid="text-products-title">
           Unsere Produkte
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-lg text-muted-foreground">
           Individuell bedruckte Verpackungen fuer Ihr Unternehmen
         </p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 mb-8 flex-wrap">
+      <div className="flex flex-col sm:flex-row gap-3 mb-10 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -90,7 +90,6 @@ export default function Products() {
         </div>
         <Select value={selectedCategory || "all"} onValueChange={handleCategoryChange}>
           <SelectTrigger className="w-full sm:w-48" data-testid="select-category">
-            <Filter className="w-4 h-4 mr-2" />
             <SelectValue placeholder="Kategorie" />
           </SelectTrigger>
           <SelectContent>
@@ -124,25 +123,23 @@ export default function Products() {
       </div>
 
       {(catLoading || prodLoading) ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Card key={i} className="overflow-hidden">
-              <Skeleton className="aspect-square" />
-              <div className="p-4 space-y-2">
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-1/2" />
-              </div>
-            </Card>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="space-y-3">
+              <Skeleton className="aspect-[4/3] rounded-md" />
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
           ))}
         </div>
       ) : filteredProducts.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="w-16 h-16 bg-muted rounded-md flex items-center justify-center mx-auto mb-4">
-            <Search className="w-8 h-8 text-muted-foreground" />
+        <div className="text-center py-20">
+          <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-5">
+            <Search className="w-7 h-7 text-muted-foreground" />
           </div>
-          <h3 className="text-lg font-semibold mb-2" data-testid="text-no-results">Keine Produkte gefunden</h3>
-          <p className="text-muted-foreground mb-4">
+          <h3 className="text-xl font-semibold mb-2" data-testid="text-no-results">Keine Produkte gefunden</h3>
+          <p className="text-muted-foreground mb-6">
             Versuchen Sie, Ihre Suchkriterien anzupassen.
           </p>
           <Button variant="outline" onClick={clearFilters} data-testid="button-reset-search">
@@ -151,25 +148,25 @@ export default function Products() {
         </div>
       ) : (
         <>
-          <p className="text-sm text-muted-foreground mb-4" data-testid="text-result-count">
+          <p className="text-sm text-muted-foreground mb-6" data-testid="text-result-count">
             {filteredProducts.length} Produkt{filteredProducts.length !== 1 ? "e" : ""} gefunden
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.map((product) => (
               <Link key={product.id} href={`/produkt/${product.slug}`}>
                 <Card
                   className="overflow-hidden group hover-elevate cursor-pointer h-full"
                   data-testid={`card-product-${product.id}`}
                 >
-                  <div className="aspect-square overflow-hidden bg-muted/30">
+                  <div className="aspect-[4/3] overflow-hidden bg-muted/20">
                     <img
                       src={product.imageUrl || ""}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-4">
-                    <div className="flex items-start justify-between gap-2 mb-1">
+                  <div className="p-5">
+                    <div className="flex items-start justify-between gap-2 mb-2">
                       <h3 className="font-semibold line-clamp-1">{product.name}</h3>
                       {product.eco && (
                         <Badge variant="secondary" className="shrink-0">
@@ -178,11 +175,11 @@ export default function Products() {
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
                       {product.shortDescription}
                     </p>
                     <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <span className="font-semibold text-primary">
+                      <span className="font-semibold">
                         ab CHF {product.basePrice}
                       </span>
                       <span className="text-xs text-muted-foreground">

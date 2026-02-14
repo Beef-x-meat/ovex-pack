@@ -17,7 +17,6 @@ import {
   Truck,
   Palette,
   Shield,
-  Check,
   Minus,
   Plus,
 } from "lucide-react";
@@ -72,10 +71,10 @@ export default function ProductDetail() {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
         <Skeleton className="h-5 w-32 mb-8" />
-        <div className="grid lg:grid-cols-2 gap-8">
-          <Skeleton className="aspect-square rounded-md" />
+        <div className="grid lg:grid-cols-2 gap-12">
+          <Skeleton className="aspect-[4/3] rounded-md" />
           <div className="space-y-4">
             <Skeleton className="h-8 w-3/4" />
             <Skeleton className="h-4 w-full" />
@@ -90,7 +89,7 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 text-center">
         <h2 className="text-2xl font-bold mb-4">Produkt nicht gefunden</h2>
         <Link href="/produkte">
           <Button variant="outline" data-testid="button-back-products">
@@ -106,8 +105,8 @@ export default function ProductDetail() {
   const decrementQty = () => setQuantity((q) => Math.max(product.minQuantity, q - product.minQuantity));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8" data-testid="page-product-detail">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6 flex-wrap">
+    <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12" data-testid="page-product-detail">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors" data-testid="breadcrumb-home">
           Startseite
         </Link>
@@ -130,9 +129,9 @@ export default function ProductDetail() {
         <span className="text-foreground">{product.name}</span>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-        <div className="space-y-6">
-          <div className="rounded-md overflow-hidden bg-muted/30">
+      <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="space-y-8">
+          <div className="rounded-md overflow-hidden bg-muted/20">
             <img
               src={product.imageUrl || ""}
               alt={product.name}
@@ -147,7 +146,7 @@ export default function ProductDetail() {
         </div>
 
         <div>
-          <div className="flex items-start gap-2 mb-2 flex-wrap">
+          <div className="flex items-start gap-2 mb-3 flex-wrap">
             {product.eco && (
               <Badge variant="secondary">
                 <Recycle className="w-3 h-3 mr-1" />
@@ -159,21 +158,21 @@ export default function ProductDetail() {
             )}
           </div>
 
-          <h1 className="text-2xl lg:text-3xl font-bold mb-3" data-testid="text-product-name">
+          <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4" data-testid="text-product-name">
             {product.name}
           </h1>
 
-          <p className="text-muted-foreground leading-relaxed mb-6" data-testid="text-product-description">
+          <p className="text-muted-foreground leading-relaxed mb-8 text-lg" data-testid="text-product-description">
             {product.description}
           </p>
 
-          <div className="text-2xl font-bold text-primary mb-6" data-testid="text-product-price">
+          <div className="text-3xl font-bold mb-8" data-testid="text-product-price">
             ab CHF {product.basePrice}
           </div>
 
-          <Separator className="my-6" />
+          <Separator className="my-8" />
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             {product.sizes && product.sizes.length > 0 && (
               <div>
                 <label className="text-sm font-medium mb-2 block">Groesse</label>
@@ -233,7 +232,7 @@ export default function ProductDetail() {
 
           <Button
             size="lg"
-            className="w-full mt-6"
+            className="w-full mt-8 text-base"
             onClick={() => addToCart.mutate()}
             disabled={addToCart.isPending}
             data-testid="button-add-to-cart"
@@ -242,17 +241,17 @@ export default function ProductDetail() {
             {addToCart.isPending ? "Wird hinzugefuegt..." : "In den Warenkorb"}
           </Button>
 
-          <div className="grid grid-cols-3 gap-3 mt-6">
-            <div className="text-center p-3 bg-muted/50 rounded-md">
-              <Truck className="w-5 h-5 mx-auto mb-1 text-primary" />
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            <div className="text-center p-4 rounded-md bg-muted/30">
+              <Truck className="w-5 h-5 mx-auto mb-2 text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Gratis Versand</span>
             </div>
-            <div className="text-center p-3 bg-muted/50 rounded-md">
-              <Palette className="w-5 h-5 mx-auto mb-1 text-primary" />
+            <div className="text-center p-4 rounded-md bg-muted/30">
+              <Palette className="w-5 h-5 mx-auto mb-2 text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Gratis Design</span>
             </div>
-            <div className="text-center p-3 bg-muted/50 rounded-md">
-              <Shield className="w-5 h-5 mx-auto mb-1 text-primary" />
+            <div className="text-center p-4 rounded-md bg-muted/30">
+              <Shield className="w-5 h-5 mx-auto mb-2 text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Preisgarantie</span>
             </div>
           </div>
