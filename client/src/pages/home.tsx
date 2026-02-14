@@ -102,9 +102,9 @@ function HeroSection() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-              <Link href="/konfigurator">
-                <Button variant="outline" size="lg" data-testid="button-hero-configurator">
-                  3D Konfigurator
+              <Link href="/kontakt">
+                <Button variant="outline" size="lg" data-testid="button-hero-contact">
+                  Kontaktiere uns
                 </Button>
               </Link>
             </div>
