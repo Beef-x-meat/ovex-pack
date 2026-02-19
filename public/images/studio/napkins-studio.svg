@@ -1,0 +1,18 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Studio napkins">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3EEE5"/>
+      <stop offset="1" stop-color="#E5DCCF"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="500" y2="340" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#E8DECD"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <ellipse cx="600" cy="715" rx="320" ry="40" fill="#6E5B42" fill-opacity="0.2"/>
+  <rect x="286" y="268" width="620" height="360" rx="34" fill="url(#paper)"/>
+  <rect x="346" y="328" width="500" height="240" rx="24" fill="#F8F2E8"/>
+  <line x1="346" y1="448" x2="846" y2="448" stroke="#DACCB7" stroke-width="4"/>
+  <line x1="596" y1="328" x2="596" y2="568" stroke="#DACCB7" stroke-width="4"/>
+</svg>

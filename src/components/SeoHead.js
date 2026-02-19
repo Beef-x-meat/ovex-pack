@@ -2,26 +2,26 @@ import Head from 'next/head';
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
-export default function SeoHead({ title, description, path = '/', image = '/og-cover.jpg' }) {
-  const pageTitle = title ? `${title} | SwissPack Studio` : 'SwissPack Studio';
+export default function SeoHead({ title, description, path = '/', image = '/images/hero-packaging.jpg' }) {
+  const pageTitle = title ? `${title} | OVEX PACK` : 'OVEX PACK';
   const canonical = `${baseUrl}${path}`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'SwissPack Studio',
+    name: 'OVEX PACK',
     url: baseUrl,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Europaallee 12',
-      postalCode: '8004',
+      streetAddress: 'Bahnhofstrasse 42',
+      postalCode: '8001',
       addressLocality: 'Zuerich',
       addressCountry: 'CH'
     },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'sales',
-      email: 'hello@swisspack-studio.ch'
+      email: 'info@ovexpack.ch'
     }
   };
 

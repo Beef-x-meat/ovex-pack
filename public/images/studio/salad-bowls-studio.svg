@@ -1,0 +1,17 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Studio bowls">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A140E"/>
+      <stop offset="1" stop-color="#261C12"/>
+    </linearGradient>
+    <linearGradient id="bowl" x1="0" y1="0" x2="520" y2="260" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFE4D0"/>
+      <stop offset="1" stop-color="#BFA27A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <ellipse cx="600" cy="760" rx="360" ry="55" fill="#090705" fill-opacity="0.54"/>
+  <path d="M280 420C280 320 430 250 600 250C770 250 920 320 920 420V446C920 566 780 650 600 650C420 650 280 566 280 446V420Z" fill="url(#bowl)"/>
+  <ellipse cx="600" cy="422" rx="318" ry="98" fill="#F7EFDF"/>
+  <rect x="498" y="402" width="204" height="116" rx="14" fill="#14100D" fill-opacity="0.76"/>
+</svg>

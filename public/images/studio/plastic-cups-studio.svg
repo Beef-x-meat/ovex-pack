@@ -1,0 +1,24 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Studio transparent cups">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#15110C"/>
+      <stop offset="1" stop-color="#20170F"/>
+    </linearGradient>
+    <linearGradient id="cup" x1="0" y1="0" x2="220" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F1ECE4" stop-opacity="0.84"/>
+      <stop offset="1" stop-color="#CDBB9D" stop-opacity="0.42"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <ellipse cx="602" cy="760" rx="360" ry="56" fill="#090705" fill-opacity="0.52"/>
+  <g transform="translate(312 186)">
+    <ellipse cx="174" cy="112" rx="98" ry="30" fill="#E7DFD1" fill-opacity="0.68"/>
+    <path d="M84 112H264L236 590H112L84 112Z" fill="url(#cup)" stroke="#F8F1E7" stroke-opacity="0.54"/>
+    <ellipse cx="174" cy="590" rx="62" ry="18" fill="#BCAC93" fill-opacity="0.55"/>
+  </g>
+  <g transform="translate(560 262)">
+    <ellipse cx="140" cy="86" rx="74" ry="22" fill="#E7DFD1" fill-opacity="0.58"/>
+    <path d="M74 86H206L186 468H94L74 86Z" fill="url(#cup)" stroke="#F8F1E7" stroke-opacity="0.48"/>
+    <ellipse cx="140" cy="468" rx="46" ry="14" fill="#BCAC93" fill-opacity="0.5"/>
+  </g>
+</svg>

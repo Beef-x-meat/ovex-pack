@@ -1,0 +1,17 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Studio wrapping paper">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFE8DB"/>
+      <stop offset="1" stop-color="#E1D6C3"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="640" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF6ED"/>
+      <stop offset="1" stop-color="#E6D7BF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <ellipse cx="600" cy="760" rx="360" ry="44" fill="#6A553A" fill-opacity="0.2"/>
+  <rect x="220" y="250" width="760" height="430" rx="34" fill="url(#paper)"/>
+  <rect x="306" y="336" width="586" height="258" rx="18" fill="#14110D" fill-opacity="0.72"/>
+  <rect x="344" y="374" width="510" height="182" rx="12" fill="#EDE1CD"/>
+</svg>

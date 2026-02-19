@@ -1,0 +1,19 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Studio bags">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#18130E"/>
+      <stop offset="1" stop-color="#211810"/>
+    </linearGradient>
+    <linearGradient id="bag" x1="0" y1="0" x2="420" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEE2CC"/>
+      <stop offset="1" stop-color="#C8AE84"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <ellipse cx="620" cy="760" rx="360" ry="54" fill="#090706" fill-opacity="0.52"/>
+  <path d="M350 200H790L760 700H380L350 200Z" fill="url(#bag)"/>
+  <path d="M430 225C430 170 470 140 520 140C570 140 610 170 610 225" stroke="#D8C3A0" stroke-width="20" stroke-linecap="round"/>
+  <path d="M560 225C560 170 600 140 650 140C700 140 740 170 740 225" stroke="#D8C3A0" stroke-width="20" stroke-linecap="round"/>
+  <rect x="470" y="372" width="200" height="190" rx="18" fill="#14110D" fill-opacity="0.8"/>
+  <rect x="506" y="410" width="128" height="116" rx="10" fill="#E9DEC8"/>
+</svg>

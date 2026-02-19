@@ -95,7 +95,8 @@ function GLTFModel({ modelUrl, materialControls }) {
 export default function ProductViewer3D({
   title = 'Produktvorschau',
   modelUrl = '',
-  adaptiveFallback = true
+  adaptiveFallback = true,
+  compact = false
 }) {
   const [interactive, setInteractive] = useState(true);
   const [fallbackReason, setFallbackReason] = useState('3D-Vorschau ist aktuell nicht verfuegbar.');
@@ -134,7 +135,7 @@ export default function ProductViewer3D({
   }
 
   return (
-    <div className="viewer-shell">
+    <div className={compact ? 'viewer-shell viewer-shell-compact' : 'viewer-shell'}>
       <div className="viewer-canvas" role="img" aria-label={`Interaktive 3D-Ansicht: ${title}`}>
         <Canvas shadows dpr={[1, 1.7]} camera={{ position: [0, 1.3, 3.2], fov: 46 }}>
           <color attach="background" args={['#edf2ed']} />
@@ -177,53 +178,55 @@ export default function ProductViewer3D({
         </Canvas>
       </div>
 
-      <aside className="viewer-panel" aria-label="Licht und Materialeinstellungen">
-        <div className="field">
-          <label htmlFor="viewer-color">Materialfarbe</label>
-          <input id="viewer-color" type="color" value={color} onChange={(event) => setColor(event.target.value)} />
-        </div>
+      {!compact && (
+        <aside className="viewer-panel" aria-label="Licht und Materialeinstellungen">
+          <div className="field">
+            <label htmlFor="viewer-color">Materialfarbe</label>
+            <input id="viewer-color" type="color" value={color} onChange={(event) => setColor(event.target.value)} />
+          </div>
 
-        <div className="field">
-          <label htmlFor="viewer-roughness">Rauheit ({roughness.toFixed(2)})</label>
-          <input
-            id="viewer-roughness"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={roughness}
-            onChange={(event) => setRoughness(Number(event.target.value))}
-          />
-        </div>
+          <div className="field">
+            <label htmlFor="viewer-roughness">Rauheit ({roughness.toFixed(2)})</label>
+            <input
+              id="viewer-roughness"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={roughness}
+              onChange={(event) => setRoughness(Number(event.target.value))}
+            />
+          </div>
 
-        <div className="field">
-          <label htmlFor="viewer-metalness">Metallik ({metalness.toFixed(2)})</label>
-          <input
-            id="viewer-metalness"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={metalness}
-            onChange={(event) => setMetalness(Number(event.target.value))}
-          />
-        </div>
+          <div className="field">
+            <label htmlFor="viewer-metalness">Metallik ({metalness.toFixed(2)})</label>
+            <input
+              id="viewer-metalness"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={metalness}
+              onChange={(event) => setMetalness(Number(event.target.value))}
+            />
+          </div>
 
-        <div className="field">
-          <label htmlFor="viewer-light">Licht ({lightIntensity.toFixed(2)})</label>
-          <input
-            id="viewer-light"
-            type="range"
-            min="0.4"
-            max="2"
-            step="0.05"
-            value={lightIntensity}
-            onChange={(event) => setLightIntensity(Number(event.target.value))}
-          />
-        </div>
+          <div className="field">
+            <label htmlFor="viewer-light">Licht ({lightIntensity.toFixed(2)})</label>
+            <input
+              id="viewer-light"
+              type="range"
+              min="0.4"
+              max="2"
+              step="0.05"
+              value={lightIntensity}
+              onChange={(event) => setLightIntensity(Number(event.target.value))}
+            />
+          </div>
 
-        <p className="small">Drehen: Drag. Zoomen: Scroll/Pinch. GLB/GLTF via Produktfeld modelUrl.</p>
-      </aside>
+          <p className="small">Drehen: Drag. Zoomen: Scroll/Pinch. GLB/GLTF via Produktfeld modelUrl.</p>
+        </aside>
+      )}
     </div>
   );
 }

@@ -1,0 +1,25 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Studio cups">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17130E"/>
+      <stop offset="1" stop-color="#221A11"/>
+    </linearGradient>
+    <linearGradient id="cup" x1="0" y1="0" x2="210" y2="340" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4EAD9"/>
+      <stop offset="1" stop-color="#C8AF87"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <ellipse cx="600" cy="760" rx="320" ry="46" fill="#070605" fill-opacity="0.5"/>
+  <g transform="translate(260 130)">
+    <ellipse cx="210" cy="120" rx="110" ry="34" fill="#EDE0C8"/>
+    <path d="M118 120H302L272 610H148L118 120Z" fill="url(#cup)"/>
+    <ellipse cx="210" cy="610" rx="60" ry="20" fill="#BDA07A"/>
+    <rect x="158" y="320" width="104" height="132" rx="14" fill="#11100D" fill-opacity="0.78"/>
+  </g>
+  <g transform="translate(565 220)">
+    <ellipse cx="140" cy="86" rx="82" ry="25" fill="#F0E3CC"/>
+    <path d="M70 86H210L188 500H92L70 86Z" fill="#DECBB0"/>
+    <ellipse cx="140" cy="500" rx="48" ry="16" fill="#B79B75"/>
+  </g>
+</svg>
