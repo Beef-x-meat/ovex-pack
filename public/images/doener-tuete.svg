@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Doener Tuete">
+  <rect width="640" height="640" fill="#f3f3f3"/>
+  <g transform="translate(86 88) rotate(-18 234 234)">
+    <rect x="24" y="24" width="420" height="420" rx="18" fill="#fffdfa" stroke="#e5e5e5" stroke-width="6"/>
+    <text x="234" y="132" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#d2332f">DONER KEBAB</text>
+    <g fill="none" stroke="#d2332f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M132 320c48-18 90-18 138 2 48 20 94 18 138-2"/>
+      <path d="M170 300c10-36 32-64 64-82"/>
+      <path d="M232 218c16-8 36-14 56-12"/>
+      <path d="M312 210c26 4 46 20 58 44"/>
+      <path d="M168 352h134"/>
+      <path d="M338 352h108"/>
+      <circle cx="190" cy="268" r="5"/>
+      <circle cx="216" cy="286" r="5"/>
+      <circle cx="244" cy="300" r="5"/>
+      <circle cx="276" cy="310" r="5"/>
+      <circle cx="308" cy="314" r="5"/>
+      <circle cx="338" cy="312" r="5"/>
+      <circle cx="364" cy="304" r="5"/>
+      <circle cx="390" cy="286" r="5"/>
+    </g>
+  </g>
+</svg>

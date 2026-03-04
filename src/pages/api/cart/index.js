@@ -2,11 +2,17 @@ import { fetchProducts } from '@/lib/cms';
 import { addCartItem, listCartItems } from '@/lib/cart-store';
 
 const categoryImageMap = {
-  Becher: '/images/paper-cups.jpg',
-  Boxen: '/images/food-boxes.jpg',
-  Taschen: '/images/paper-bags.jpg',
-  Deckel: '/images/plastic-cups.jpg',
-  Wraps: '/images/wrapping-paper.jpg'
+  Pappbecher: '/images/pappbecher-eco-paper.jpeg',
+  Plastikbecher: '/images/plastikbecher-basic-470ml.png',
+  Mehrwegbecher: '/images/plastikbecher-basic-470ml.png',
+  Eisbecher: '/images/eisbecher-100ml.png',
+  Lebensmittelboxen: '/images/food-boxes.jpg',
+  Papiertragetaschen: '/images/paper-bags.jpg',
+  Lebensmittelpapier: '/images/lebensmittelpapier-standard.png',
+  Schalen: '/images/food-boxes.jpg',
+  Servietten: '/images/napkins.jpg',
+  Deckel: '/images/pappbecher-deckel-weiss-new.jpeg',
+  Zubehoer: '/images/food-boxes.jpg'
 };
 
 async function expandCartItems() {

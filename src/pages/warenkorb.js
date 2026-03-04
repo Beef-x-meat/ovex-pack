@@ -59,27 +59,50 @@ export default function CartPage() {
   }, [cartItems]);
 
   if (loading) {
-    return <div className="max-w-4xl mx-auto px-4 py-16 text-muted-foreground">Lade Warenkorb...</div>;
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <div className="h-8 w-48 skeleton mb-8" />
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-4">
+            {[1, 2].map((i) => (
+              <div key={i} className="p-4 rounded-2xl apple-card">
+                <div className="flex gap-4">
+                  <div className="w-24 h-24 rounded-md skeleton" />
+                  <div className="flex-1 space-y-3">
+                    <div className="h-5 w-3/4 skeleton" />
+                    <div className="h-4 w-1/2 skeleton" />
+                    <div className="h-4 w-1/3 skeleton" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="p-6 rounded-2xl apple-card h-48 skeleton" />
+        </div>
+      </div>
+    );
   }
 
   if (!cartItems.length) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center" data-testid="page-cart-empty">
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center fade-up" data-testid="page-cart-empty">
         <SeoHead title="Warenkorb" description="Ihr Warenkorb bei Ovex Pack" path="/warenkorb" />
-        <div className="w-20 h-20 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <ShoppingCart className="w-10 h-10 text-muted-foreground" />
+        <div className="w-24 h-24 bg-muted/40 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-black/5">
+          <ShoppingCart className="w-12 h-12 text-muted-foreground/40" />
         </div>
         <h2 className="text-2xl font-bold mb-3" data-testid="text-cart-empty">
           Ihr Warenkorb ist leer
         </h2>
-        <p className="text-muted-foreground mb-6">Entdecken Sie unsere individuell bedruckten Verpackungen.</p>
+        <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          Entdecken Sie unsere individuell bedruckten Verpackungen und fuellen Sie Ihren Warenkorb.
+        </p>
         <Link
           href="/produkte"
-          className="apple-btn-primary"
+          className="apple-btn-primary text-base px-8"
           data-testid="button-shop-now"
         >
-          <Package className="w-4 h-4 mr-2" />
-          Jetzt einkaufen
+          <Package className="w-5 h-5 mr-2" />
+          Jetzt Produkte entdecken
         </Link>
       </div>
     );

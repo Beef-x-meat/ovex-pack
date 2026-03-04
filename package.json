@@ -3,24 +3,29 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "bash scripts/dev-stable.sh",
     "dev:express": "NODE_ENV=development node server.js",
     "build": "next build",
     "start": "next start",
     "start:express": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "app:start": "bash scripts/local-server.sh start",
+    "app:stop": "bash scripts/local-server.sh stop",
+    "app:restart": "bash scripts/local-server.sh restart",
+    "app:status": "bash scripts/local-server.sh status",
+    "app:open": "bash scripts/local-server.sh open"
   },
   "dependencies": {
-    "@react-three/drei": "^9.108.3",
-    "@react-three/fiber": "^8.16.8",
     "compression": "^1.7.4",
     "express": "^4.19.2",
+    "formidable": "^3.5.4",
     "helmet": "^7.1.0",
     "lucide-react": "^0.564.0",
     "next": "^14.2.5",
+    "nodemailer": "^8.0.1",
+    "pdf-lib": "^1.17.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "three": "^0.164.1"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",

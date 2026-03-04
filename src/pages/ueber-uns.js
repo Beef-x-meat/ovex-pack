@@ -1,5 +1,6 @@
 import { Award, Globe, Heart, Recycle, Users } from 'lucide-react';
 import SeoHead from '@/components/SeoHead';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const values = [
   {
@@ -37,42 +38,46 @@ const values = [
 ];
 
 export default function AboutPage() {
+  const heroRef = useScrollReveal();
+  const storyRef = useScrollReveal();
+  const valuesRef = useScrollReveal();
+
   return (
     <div data-testid="page-about">
       <SeoHead
         title="Ueber uns"
-        description="Erfahren Sie mehr ueber Ovex Pack - Ihr Partner fuer individuell bedruckte Verpackungen seit 2016."
+        description="Erfahren Sie mehr ueber Ovex Pack - Ihr Partner fuer individuell bedruckte Verpackungen seit 2021."
         path="/ueber-uns"
       />
 
-      <section className="py-20 lg:py-28">
+      <section ref={heroRef} className="py-20 lg:py-28 reveal-section">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-6">Seit 2016</p>
-          <h1 className="section-title mb-5" data-testid="text-about-title">Ueber Ovex Pack</h1>
-          <p className="section-copy leading-relaxed max-w-2xl mx-auto">
-            Wir sind Ihr Partner fuer Premium-Verpackungen in der Schweiz. Qualitaet, Innovation und Nachhaltigkeit
-            stehen bei uns an erster Stelle.
+          <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-6 fade-up">Seit 2021</p>
+          <h1 className="section-title mb-5 fade-up-delay-1" data-testid="text-about-title">Ueber Ovex Pack</h1>
+          <p className="section-copy leading-relaxed max-w-2xl mx-auto fade-up-delay-2">
+            Ovex Pack ist ein junges Unternehmen, das 2021 gegruendet wurde, mit einer klaren Mission:
+            Marken durch hochwertige, individuell bedruckte Verpackungen zu staerken.
           </p>
         </div>
       </section>
 
       <section className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+        <div ref={storyRef} className="grid lg:grid-cols-2 gap-12 items-center mb-16 reveal-section">
           <div>
             <h2 className="text-2xl font-bold mb-4">Unsere Geschichte</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Ovex Pack wurde 2016 gegruendet mit einer einfachen Mission: Unternehmen dabei zu helfen, ihre Marke
-                durch hochwertige, individuell bedruckte Verpackungen zu staerken.
+                Ovex Pack ist ein junges Unternehmen, das 2021 gegruendet wurde, mit einer klaren Mission:
+                Marken durch hochwertige, individuell bedruckte Verpackungen zu staerken.
               </p>
               <p>
-                Was als kleine Idee begann, ist heute zu einer fuehrenden Plattform fuer bedruckte To-Go-Verpackungen
-                in Europa gewachsen. Wir arbeiten mit den besten Herstellern in Europa zusammen, um Ihnen die hoechste
-                Qualitaet zu den besten Preisen zu bieten.
+                Trotz seiner kurzen Geschichte hat sich Ovex Pack schnell als zuverlaessiger Partner fuer To-Go-Verpackungen etabliert.
+                Durch die Zusammenarbeit mit erstklassigen Herstellern in Europa bieten wir innovative Loesungen in hoechster Qualitaet
+                zu fairen Preisen.
               </p>
               <p>
-                Heute vertrauen ueber 6.900 Unternehmen auf Ovex Pack - von kleinen Cafes bis hin zu internationalen
-                Ketten wie Delivery Hero und Vapiano.
+                Heute vertrauen zahlreiche Unternehmen von kleinen Cafes bis hin zu aufstrebenden Gastronomieketten auf
+                Ovex Pack, um ihre Marke in jeder Verpackung erlebbar zu machen.
               </p>
             </div>
           </div>
@@ -86,7 +91,7 @@ export default function AboutPage() {
               <div className="text-sm text-muted-foreground">Google Rating</div>
             </article>
             <article className="p-6 text-center rounded-2xl apple-card">
-              <div className="text-3xl font-bold text-primary mb-1">2016</div>
+              <div className="text-3xl font-bold text-primary mb-1">2021</div>
               <div className="text-sm text-muted-foreground">Gegruendet</div>
             </article>
             <article className="p-6 text-center rounded-2xl apple-card">
@@ -96,7 +101,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div>
+        <div ref={valuesRef} className="reveal-section">
           <h2 className="text-2xl font-bold mb-8 text-center">Unsere Werte</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {values.map((value) => (
