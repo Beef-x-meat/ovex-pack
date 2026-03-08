@@ -193,7 +193,7 @@ export const productModelCatalog = [
   },
   {
     id: 'papiertueten',
-    label: 'Papiertueten',
+    label: 'Papiertüten',
     description: 'Retail & Carry Bags',
     modelUrl: '/models/premium/core-bag.glb',
     type: 'bag',

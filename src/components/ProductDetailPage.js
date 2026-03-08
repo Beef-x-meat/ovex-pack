@@ -17,75 +17,95 @@ import {
 import SeoHead from '@/components/SeoHead';
 import { categorySlugMap } from '@/lib/product-categories';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-
-const categoryImageMap = {
-  Pappbecher: '/images/pappbecher-espresso.jpeg',
-  Eisbecher: '/images/eisbecher-basic-100ml.png',
-  Plastikbecher: '/images/plastikbecher-basic-470ml.png',
-  Mehrwegbecher: '/images/plastikbecher-basic-470ml.png',
-  Deckel: '/images/food-boxes.jpg',
-  Lebensmittelboxen: '/images/food-boxes.jpg',
-  Schalen: '/images/food-boxes.jpg',
-  Papiertragetaschen: '/images/paper-bags.jpg',
-  Lebensmittelpapier: '/images/lebensmittelpapier-standard.png',
-  Servietten: '/images/napkins.jpg',
-  Zubehoer: '/images/food-boxes.jpg'
-};
-
-const productImageMap = {
-  'pappbecher-basic': '/images/pappbecher-basic-100ml-weiss.png',
-  'pappbecher-individual': '/images/pappbecher-individual-main.png',
-  'pappbecher-deckel': '/images/pappbecher-deckel-weiss-new.jpeg',
-  'plastikbecher-standard': '/images/plastikbecher-basic-350ml.png',
-  'plastikbecher-individual': '/images/plastikbecher-550ml.png',
-  'deckel-plastik': '/images/plastikbecher-deckel-flach-new.png',
-  'deckel-standard': '/images/plastikbecher-deckel-flach-new.png',
-  'deckel-dome-papier': '/images/plastikbecher-deckel-smoothie-new.png',
-  'deckel-flat-papier': '/images/plastikbecher-deckel-sip-new.png',
-  'eisbecher-standard': '/images/eisbecher-basic-100ml.png',
-  'eisbecher-individual': '/images/eisbecher-200ml.png',
-  'doener-tuete-klassisch': '/images/doener-tuete-klassisch.png',
-  'doener-tuete-individual': '/images/doener-tuete-individual.png'
-};
+import { useCart } from '@/hooks/useCart';
+import { getProductImage } from '@/lib/product-images';
 
 const defaultSizesByCategory = {
   Pappbecher: ['100 ml Espresso', '200 ml', '240 ml', '400 ml', '470 ml'],
-  Plastikbecher: ['350 ml', '470 ml', '500 ml', '550 ml', '700 ml'],
-  Mehrwegbecher: ['250 ml', '300 ml', '400 ml', '500 ml'],
+  Plastikbecher: ['350 ml', '400 ml', '470 ml', '550 ml', '700 ml'],
   Eisbecher: ['100 ml', '200 ml', '250 ml', '300 ml'],
-  Deckel: ['Standard'],
-  Lebensmittelboxen: ['500 ml', '750 ml', '1000 ml'],
-  Schalen: ['750 ml', '1000 ml', '1300 ml'],
-  Papiertragetaschen: ['S', 'M', 'L'],
-  Lebensmittelpapier: ['500x350', '250x335', '250x167', '167x167'],
-  Servietten: ['20x20', '24x24', '33x33', '40x40'],
-  Zubehoer: ['Standard']
+  Lebensmittelboxen: ['S', 'M', 'L'],
+  Papiertragetaschen: ['S', 'M', 'L', 'XL', 'XXL'],
+  Lebensmittelpapier: ['XXS 25×17 cm', 'XS 25×34 cm', 'S 20×30 cm', 'M 30×40 cm', 'L 40×50 cm'],
+  Servietten: ['Standard']
 };
 
 const sizeOptionsBySlug = {
-  'pappbecher-basic': ['100 ml Espresso', '200 ml', '240 ml', '400 ml', '470 ml', 'Wunschgroesse (eingeben)'],
-  'pappbecher-individual': ['100 ml Espresso', '200 ml', '240 ml', '400 ml', '470 ml', 'Wunschgroesse (eingeben)'],
-  'pappbecher-deckel': ['200 ml', '240 ml', '400 ml', '470 ml', 'Wunschgroesse (eingeben)'],
-  'eisbecher-standard': ['100 ml', '200 ml', '250 ml', '300 ml', 'Wunschgroesse (eingeben)'],
-  'eisbecher-individual': ['100 ml', '200 ml', '250 ml', '300 ml', 'Wunschgroesse (eingeben)']
+  'pappbecher-basic':             ['100 ml Espresso', '200 ml', '240 ml', '400 ml', '470 ml', 'Wunschgroesse (eingeben)'],
+  'pappbecher-individual':        ['100 ml Espresso', '200 ml', '240 ml', '400 ml', '470 ml', 'Wunschgroesse (eingeben)'],
+  'pappbecher-deckel':            ['200 ml', '240 ml', '400 ml', '470 ml', 'Wunschgroesse (eingeben)'],
+  'plastikbecher-standard':       ['350 ml', '400 ml', '470 ml', '550 ml', '700 ml', 'Wunschgroesse (eingeben)'],
+  'plastikbecher-individual':     ['350 ml', '400 ml', '470 ml', '550 ml', '700 ml', 'Wunschgroesse (eingeben)'],
+  'plastikbecher-deckel':         ['350 ml', '400 ml', '470 ml', '550 ml', '700 ml', 'Wunschgroesse (eingeben)'],
+  'eisbecher-standard':           ['100 ml', '200 ml', '250 ml', '300 ml', 'Wunschgroesse (eingeben)'],
+  'eisbecher-individual':         ['100 ml', '200 ml', '250 ml', '300 ml', 'Wunschgroesse (eingeben)'],
+  'burgerboxen':                  ['S (9,5×9,5×7,5 cm)', 'M (11,5×11,5×9 cm)', 'L (13×13×10 cm)', 'Wunschgroesse (eingeben)'],
+  'burgerboxen-individual':       ['S (9,5×9,5×7,5 cm)', 'M (11,5×11,5×9 cm)', 'L (13×13×10 cm)', 'Wunschgroesse (eingeben)'],
+  'pommesbox':                    ['Small', 'Standard', 'Wunschgroesse (eingeben)'],
+  'pommesbox-individual':         ['Small', 'Standard', 'Wunschgroesse (eingeben)'],
+  'hamburger-menubox':            ['Standard (19×12×8 cm)', 'Medium (22×12×8 cm)', 'Wunschgroesse (eingeben)'],
+  'hamburger-menubox-individual': ['Standard (19×12×8 cm)', 'Medium (22×12×8 cm)', 'Wunschgroesse (eingeben)'],
+  'noodle-doenerbox':             ['Standard'],
+  'noodle-doenerbox-individual':  ['Standard'],
+  'lunchbox':                     ['Standard (12,5×17×9,5 cm)', 'Small (9,5×11×9,5 cm)', 'Flat (15×21×6,5 cm)'],
+  'lunchbox-individual':          ['Standard (12,5×17×9,5 cm)', 'Small (9,5×11×9,5 cm)', 'Flat (15×21×6,5 cm)'],
+  'pizzaboxen':                   ['XXS 26×26 cm', 'XS 28×28 cm', 'S 30×30 cm', 'M 33×33 cm', 'L 42×42 cm', 'Wunschgroesse (eingeben)'],
+  'pizzaboxen-individual':        ['XXS 26×26 cm', 'XS 28×28 cm', 'S 30×30 cm', 'M 33×33 cm', 'L 42×42 cm', 'Wunschgroesse (eingeben)'],
+  'papiertragetasche':            ['S (24×18×8 cm)', 'M (28×22×10 cm)', 'L (31×25×12 cm)', 'XL (41×31×12 cm)', 'XXL (50,5×45×15 cm)'],
+  'papiertragetasche-individual': ['S (24×18×8 cm)', 'M (28×22×10 cm)', 'L (31×25×12 cm)', 'XL (41×31×12 cm)', 'XXL (50,5×45×15 cm)'],
+  'papiertuecher-bedruckt':       ['¼-Faltung (12,5×12,5 cm)', '1/8-Faltung (6,25×12,5 cm)'],
+  'papiertuecher-individual':     ['¼-Faltung (12,5×12,5 cm)', '1/8-Faltung (6,25×12,5 cm)'],
+  'feuchttuecher-bedruckt':       ['8×6 cm', '10×5 cm', '12×5 cm', '13×5 cm', '14×6 cm'],
+  'feuchttuecher-individual':     ['8×6 cm', '10×5 cm', '12×5 cm', '13×5 cm', '14×6 cm'],
+  'lebensmittelpapier-bedruckt':  ['XXS 25×17 cm', 'XS 25×34 cm', 'S 20×30 cm', 'M 30×40 cm', 'L 40×50 cm', 'Wunschgroesse (eingeben)'],
+  'lebensmittelpapier-individual':['XXS 25×17 cm', 'XS 25×34 cm', 'S 20×30 cm', 'M 30×40 cm', 'L 40×50 cm', 'Wunschgroesse (eingeben)'],
+  'verpackungspapier-takeaway':   ['12×23 cm', '12×28 cm', '12×25 cm', 'Wunschgroesse (eingeben)'],
+  'verpackungspapier-individual': ['12×23 cm', '12×28 cm', '12×25 cm', 'Wunschgroesse (eingeben)']
 };
 
 const quantityPresetsBySlug = {
-  'pappbecher-basic': [2500, 5000, 7500, 10000],
-  'pappbecher-individual': [2500, 5000, 7500, 10000],
-  'pappbecher-deckel': [2500, 5000, 7500, 10000],
-  'eisbecher-standard': [2500, 5000, 7500, 10000],
-  'eisbecher-individual': [2500, 5000, 7500, 10000]
+  'pappbecher-basic':             [2500, 5000, 7500, 10000],
+  'pappbecher-individual':        [2500, 5000, 7500, 10000],
+  'pappbecher-deckel':            [2500, 5000, 7500, 10000],
+  'plastikbecher-standard':       [2500, 5000, 7500, 10000],
+  'plastikbecher-individual':     [2500, 5000, 7500, 10000],
+  'plastikbecher-deckel':         [2500, 5000, 7500, 10000],
+  'eisbecher-standard':           [2500, 5000, 7500, 10000],
+  'eisbecher-individual':         [2500, 5000, 7500, 10000],
+  'burgerboxen':                  [5000, 7500, 10000],
+  'burgerboxen-individual':       [5000, 7500, 10000],
+  'pommesbox':                    [3000, 5000, 8000, 10000],
+  'pommesbox-individual':         [3000, 5000, 8000, 10000],
+  'hamburger-menubox':            [3000, 5000, 8000, 10000],
+  'hamburger-menubox-individual': [3000, 5000, 8000, 10000],
+  'noodle-doenerbox':             [5000, 10000, 15000],
+  'noodle-doenerbox-individual':  [5000, 10000, 15000],
+  'lunchbox':                     [2500, 5000, 8000, 10000],
+  'lunchbox-individual':          [2500, 5000, 8000, 10000],
+  'pizzaboxen':                   [3000, 5000, 8000, 10000],
+  'pizzaboxen-individual':        [3000, 5000, 8000, 10000],
+  'papiertragetasche':            [2500, 5000, 7500, 10000],
+  'papiertragetasche-individual': [2500, 5000, 7500, 10000],
+  'papiertuecher-bedruckt':       [25000, 30000, 40000, 50000],
+  'papiertuecher-individual':     [25000, 30000, 40000, 50000],
+  'feuchttuecher-bedruckt':       [10000, 20000, 30000, 50000],
+  'feuchttuecher-individual':     [10000, 20000, 30000, 50000],
+  'lebensmittelpapier-bedruckt':  [250, 500, 1000],
+  'lebensmittelpapier-individual':[250, 500, 1000],
+  'verpackungspapier-takeaway':   [20, 30, 50, 100],
+  'verpackungspapier-individual': [20, 30, 50, 100]
 };
 
 const stabilityOptionsBySlug = {
-  'pappbecher-basic': ['Einwandig', 'Doppelwandig (ideal fuer Kaffee)'],
-  'pappbecher-individual': ['Einwandig', 'Doppelwandig (ideal fuer Kaffee)']
+  'pappbecher-basic':       ['Einwandig', 'Doppelwandig (ideal für Kaffee)'],
+  'pappbecher-individual':  ['Einwandig', 'Doppelwandig (ideal für Kaffee)']
 };
 
 const itemColorOptionsBySlug = {
-  'pappbecher-basic': ['Weiss', 'Schwarz', 'Natur'],
-  'pappbecher-individual': ['Weiss', 'Schwarz', 'Natur']
+  'pappbecher-basic':     ['Weiss', 'Schwarz', 'Natur'],
+  'papiertragetasche':    ['Kraft (braun)', 'Weiss', 'Wunschfarbe'],
+  'papiertuecher-bedruckt': ['Weiss', 'Kraft'],
+  'feuchttuecher-bedruckt': ['Weiss', 'Schwarz', 'Wunschfarbe']
 };
 
 const lidColorOptionsBySlug = {
@@ -103,10 +123,38 @@ const lidMaterialOptionsBySlug = {
 };
 
 const pappbecherCupSlugs = ['pappbecher-basic', 'pappbecher-individual'];
-const pappbecherTierSlugMap = {
-  'pappbecher-basic': { standard: 'pappbecher-basic', individual: 'pappbecher-individual' },
-  'pappbecher-individual': { standard: 'pappbecher-basic', individual: 'pappbecher-individual' }
+
+const tierSlugMap = {
+  'pappbecher-basic':               { standard: 'pappbecher-basic',            individual: 'pappbecher-individual' },
+  'pappbecher-individual':          { standard: 'pappbecher-basic',            individual: 'pappbecher-individual' },
+  'plastikbecher-standard':         { standard: 'plastikbecher-standard',      individual: 'plastikbecher-individual' },
+  'plastikbecher-individual':       { standard: 'plastikbecher-standard',      individual: 'plastikbecher-individual' },
+  'eisbecher-standard':             { standard: 'eisbecher-standard',          individual: 'eisbecher-individual' },
+  'eisbecher-individual':           { standard: 'eisbecher-standard',          individual: 'eisbecher-individual' },
+  'burgerboxen':                    { standard: 'burgerboxen',                 individual: 'burgerboxen-individual' },
+  'burgerboxen-individual':         { standard: 'burgerboxen',                 individual: 'burgerboxen-individual' },
+  'pommesbox':                      { standard: 'pommesbox',                   individual: 'pommesbox-individual' },
+  'pommesbox-individual':           { standard: 'pommesbox',                   individual: 'pommesbox-individual' },
+  'hamburger-menubox':              { standard: 'hamburger-menubox',           individual: 'hamburger-menubox-individual' },
+  'hamburger-menubox-individual':   { standard: 'hamburger-menubox',           individual: 'hamburger-menubox-individual' },
+  'noodle-doenerbox':               { standard: 'noodle-doenerbox',            individual: 'noodle-doenerbox-individual' },
+  'noodle-doenerbox-individual':    { standard: 'noodle-doenerbox',            individual: 'noodle-doenerbox-individual' },
+  'lunchbox':                       { standard: 'lunchbox',                    individual: 'lunchbox-individual' },
+  'lunchbox-individual':            { standard: 'lunchbox',                    individual: 'lunchbox-individual' },
+  'pizzaboxen':                     { standard: 'pizzaboxen',                  individual: 'pizzaboxen-individual' },
+  'pizzaboxen-individual':          { standard: 'pizzaboxen',                  individual: 'pizzaboxen-individual' },
+  'papiertragetasche':              { standard: 'papiertragetasche',           individual: 'papiertragetasche-individual' },
+  'papiertragetasche-individual':   { standard: 'papiertragetasche',           individual: 'papiertragetasche-individual' },
+  'papiertuecher-bedruckt':         { standard: 'papiertuecher-bedruckt',      individual: 'papiertuecher-individual' },
+  'papiertuecher-individual':       { standard: 'papiertuecher-bedruckt',      individual: 'papiertuecher-individual' },
+  'feuchttuecher-bedruckt':         { standard: 'feuchttuecher-bedruckt',      individual: 'feuchttuecher-individual' },
+  'feuchttuecher-individual':       { standard: 'feuchttuecher-bedruckt',      individual: 'feuchttuecher-individual' },
+  'lebensmittelpapier-bedruckt':    { standard: 'lebensmittelpapier-bedruckt', individual: 'lebensmittelpapier-individual' },
+  'lebensmittelpapier-individual':  { standard: 'lebensmittelpapier-bedruckt', individual: 'lebensmittelpapier-individual' },
+  'verpackungspapier-takeaway':     { standard: 'verpackungspapier-takeaway',  individual: 'verpackungspapier-individual' },
+  'verpackungspapier-individual':   { standard: 'verpackungspapier-takeaway',  individual: 'verpackungspapier-individual' },
 };
+
 const pappbecherConfigSlugs = [...pappbecherCupSlugs, 'pappbecher-deckel'];
 
 const galleryImagesBySlug = {
@@ -116,13 +164,6 @@ const galleryImagesBySlug = {
     '/images/pappbecher-basic-240ml-weiss.png',
     '/images/pappbecher-basic-400ml-weiss.png',
     '/images/pappbecher-basic-470ml-weiss.png'
-  ],
-  'pappbecher-individual': [
-    '/images/pappbecher-espresso.jpeg',
-    '/images/pappbecher-200ml.jpeg',
-    '/images/pappbecher-individual-main.png',
-    '/images/pappbecher-475ml.jpeg',
-    '/images/pappbecher-doppelwandig-new.jpeg'
   ],
   'pappbecher-deckel': [
     '/images/pappbecher-deckel-weiss-new.jpeg',
@@ -136,11 +177,6 @@ const galleryImagesBySlug = {
     '/images/eisbecher-basic-300ml.png',
     '/images/eisbecher-basic-mit-deckel.png'
   ],
-  'eisbecher-individual': [
-    '/images/eisbecher-100ml.png',
-    '/images/eisbecher-200ml.png',
-    '/images/eisbecher-300ml.png'
-  ],
   'plastikbecher-standard': [
     '/images/plastikbecher-basic-350ml.png',
     '/images/plastikbecher-basic-470ml.png',
@@ -148,25 +184,41 @@ const galleryImagesBySlug = {
     '/images/plastikbecher-basic-550ml.png',
     '/images/plastikbecher-basic-700ml.png'
   ],
-  'plastikbecher-individual': [
-    '/images/plastikbecher-700ml.png',
-    '/images/plastikbecher-550ml.png',
-    '/images/plastikbecher-470ml.png',
-    '/images/plastikbecher-400ml.png',
-    '/images/plastikbecher-350ml.png'
+  'pappbecher-individual': [
+    '/images/pappbecher-individual-475ml.jpeg',
+    '/images/pappbecher-individual-200ml.jpeg',
+    '/images/pappbecher-individual-240ml.png',
+    '/images/pappbecher-individual-400ml.png',
+    '/images/pappbecher-individual-espresso.jpeg',
+    '/images/pappbecher-individual-doppelwandig.jpeg'
   ],
-  'deckel-plastik': [
+  'plastikbecher-individual': [
+    '/images/plastikbecher-individual-new-470ml.png',
+    '/images/plastikbecher-individual-new-350ml.png',
+    '/images/plastikbecher-individual-new-400ml.png',
+    '/images/plastikbecher-individual-new-550ml.png',
+    '/images/plastikbecher-individual-new-700ml.png',
+    '/images/plastikbecher-individual-new-mit-standarddeckel.png',
+    '/images/plastikbecher-individual-new-mit-smoothiedeckel.png',
+    '/images/plastikbecher-individual-new-mit-sip.png'
+  ],
+  'plastikbecher-deckel': [
     '/images/plastikbecher-deckel-flach-new.png',
     '/images/plastikbecher-deckel-smoothie-new.png',
     '/images/plastikbecher-deckel-sip-new.png'
+  ],
+  'eisbecher-individual': [
+    '/images/eisbecher-individual-100ml.png',
+    '/images/eisbecher-individual-200ml.png',
+    '/images/eisbecher-individual-300ml.png',
+    '/images/eisbecher-individual-mit-deckel.png'
   ]
 };
 
 const lidBasePriceByCategory = {
-  Pappbecher: 0.06,
-  Plastikbecher: 0.04,
-  Eisbecher: 0.05,
-  Mehrwegbecher: 0.05
+  Pappbecher: 0.04,
+  Plastikbecher: 0.035,
+  Eisbecher: 0.05
 };
 
 const lidOptionsByCategory = {
@@ -176,15 +228,14 @@ const lidOptionsByCategory = {
     { id: 'flat-paper', label: 'Flat Deckel (Papier)', delta: 0.005 }
   ],
   Plastikbecher: [
-    { id: 'flach', label: 'Flach', delta: 0.004 },
-    { id: 'smoothie', label: 'Smoothie Deckel', delta: 0.01 },
-    { id: 'sip', label: 'Sip Deckel', delta: 0.004 }
+    { id: 'flach', label: 'Standard gerade', delta: 0 },
+    { id: 'smoothie', label: 'Smoothie (gewölbt)', delta: 0.01 },
+    { id: 'sip', label: 'Sip-Deckel', delta: 0.004 }
   ],
   Eisbecher: [
     { id: 'mit-deckel', label: 'Mit Deckel', delta: 0.004 },
     { id: 'ohne-deckel', label: 'Ohne Deckel', delta: 0 }
-  ],
-  Mehrwegbecher: [{ id: 'standard', label: 'Standard Deckel', delta: 0 }]
+  ]
 };
 
 const defaultPrintPalette = [
@@ -218,11 +269,6 @@ const categoryPrintPalette = {
   ]
 };
 
-function getProductImage(product) {
-  if (productImageMap[product.slug]) return productImageMap[product.slug];
-  return categoryImageMap[product.category] || '/images/food-boxes.jpg';
-}
-
 function getTier(product) {
   if (product.tier) return product.tier;
   const source = `${product.slug || ''} ${product.name || ''}`.toLowerCase();
@@ -232,16 +278,14 @@ function getTier(product) {
 }
 
 function getTierBadgeClass(tier) {
-  if (tier === 'premium') return 'border-[#7c6a38] bg-[#fff8e8] text-[#5a4720]';
   if (tier === 'individual') return 'border-[#5c5ad6] bg-[#f4f3ff] text-[#3230a3]';
   return 'border-[#85f04b] bg-[#f4ffea] text-[#2e5d17]';
 }
 
-function getTierLabel(tier, fallback) {
-  if (fallback) return fallback;
-  if (tier === 'premium') return 'Premium';
-  if (tier === 'individual') return 'Individual';
-  return 'Eco / Standard';
+function getTierLabel(tier, category) {
+  if (tier === 'individual') return 'Individualisiert';
+  if (category === 'Plastikbecher') return 'Standard';
+  return 'Standard / Eco';
 }
 
 function getColorOptions(product) {
@@ -252,15 +296,21 @@ function getColorOptions(product) {
     return ['1 Farbe', '2 Farben', '3 und mehr Farben'];
   }
   if (product.category === 'Plastikbecher') {
-    return ['1 Farbe', '2 Farben', '3 Farben', '4 Farben', '5 Farben', '6 Farben'];
-  }
-  if (product.category === 'Papiertragetaschen' || product.slug.includes('blockboden') || product.slug.includes('brottueten')) {
-    return ['1 Farbe', '2 Farben'];
-  }
-  if (product.slug.includes('pizza')) {
     return ['1 Farbe', '2 Farben', '3 Farben'];
   }
-  return ['1 Farbe', '2 Farben', '3 Farben', '4 Farben'];
+  if (product.category === 'Papiertragetaschen') {
+    return ['Keine Farben', '1 Farbe', '2 Farben', '3 Farben'];
+  }
+  if (product.slug === 'pizzaboxen') {
+    return ['1 Farbe', '2 Farben', '3 Farben'];
+  }
+  if (product.category === 'Lebensmittelpapier') {
+    return ['1 Farbe', '2 Farben', '3 Farben', '3+ Farben'];
+  }
+  if (product.category === 'Servietten') {
+    return ['Ohne Druck', '1 Farbe', '2 Farben', '3+ Farben'];
+  }
+  return ['1 Farbe', '2 Farben', '3 Farben'];
 }
 
 function getColorSurcharge(index) {
@@ -274,7 +324,7 @@ function hasNumericColorModel(options = []) {
 
 function getPrintPalette(product) {
   if (categoryPrintPalette[product.category]) return categoryPrintPalette[product.category];
-  if (product.slug.includes('blockboden') || product.slug.includes('brottueten') || product.slug.includes('doener')) {
+  if (product.slug === 'noodle-doenerbox') {
     return categoryPrintPalette.Papiertragetaschen;
   }
   return defaultPrintPalette;
@@ -310,6 +360,7 @@ export default function ProductDetailPage({ product }) {
   const router = useRouter();
   const pageRef = useScrollReveal();
   const contentRef = useScrollReveal();
+  const { addItem } = useCart();
 
   const minOrder = product.minOrder || 100;
   const tier = getTier(product);
@@ -365,10 +416,8 @@ export default function ProductDetailPage({ product }) {
   const [activeTab, setActiveTab] = useState('beschreibung');
   const [manualPreviewImage, setManualPreviewImage] = useState('');
 
-  const isCupCategory = ['Pappbecher', 'Plastikbecher', 'Eisbecher', 'Mehrwegbecher'].includes(product.category);
-  const isPappbecherCategory = product.category === 'Pappbecher';
-  const hideSizeSelection = product.category === 'Deckel';
-  const showTierSwitch = isPappbecherCup || !pappbecherConfigSlugs.includes(product.slug);
+  const isCupCategory = ['Pappbecher', 'Plastikbecher', 'Eisbecher'].includes(product.category);
+  const hideSizeSelection = product.slug === 'noodle-doenerbox';
   const showLegacyLidAddon = isCupCategory && !pappbecherConfigSlugs.includes(product.slug);
   const lidOptions = lidOptionsByCategory[product.category] || [{ id: 'standard', label: 'Standard Deckel', delta: 0 }];
   const [addLid, setAddLid] = useState(false);
@@ -380,7 +429,7 @@ export default function ProductDetailPage({ product }) {
   const categorySlug = categorySlugMap[product.category] || '';
   const categoryImage = getProductImage(product);
 
-  const priceValue = Number(String(product.priceHint).replace('ab CHF ', '').replace(' / Stueck', '')) || 0;
+  const priceValue = Number(String(product.priceHint).replace('ab CHF ', '').replace(' / Stück', '')) || 0;
   const colorIndex = Math.max(0, colorOptions.indexOf(selectedColorCount));
   const colorSurcharge = hasDesignSelection && colorModelHasNumbers ? getColorSurcharge(colorIndex) : 0;
   const selectedColorSlots = parseColorCount(selectedColorCount);
@@ -410,18 +459,14 @@ export default function ProductDetailPage({ product }) {
 
   const unitPrice = priceValue + colorSurcharge;
 
-  const baseSlug = product.slug.replace(/-(standard|premium|individual)$/, '');
-  const tierSlugFamily = pappbecherTierSlugMap[product.slug] || null;
-  const tierOptions = tierSlugFamily
-    ? [
-      { key: 'standard', label: 'Eco / Standard', className: 'border-[#85f04b] bg-[#f4ffea] text-[#2e5d17]' },
-      { key: 'individual', label: 'Individual', className: 'border-[#5c5ad6] bg-[#f4f3ff] text-[#3230a3]' }
-    ]
-    : [
-      { key: 'standard', label: 'Eco / Standard', className: 'border-[#85f04b] bg-[#f4ffea] text-[#2e5d17]' },
-      { key: 'premium', label: 'Premium', className: 'border-[#7c6a38] bg-[#fff8e8] text-[#5a4720]' },
-      { key: 'individual', label: 'Individual', className: 'border-[#5c5ad6] bg-[#f4f3ff] text-[#3230a3]' }
-    ];
+  const baseSlug = product.slug.replace(/-(standard|individual)$/, '');
+  const tierSlugFamily = tierSlugMap[product.slug] || null;
+  const showTierSwitch = tierSlugFamily !== null;
+  const standardLabel = product.category === 'Plastikbecher' ? 'Standard' : 'Standard / Eco';
+  const tierOptions = [
+    { key: 'standard', label: standardLabel, className: 'border-[#85f04b] bg-[#f4ffea] text-[#2e5d17]' },
+    { key: 'individual', label: 'Individualisiert', className: 'border-[#5c5ad6] bg-[#f4f3ff] text-[#3230a3]' }
+  ];
 
   const detailImage = useMemo(() => {
     if (addLid && product.category === 'Plastikbecher' && !hideSizeSelection) {
@@ -471,6 +516,15 @@ export default function ProductDetailPage({ product }) {
         ? '/images/pappbecher-deckel-schwarz-new.jpeg'
         : '/images/pappbecher-deckel-weiss-new.jpeg';
     }
+    if (product.slug === 'pappbecher-individual') {
+      const normalizedSize = resolvedSize.toLowerCase();
+      if (normalizedSize.includes('100') || normalizedSize.includes('espresso')) return '/images/pappbecher-individual-espresso.jpeg';
+      if (normalizedSize.includes('200')) return '/images/pappbecher-individual-200ml.jpeg';
+      if (normalizedSize.includes('240')) return '/images/pappbecher-individual-240ml.png';
+      if (normalizedSize.includes('400')) return '/images/pappbecher-individual-400ml.png';
+      if (normalizedSize.includes('470') || normalizedSize.includes('475')) return '/images/pappbecher-individual-475ml.jpeg';
+      return '/images/pappbecher-individual-475ml.jpeg';
+    }
     if (isPappbecherCup) {
       const normalizedSize = resolvedSize.toLowerCase();
       const normalizedItemColor = resolvedItemColor.toLowerCase();
@@ -505,64 +559,49 @@ export default function ProductDetailPage({ product }) {
         if (normalizedItemColor.includes('natur')) return '/images/pappbecher-doppelwandig-natur.png';
         return '/images/pappbecher-doppelwandig-weiss.png';
       }
-      if (product.slug === 'pappbecher-individual') {
-        if (normalizedSize.includes('100')) return '/images/pappbecher-espresso.jpeg';
-        if (normalizedSize.includes('200')) return '/images/pappbecher-200ml.jpeg';
-        if (normalizedSize.includes('240')) return '/images/pappbecher-individual-main.png';
-        if (normalizedSize.includes('400')) return '/images/pappbecher-individual-main.png';
-        if (normalizedSize.includes('470')) return '/images/pappbecher-475ml.jpeg';
-        return '/images/pappbecher-individual-main.png';
-      }
       if (normalizedSize.includes('100')) return '/images/pappbecher-basic-100ml-weiss.png';
       if (normalizedSize.includes('200')) return '/images/pappbecher-basic-200ml-weiss.png';
       if (normalizedSize.includes('240')) return '/images/pappbecher-basic-240ml-weiss.png';
       if (normalizedSize.includes('400')) return '/images/pappbecher-basic-400ml-weiss.png';
       if (normalizedSize.includes('470')) return '/images/pappbecher-basic-470ml-weiss.png';
-      if (selectedColorCount.toLowerCase().includes('3 farben')) {
-        return '/images/pappbecher-475ml.jpeg';
-      }
       if (resolvedItemColor.toLowerCase().includes('schwarz')) return '/images/pappbecher-basic-470ml-schwarz.png';
-      if (resolvedItemColor.toLowerCase().includes('weiss')) return '/images/pappbecher-basic-200ml-weiss.png';
-      if (product.slug === 'pappbecher-individual') {
-        return '/images/pappbecher-doppelwandig-new.jpeg';
-      }
       return '/images/pappbecher-basic-100ml-weiss.png';
+    }
+    if (product.slug === 'eisbecher-individual') {
+      const normalizedSize = resolvedSize.toLowerCase();
+      if (normalizedSize.includes('100')) return '/images/eisbecher-individual-100ml.png';
+      if (normalizedSize.includes('200')) return '/images/eisbecher-individual-200ml.png';
+      if (normalizedSize.includes('250')) return '/images/eisbecher-individual-200ml.png';
+      if (normalizedSize.includes('300')) return '/images/eisbecher-individual-300ml.png';
+      return '/images/eisbecher-individual-100ml.png';
     }
     if (product.category === 'Eisbecher') {
       const normalizedSize = resolvedSize.toLowerCase();
-      if (product.slug === 'eisbecher-individual') {
-        if (normalizedSize.includes('100')) return '/images/eisbecher-100ml.png';
-        if (normalizedSize.includes('200')) return '/images/eisbecher-200ml.png';
-        if (normalizedSize.includes('250')) return '/images/eisbecher-200ml.png';
-        if (normalizedSize.includes('300')) return '/images/eisbecher-300ml.png';
-        return '/images/eisbecher-200ml.png';
-      }
       if (normalizedSize.includes('100')) return '/images/eisbecher-basic-100ml.png';
       if (normalizedSize.includes('200')) return '/images/eisbecher-basic-200ml.png';
       if (normalizedSize.includes('250')) return '/images/eisbecher-basic-200ml.png';
       if (normalizedSize.includes('300')) return '/images/eisbecher-basic-300ml.png';
       return '/images/eisbecher-basic-100ml.png';
     }
+    if (product.slug === 'plastikbecher-individual') {
+      const normalizedSize = resolvedSize.toLowerCase();
+      if (normalizedSize.includes('350')) return '/images/plastikbecher-individual-new-350ml.png';
+      if (normalizedSize.includes('400')) return '/images/plastikbecher-individual-new-400ml.png';
+      if (normalizedSize.includes('470')) return '/images/plastikbecher-individual-new-470ml.png';
+      if (normalizedSize.includes('550')) return '/images/plastikbecher-individual-new-550ml.png';
+      if (normalizedSize.includes('700')) return '/images/plastikbecher-individual-new-700ml.png';
+      return '/images/plastikbecher-individual-new-470ml.png';
+    }
     if (product.category === 'Plastikbecher') {
       const normalizedSize = resolvedSize.toLowerCase();
-      if (product.slug === 'plastikbecher-individual') {
-        if (normalizedSize.includes('350')) return '/images/plastikbecher-350ml.png';
-        if (normalizedSize.includes('400')) return '/images/plastikbecher-400ml.png';
-        if (normalizedSize.includes('470')) return '/images/plastikbecher-470ml.png';
-        if (normalizedSize.includes('500')) return '/images/plastikbecher-550ml.png';
-        if (normalizedSize.includes('550')) return '/images/plastikbecher-550ml.png';
-        if (normalizedSize.includes('700')) return '/images/plastikbecher-700ml.png';
-        return '/images/plastikbecher-550ml.png';
-      }
       if (normalizedSize.includes('350')) return '/images/plastikbecher-basic-350ml.png';
       if (normalizedSize.includes('400')) return '/images/plastikbecher-basic-500ml.png';
       if (normalizedSize.includes('470')) return '/images/plastikbecher-basic-470ml.png';
-      if (normalizedSize.includes('500')) return '/images/plastikbecher-basic-500ml.png';
       if (normalizedSize.includes('550')) return '/images/plastikbecher-basic-550ml.png';
       if (normalizedSize.includes('700')) return '/images/plastikbecher-basic-700ml.png';
       return '/images/plastikbecher-basic-470ml.png';
     }
-    if (product.slug === 'deckel-plastik') {
+    if (product.slug === 'plastikbecher-deckel') {
       if (selectedLidOption?.id === 'smoothie') return '/images/plastikbecher-deckel-smoothie-new.png';
       if (selectedLidOption?.id === 'sip') return '/images/plastikbecher-deckel-sip-new.png';
       return '/images/plastikbecher-deckel-flach-new.png';
@@ -617,14 +656,14 @@ export default function ProductDetailPage({ product }) {
     if (quantityInput === '') {
       setQuantity(minOrder);
       setQuantityInput(String(minOrder));
-      setQuantityHint(`Mindestmenge ist ${minOrder} Stueck.`);
+      setQuantityHint(`Mindestmenge ist ${minOrder} Stück.`);
       return;
     }
 
     const corrected = normalizeQuantity(quantityInput);
     setQuantity(corrected);
     setQuantityInput(String(corrected));
-    setQuantityHint(corrected === minOrder && Number(quantityInput) < minOrder ? `Mindestmenge ist ${minOrder} Stueck.` : '');
+    setQuantityHint(corrected === minOrder && Number(quantityInput) < minOrder ? `Mindestmenge ist ${minOrder} Stück.` : '');
   }
 
   function incrementQty() {
@@ -639,55 +678,33 @@ export default function ProductDetailPage({ product }) {
     setQuantity(next);
     setQuantityInput(String(next));
     if (next === minOrder) {
-      setQuantityHint(`Mindestmenge ist ${minOrder} Stueck.`);
+      setQuantityHint(`Mindestmenge ist ${minOrder} Stück.`);
     }
   }
 
-  async function addToCart() {
+  function addToCart() {
     const corrected = normalizeQuantity(quantityInput);
     setQuantity(corrected);
     setQuantityInput(String(corrected));
-
     setStatus({ state: 'loading', message: '' });
     try {
-      const response = await fetch('/api/cart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          productId: product.id,
-          quantity: corrected,
-          size: resolvedSize,
-          options: {
-            stabilitaet: selectedStability || '',
-            artikelFarbe: resolvedItemColor || '',
-            deckelFarbe: resolvedLidColor || '',
-            deckelMaterial: selectedLidMaterial || '',
-            druckOption: hasDesignSelection ? selectedColorCount : ''
-          },
-          addOns: addLid ? [{ type: 'deckel', option: lidType, quantity: lidQuantity }] : []
-        })
-      });
-      const payload = await response.json();
-      if (!response.ok) {
-        throw new Error(payload.error || 'Produkt konnte nicht hinzugefuegt werden.');
-      }
+      addItem({ productId: product.id, quantity: corrected, size: resolvedSize || null });
       setStatus({ state: 'success', message: `${corrected}x ${product.name} wurde hinzugefuegt.` });
-      window.dispatchEvent(new Event('cart-updated'));
-    } catch (error) {
-      setStatus({ state: 'error', message: error.message || 'Produkt konnte nicht hinzugefuegt werden.' });
+    } catch {
+      setStatus({ state: 'error', message: 'Produkt konnte nicht hinzugefuegt werden.' });
     }
   }
 
   function buildPrefilledMessage() {
     const lines = [
-      `Anfrage fuer Produkt: ${product.name}`,
+      `Anfrage für Produkt: ${product.name}`,
       `Kategorie: ${product.category}`,
-      `Ausfuehrung: ${getTierLabel(tier, product.badge)}`,
-      `Menge: ${quantity} Stueck`
+      `Ausfuehrung: ${getTierLabel(tier, product.category)}`,
+      `Menge: ${quantity} Stück`
     ];
 
     if (resolvedSize) {
-      lines.splice(3, 0, `Groesse: ${resolvedSize}`);
+      lines.splice(3, 0, `Größe: ${resolvedSize}`);
     }
 
     if (hasDesignSelection) {
@@ -711,7 +728,7 @@ export default function ProductDetailPage({ product }) {
       lines.push(`Deckel Material: ${selectedLidMaterial}`);
     }
     if (addLid) {
-      lines.push(`Deckel: ${selectedLidOption.label}, ${lidQuantity} Stueck`);
+      lines.push(`Deckel: ${selectedLidOption.label}, ${lidQuantity} Stück`);
     }
 
     lines.push('', 'Bitte um Angebot und Rueckmeldung innerhalb von 24 Stunden.');
@@ -749,14 +766,14 @@ export default function ProductDetailPage({ product }) {
     setQuantity(corrected);
     setQuantityInput(String(corrected));
     if (corrected === minOrder && Number(quantityInput || 0) < minOrder) {
-      setQuantityHint(`Mindestmenge ist ${minOrder} Stueck.`);
+      setQuantityHint(`Mindestmenge ist ${minOrder} Stück.`);
     }
 
     const query = new URLSearchParams({
       productSlug: product.slug,
       productName: product.name,
       category: product.category,
-      tier: getTierLabel(tier, product.badge),
+      tier: getTierLabel(tier, product.category),
       quantity: String(corrected),
       size: resolvedSize,
       colorCount: selectedColorCount,
@@ -893,7 +910,7 @@ export default function ProductDetailPage({ product }) {
           <div className="flex items-start gap-2 mb-3 flex-wrap">
             <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${getTierBadgeClass(tier)}`}>
               <Recycle className="w-3 h-3 mr-1" />
-              {getTierLabel(tier, product.badge)}
+              {getTierLabel(tier, product.category)}
             </span>
             <span className="inline-flex items-center rounded-full border px-2.5 py-1 text-xs text-muted-foreground bg-white/65">{product.category}</span>
             <span className="inline-flex items-center rounded-full border px-2.5 py-1 text-xs text-muted-foreground bg-white/65">Lieferzeit {product.leadTime}</span>
@@ -929,8 +946,8 @@ export default function ProductDetailPage({ product }) {
             {hideSizeSelection
               ? 'Konfigurieren Sie Deckeltyp, Farbe und Menge direkt rechts und senden Sie danach Ihre Anfrage.'
               : supportsCustomizationFlow
-                ? 'Konfigurieren Sie Groesse, Variante und Menge direkt rechts und gehen Sie danach zur Gestaltung oder Anfrage.'
-                : 'Konfigurieren Sie Groesse, Ausfuehrung und Menge direkt rechts. Fuer Eco / Standard ist keine Gestaltung vorgesehen.'}
+                ? 'Konfigurieren Sie Größe, Variante und Menge direkt rechts und gehen Sie danach zur Gestaltung oder Anfrage.'
+                : 'Konfigurieren Sie Größe, Ausfuehrung und Menge direkt rechts. Für Eco / Standard ist keine Gestaltung vorgesehen.'}
           </p>
 
           <div className="product-price text-[2rem] mb-2">ab CHF {unitPrice.toFixed(3)}</div>
@@ -943,7 +960,7 @@ export default function ProductDetailPage({ product }) {
           <div className="space-y-5">
             {!hideSizeSelection && (
               <div>
-                <label className="text-sm font-medium mb-2 block">Groesse</label>
+                <label className="text-sm font-medium mb-2 block">Größe</label>
                 <select
                   className="apple-select"
                   value={selectedSize}
@@ -1005,7 +1022,7 @@ export default function ProductDetailPage({ product }) {
 
                 {usesColorSlotSelection && (
                   <div className="mt-3 space-y-2">
-                    <label className="text-sm font-medium block">Druckfarben waehlen (optional)</label>
+                    <label className="text-sm font-medium block">Druckfarben wählen (optional)</label>
                     <div className="grid sm:grid-cols-2 gap-2">
                       {Array.from({ length: selectedColorSlots }).map((_, slotIndex) => (
                         <div key={`color-slot-${slotIndex}`} className="space-y-1">
@@ -1098,7 +1115,7 @@ export default function ProductDetailPage({ product }) {
             )}
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Menge (Min. {minOrder} Stueck)</label>
+              <label className="text-sm font-medium mb-2 block">Menge (Min. {minOrder} Stück)</label>
               <div className="flex items-center gap-2">
                 <button type="button" className="apple-btn-secondary h-10 w-10 p-0" onClick={decrementQty} disabled={quantity <= minOrder}>
                   <Minus className="w-4 h-4" />
@@ -1180,7 +1197,7 @@ export default function ProductDetailPage({ product }) {
                         onChange={(event) => setLidQuantity(Math.max(minOrder, Number(event.target.value) || minOrder))}
                       />
                       <p className="text-xs text-muted-foreground mt-2">
-                        Deckelpreis: ab CHF {lidUnitPrice.toFixed(3)} / Stueck · Zwischensumme CHF {lidTotalPrice.toFixed(2)}
+                        Deckelpreis: ab CHF {lidUnitPrice.toFixed(3)} / Stück · Zwischensumme CHF {lidTotalPrice.toFixed(2)}
                       </p>
                     </div>
                   </>
@@ -1283,7 +1300,7 @@ export default function ProductDetailPage({ product }) {
       <div className="mt-10">
         <Link href="/produkte" className="apple-btn-ghost">
           <ArrowLeft className="w-4 h-4" />
-          Zurueck zu Produkten
+          Zurück zu Produkten
         </Link>
       </div>
     </div>

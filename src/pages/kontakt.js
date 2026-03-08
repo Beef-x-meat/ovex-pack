@@ -7,12 +7,12 @@ const contactInfo = [
   {
     icon: MapPin,
     title: 'Adresse',
-    details: ['Bahnhofstrasse 42', '8001 Zuerich, Schweiz']
+    details: ['OEV Global Commerce']
   },
   {
     icon: Phone,
     title: 'Telefon',
-    details: ['+41 44 123 45 67']
+    details: ['+41 78 230 30 08']
   },
   {
     icon: Mail,
@@ -21,7 +21,7 @@ const contactInfo = [
   },
   {
     icon: Clock,
-    title: 'Oeffnungszeiten',
+    title: 'Öffnungszeiten',
     details: ['Mo-Fr: 08:00 - 17:00', 'Sa-So: Geschlossen']
   }
 ];
@@ -88,7 +88,7 @@ export default function ContactPage() {
 
       setStatus({
         state: 'success',
-        message: `Vielen Dank! Ihre Anfrage wurde gesendet. Sie erhalten eine Bestaetigung per E-Mail. Ref: ${payload.inquiryId}`
+        message: `Vielen Dank! Ihre Anfrage wurde gesendet. Sie erhalten eine Bestätigung per E-Mail. Ref: ${payload.inquiryId}`
       });
       setForm({ name: '', email: '', company: '', phone: '', message: '' });
       setLogoFile(null);
@@ -107,8 +107,8 @@ export default function ContactPage() {
 
       <section className="py-20 lg:py-28">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <span className="apple-kicker mb-6">Wir sind fuer Sie da</span>
-          <h1 className="section-title mb-5">Sprechen wir ueber Ihr Packaging.</h1>
+          <span className="apple-kicker mb-6">Wir sind für Sie da</span>
+          <h1 className="section-title mb-5">Sprechen wir über Ihr Packaging.</h1>
           <p className="section-copy max-w-2xl mx-auto">
             Anfrage senden, Logo anhängen und in 24 Stunden ein passendes Angebot erhalten.
           </p>
@@ -122,7 +122,7 @@ export default function ContactPage() {
               <h2 className="text-xl font-semibold mb-4">Anfrage senden</h2>
               {prefills.productName && (
                 <p className="text-sm text-muted-foreground mb-4">
-                  Vorbefuellte Anfrage fuer: <span className="font-medium text-foreground">{prefills.productName}</span>
+                  Vorbefüllte Anfrage für: <span className="font-medium text-foreground">{prefills.productName}</span>
                 </p>
               )}
 
@@ -177,7 +177,7 @@ export default function ContactPage() {
                   <label className="text-sm font-medium text-foreground/80">Nachricht *</label>
                   <textarea
                     className="apple-textarea"
-                    placeholder="Beschreiben Sie Ihr Projekt, gewuenschte Mengen, Designs..."
+                    placeholder="Beschreiben Sie Ihr Projekt, gewünschte Mengen, Designs..."
                     value={form.message}
                     onChange={(e) => updateField('message', e.target.value)}
                     required

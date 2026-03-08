@@ -45,10 +45,10 @@ export default function GestaltungPage() {
     if (!config) return;
 
     const lines = [
-      `Anfrage fuer individualisierte Gestaltung: ${config.productName}`,
+      `Anfrage für individualisierte Gestaltung: ${config.productName}`,
       config.category ? `Kategorie: ${config.category}` : '',
-      config.size ? `Groesse: ${config.size}` : '',
-      config.quantity ? `Menge: ${config.quantity} Stueck` : '',
+      config.size ? `Größe: ${config.size}` : '',
+      config.quantity ? `Menge: ${config.quantity} Stück` : '',
       config.colorCount ? `Druckoption: ${config.colorCount}` : '',
       config.printColors ? `Druckfarben: ${config.printColors}` : '',
       config.itemColor ? `Artikel Farbe: ${config.itemColor}` : '',
@@ -80,7 +80,7 @@ export default function GestaltungPage() {
     <div className="max-w-5xl mx-auto px-6 lg:px-8 py-14" data-testid="page-gestaltung">
       <SeoHead
         title="Gestaltung konfigurieren"
-        description="Laden Sie Ihr Logo hoch und uebermitteln Sie Ihre Designwunsche fuer ein individuelles Angebot."
+        description="Laden Sie Ihr Logo hoch und uebermitteln Sie Ihre Designwunsche für ein individuelles Angebot."
         path="/gestaltung"
       />
 
@@ -94,7 +94,7 @@ export default function GestaltungPage() {
         <div>
           <span className="apple-kicker mb-3">Gestaltung</span>
           <h1 className="text-3xl lg:text-5xl font-semibold tracking-tight mb-3">
-            Design fuer Ihr Produkt vorbereiten
+            Design für Ihr Produkt vorbereiten
           </h1>
           <p className="text-sm text-muted-foreground">
             Laden Sie Ihr Logo hoch und erfassen Sie Hinweise. Danach wird Ihre Anfrage mit allen Daten vorbereitet.
@@ -104,7 +104,7 @@ export default function GestaltungPage() {
         {config && (
           <div className="rounded-2xl border border-black/10 bg-white/80 p-4 grid sm:grid-cols-2 gap-3 text-sm">
             <p><span className="text-muted-foreground">Produkt:</span> <span className="font-medium">{config.productName}</span></p>
-            {config.size && <p><span className="text-muted-foreground">Groesse:</span> <span className="font-medium">{config.size}</span></p>}
+            {config.size && <p><span className="text-muted-foreground">Größe:</span> <span className="font-medium">{config.size}</span></p>}
             {config.quantity && <p><span className="text-muted-foreground">Menge:</span> <span className="font-medium">{config.quantity}</span></p>}
             {config.colorCount && <p><span className="text-muted-foreground">Druckoption:</span> <span className="font-medium">{config.colorCount}</span></p>}
             {config.itemColor && <p><span className="text-muted-foreground">Artikel Farbe:</span> <span className="font-medium">{config.itemColor}</span></p>}

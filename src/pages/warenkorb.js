@@ -1,89 +1,36 @@
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { ArrowLeft, ArrowRight, Minus, Package, Plus, ShoppingCart, Trash2 } from 'lucide-react';
 import SeoHead from '@/components/SeoHead';
+import { useCart } from '@/hooks/useCart';
+import { localProducts } from '@/lib/products';
+import { getProductImage } from '@/lib/product-images';
+
+const productMap = new Map(localProducts.map((p) => [p.id, p]));
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items, updateItem, removeItem, cartCount } = useCart();
 
-  async function loadCart() {
-    try {
-      const response = await fetch('/api/cart');
-      if (!response.ok) {
-        setCartItems([]);
-        return;
-      }
-      const payload = await response.json().catch(() => ({}));
-      setCartItems(Array.isArray(payload.items) ? payload.items : []);
-    } catch {
-      setCartItems([]);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadCart();
-  }, []);
-
-  async function updateQuantity(id, quantity) {
-    try {
-      await fetch(`/api/cart/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quantity })
-      });
-    } catch {
-      // UI bleibt bedienbar, auch wenn Cart-API temporaer nicht erreichbar ist.
-    }
-    await loadCart();
-    window.dispatchEvent(new Event('cart-updated'));
-  }
-
-  async function removeItem(id) {
-    try {
-      await fetch(`/api/cart/${id}`, { method: 'DELETE' });
-    } catch {
-      // UI bleibt bedienbar, auch wenn Cart-API temporaer nicht erreichbar ist.
-    }
-    await loadCart();
-    window.dispatchEvent(new Event('cart-updated'));
-  }
+  const expandedItems = useMemo(() =>
+    items.map((item) => {
+      const product = productMap.get(item.productId) || null;
+      return {
+        ...item,
+        product,
+        imageUrl: product ? (getProductImage(product) || '/images/food-boxes.jpg') : '/images/food-boxes.jpg'
+      };
+    }),
+    [items]
+  );
 
   const total = useMemo(() => {
-    return cartItems.reduce((sum, item) => {
-      const price = Number(item.product?.priceHint?.replace('ab CHF ', '').replace(' / Stueck', '') || 0);
+    return expandedItems.reduce((sum, item) => {
+      const price = Number(item.product?.priceHint?.replace('ab CHF ', '').replace(' / Stück', '') || 0);
       return sum + price * item.quantity;
     }, 0);
-  }, [cartItems]);
+  }, [expandedItems]);
 
-  if (loading) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <div className="h-8 w-48 skeleton mb-8" />
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-4">
-            {[1, 2].map((i) => (
-              <div key={i} className="p-4 rounded-2xl apple-card">
-                <div className="flex gap-4">
-                  <div className="w-24 h-24 rounded-md skeleton" />
-                  <div className="flex-1 space-y-3">
-                    <div className="h-5 w-3/4 skeleton" />
-                    <div className="h-4 w-1/2 skeleton" />
-                    <div className="h-4 w-1/3 skeleton" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="p-6 rounded-2xl apple-card h-48 skeleton" />
-        </div>
-      </div>
-    );
-  }
-
-  if (!cartItems.length) {
+  if (!expandedItems.length) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center fade-up" data-testid="page-cart-empty">
         <SeoHead title="Warenkorb" description="Ihr Warenkorb bei Ovex Pack" path="/warenkorb" />
@@ -94,13 +41,9 @@ export default function CartPage() {
           Ihr Warenkorb ist leer
         </h2>
         <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-          Entdecken Sie unsere individuell bedruckten Verpackungen und fuellen Sie Ihren Warenkorb.
+          Entdecken Sie unsere individuell bedruckten Verpackungen und füllen Sie Ihren Warenkorb.
         </p>
-        <Link
-          href="/produkte"
-          className="apple-btn-primary text-base px-8"
-          data-testid="button-shop-now"
-        >
+        <Link href="/produkte" className="apple-btn-primary text-base px-8" data-testid="button-shop-now">
           <Package className="w-5 h-5 mr-2" />
           Jetzt Produkte entdecken
         </Link>
@@ -114,7 +57,7 @@ export default function CartPage() {
 
       <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
         <h1 className="text-2xl font-bold" data-testid="text-cart-title">
-          Warenkorb ({cartItems.length} Artikel)
+          Warenkorb ({cartCount.toLocaleString()} St.)
         </h1>
         <Link href="/produkte" className="apple-btn-secondary text-sm py-2.5 px-4" data-testid="button-continue-shopping">
           <ArrowLeft className="w-4 h-4 mr-1" />
@@ -124,15 +67,15 @@ export default function CartPage() {
 
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-4">
-          {cartItems.map((item) => {
-            const price = Number(item.product?.priceHint?.replace('ab CHF ', '').replace(' / Stueck', '') || 0);
+          {expandedItems.map((item) => {
+            const price = Number(item.product?.priceHint?.replace('ab CHF ', '').replace(' / Stück', '') || 0);
             const minOrder = item.product?.minOrder || 100;
             return (
               <article key={item.id} className="p-4 rounded-2xl apple-card" data-testid={`card-cart-item-${item.id}`}>
                 <div className="flex gap-4">
                   <div className="w-24 h-24 rounded-md overflow-hidden bg-muted/30 shrink-0">
                     <img
-                      src={item.imageUrl || '/images/food-boxes.jpg'}
+                      src={item.imageUrl}
                       alt={item.product?.name || ''}
                       loading="lazy"
                       decoding="async"
@@ -143,9 +86,11 @@ export default function CartPage() {
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <Link href={`/produkt/${item.product?.slug || ''}`}>
-                          <h3 className="font-semibold hover:text-primary transition-colors line-clamp-1">{item.product?.name}</h3>
+                          <h3 className="font-semibold hover:text-primary transition-colors line-clamp-1">
+                            {item.product?.name}
+                          </h3>
                         </Link>
-                        {item.size && <p className="text-sm text-muted-foreground">Groesse: {item.size}</p>}
+                        {item.size && <p className="text-sm text-muted-foreground">Größe: {item.size}</p>}
                       </div>
                       <button
                         type="button"
@@ -162,19 +107,19 @@ export default function CartPage() {
                         <button
                           type="button"
                           className="apple-btn-secondary h-8 w-8 p-0"
-                          onClick={() => updateQuantity(item.id, Math.max(minOrder, item.quantity - minOrder))}
+                          onClick={() => updateItem(item.id, Math.max(minOrder, item.quantity - minOrder))}
                           disabled={item.quantity <= minOrder}
                           data-testid={`button-cart-minus-${item.id}`}
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="text-sm font-medium w-16 text-center" data-testid={`text-qty-${item.id}`}>
-                          {item.quantity} St.
+                        <span className="text-sm font-medium w-20 text-center" data-testid={`text-qty-${item.id}`}>
+                          {item.quantity.toLocaleString()} St.
                         </span>
                         <button
                           type="button"
                           className="apple-btn-secondary h-8 w-8 p-0"
-                          onClick={() => updateQuantity(item.id, item.quantity + minOrder)}
+                          onClick={() => updateItem(item.id, item.quantity + minOrder)}
                           data-testid={`button-cart-plus-${item.id}`}
                         >
                           <Plus className="w-3 h-3" />
@@ -206,14 +151,16 @@ export default function CartPage() {
             </div>
             <div className="my-4 border-t" />
             <div className="flex justify-between gap-2 font-semibold">
-              <span>Gesamt</span>
+              <span>Gesamt (Richtwert)</span>
               <span className="text-primary" data-testid="text-cart-total">CHF {total.toFixed(2)}</span>
             </div>
-            <Link href="/kontakt?intent=checkout" className="w-full mt-6 h-11 apple-btn-primary" data-testid="button-checkout">
+            <Link href="/checkout" className="w-full mt-6 h-11 apple-btn-primary flex items-center justify-center" data-testid="button-checkout">
               Zur Kasse
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
-            <p className="text-xs text-muted-foreground text-center mt-3">Inkl. MwSt. Kostenloser Versand in die Schweiz.</p>
+            <p className="text-xs text-muted-foreground text-center mt-3">
+              Der finale Preis wird nach Prüfung der Anforderungen bestätigt.
+            </p>
           </article>
         </div>
       </div>

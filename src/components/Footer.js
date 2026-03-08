@@ -16,7 +16,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-              Premium-Verpackungen fuer anspruchsvolle Unternehmen. Bedruckt oder neutral, immer in hoechster Qualitaet.
+              Premium-Verpackungen für anspruchsvolle Unternehmen. Bedruckt oder neutral, immer in höchster Qualität.
             </p>
           </div>
 
@@ -38,21 +38,23 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/produkte/plastikbecher" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Plastikbecher
+                </Link>
+              </li>
+              <li>
+                <Link href="/produkte/lebensmittelboxen" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Burger- &amp; Foodboxen
+                </Link>
+              </li>
+              <li>
                 <Link href="/produkte/papiertragetaschen" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Papiertueten
+                  Tragtaschen &amp; Tüten
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/produkte/lebensmittelboxen"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Lebensmittelboxen
-                </Link>
-              </li>
-              <li>
-                <Link href="/produkte/zubehoer" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Zubehoer
+                <Link href="/produkte/servietten" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Servietten
                 </Link>
               </li>
             </ul>
@@ -67,7 +69,7 @@ export default function Footer() {
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="link-footer-about"
                 >
-                  Ueber uns
+                  Über uns
                 </Link>
               </li>
               <li>
@@ -102,15 +104,15 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2.5 text-muted-foreground">
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-                <span>Bahnhofstrasse 42, 8001 Zuerich, Schweiz</span>
+                <span>OEV Global Commerce</span>
               </li>
               <li>
                 <a
-                  href="tel:+41441234567"
+                  href="tel:+41782303008"
                   className="flex items-center gap-2.5 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Phone className="w-4 h-4 shrink-0" />
-                  +41 44 123 45 67
+                  +41 78 230 30 08
                 </a>
               </li>
               <li>

@@ -1,15 +1,11 @@
 export const categorySlugMap = {
-  Pappbecher: 'pappbecher',
-  Plastikbecher: 'plastikbecher',
-  Mehrwegbecher: 'mehrwegbecher',
-  Eisbecher: 'eisbecher',
-  Deckel: 'deckel',
-  Lebensmittelpapier: 'lebensmittelpapier',
+  Pappbecher:         'pappbecher',
+  Plastikbecher:      'plastikbecher',
+  Eisbecher:          'eisbecher',
+  Lebensmittelboxen:  'lebensmittelboxen',
   Papiertragetaschen: 'papiertragetaschen',
-  Schalen: 'schalen',
-  Lebensmittelboxen: 'lebensmittelboxen',
-  Servietten: 'servietten',
-  Zubehoer: 'zubehoer'
+  Servietten:         'servietten',
+  Lebensmittelpapier: 'lebensmittelpapier',
 };
 
 export const slugToCategoryMap = Object.fromEntries(
@@ -18,58 +14,31 @@ export const slugToCategoryMap = Object.fromEntries(
 
 export const categoryPageMeta = {
   pappbecher: {
-    h1: 'Pappbecher Kategorie fuer den taeglichen Markenauftritt',
-    description:
-      'In dieser Kategorie finden Sie Pappbecher und passende Deckel in einer klaren B2B-Struktur. Bechergroessen von 100ml bis 470ml sowie Wunschgroessen lassen sich direkt konfigurieren. Fuer das Branding stehen 1-, 2- oder 3+ Farbkonzepte zur Auswahl, kombiniert mit einwandiger oder doppelwandiger Stabilitaet. Preise starten bei CHF 0.11 pro Becher und bleiben auf planbare Mengenprozesse ausgerichtet.'
+    h1: 'Pappbecher & Deckel',
+    description: 'FSC-zertifizierte Pappbecher in 5 Größen (100–470 ml), passende Deckel in 5 Materialvarianten – einwandig oder doppelwandig, mit 1–3+ Druckfarben. Ab 2.500 Stück.'
   },
   plastikbecher: {
-    h1: 'Plastikbecher fuer Events und Systemgastronomie',
-    description:
-      'Standard und individualisierte Plastikbecher mit konsistenter Materialqualitaet, klarer Markenwirkung und passenden Deckeloptionen fuer skalierbare B2B-Prozesse.'
-  },
-  mehrwegbecher: {
-    h1: 'Mehrwegbecher fuer wiederkehrende B2B-Kreislaufmodelle',
-    description:
-      'Mehrwegbecher in gaengigen Volumenstufen fuer robuste Umlaufprozesse. Auf Wunsch individualisiert fuer konsistente Markenwahrnehmung am POS.'
+    h1: 'Plastikbecher & Deckel',
+    description: 'rPET-Plastikbecher in 5 Größen (350–700 ml) in Standard- oder Budget-Gewicht, mit passenden Deckeln in 3 Formen. Mit 1–3+ Druckfarben oder ohne Logo. Ab 2.500 Stück.'
   },
   eisbecher: {
-    h1: 'Eisbecher mit klarer Markenfuehrung',
-    description:
-      'Eisbecher und Eisbecher Individual mit klaren Groessenoptionen (100ml, 200ml, 250ml, 300ml), flexibler Wunschgroesse und B2B-konformer Mengenlogik ab 2.500 Stueck.'
-  },
-  deckel: {
-    h1: 'Deckelprogramm fuer alle Becherformate',
-    description:
-      'Standard-, Dome-, Flat- und Plastikdeckel, filterbar nach Bechergroesse. So bleiben Passform, Handling und Produktbild durchgaengig professionell.'
-  },
-  lebensmittelpapier: {
-    h1: 'Papier und Einschlagmaterial fuer Food-Konzepte',
-    description:
-      'Fettdichtes Papier und Lebensmittelpapier in mehreren Formaten und Farbvarianten. Voll individualisierbar fuer hygienische, markenkonsistente To-go-Prozesse.'
-  },
-  papiertragetaschen: {
-    h1: 'Tueten und Taschen fuer Take-away und Retail',
-    description:
-      'Von Doenertaschen ueber Blockboden- bis Brottueten: strukturierte Formate, definierte Druckoptionen und robuste Materialauswahl fuer B2B-Bedarfe.'
-  },
-  schalen: {
-    h1: 'Schalen und Bowls fuer frische Konzepte',
-    description:
-      'Salatschalen in den gaengigsten Volumen mit passenden Deckeln in Papier oder Kunststoff. Standard und individualisiert fuer einen konsistenten Markenauftritt.'
+    h1: 'Eisbecher',
+    description: 'Fettdicht beschichtete Eisbecher aus FSC-Karton in 4 Größen (100–300 ml). Mit 1, 2 oder 3+ Druckfarben für Ihr Branding. Ab 2.500 Stück.'
   },
   lebensmittelboxen: {
-    h1: 'Boxenprogramm von Pizza bis Takeaway',
-    description:
-      'Pizza-, Takeaway-, Nudel-, Burger- und Pommesboxen mit klaren Formaten, drucktechnischen Optionen und planbarer Beschaffung fuer professionelle Ablauforganisation.'
+    h1: 'Burger- & Foodboxen',
+    description: 'Burgerboxen, Pommesboxen, Hamburger Menüboxen, Noodle- & Dönerboxen, Lunchboxen und Pizzaboxen – in Weiss, Kraft oder mit Ihrem Design. Ab 2.500 Stück.'
+  },
+  papiertragetaschen: {
+    h1: 'Tragtaschen & Tüten',
+    description: 'Kraft-Papiertragtaschen in 5 Größen (S bis XXL), in 90g oder 70g Papier, in Kraft oder Weiss. Mit 1–3+ Druckfarben auf einer oder mehreren Seiten. Ab 2.500 Stück.'
   },
   servietten: {
-    h1: 'Servietten und Hygieneprodukte fuer den Gastkontakt',
-    description:
-      'Servietten, Serviettentaschen und Erfrischungstuecher in standardisierten Formaten und Druckoptionen fuer konsistente Markenfuehrung bis ins Detail.'
+    h1: 'Servietten & Feuchttücher',
+    description: 'Bedruckte Papiertücher in ¼- oder 1/8-Faltung und bedruckte Feuchttücher in 5 Größen – in Weiss oder Kraft, mit 1–3+ Druckfarben. Ab 10.000 Stück.'
   },
-  zubehoer: {
-    h1: 'Zubehoer fuer Komplettloesungen',
-    description:
-      'Alle Deckeltypen und erweiterte Verpackungsoptionen als zusaetzliche Module fuer skalierbare B2B-Projekte mit einheitlicher Spezifikation.'
-  }
+  lebensmittelpapier: {
+    h1: 'Verpackungspapier',
+    description: 'Fettdichtes Lebensmittelpapier in 5 Größen sowie Take-Away Verpackungspapier – in Weiss oder Kraft, mit 1–3+ Druckfarben. Bestelleinheit: KG.'
+  },
 };

@@ -11,7 +11,7 @@ const sections = [
   },
   {
     heading: 'Speicherdauer und Rechte',
-    body: 'Daten werden nur so lange gespeichert, wie es fuer die genannten Zwecke oder gesetzlich erforderlich ist. Sie haben Auskunfts-, Berichtigungs- und Loeschungsrechte.'
+    body: 'Daten werden nur so lange gespeichert, wie es für die genannten Zwecke oder gesetzlich erforderlich ist. Sie haben Auskunfts-, Berichtigungs- und Loeschungsrechte.'
   }
 ];
 

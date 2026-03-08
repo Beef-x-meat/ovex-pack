@@ -3,7 +3,7 @@ import LegalPage from '@/components/LegalPage';
 const sections = [
   {
     heading: 'Geltungsbereich',
-    body: 'Diese Bedingungen gelten fuer alle Bestellungen, Angebote und Lieferungen von OVEX PACK. Abweichende Bedingungen gelten nur nach schriftlicher Bestaetigung.'
+    body: 'Diese Bedingungen gelten für alle Bestellungen, Angebote und Lieferungen von OVEX PACK. Abweichende Bedingungen gelten nur nach schriftlicher Bestätigung.'
   },
   {
     heading: 'Angebot und Bestellung',
@@ -20,7 +20,7 @@ export default function TermsPage() {
     <LegalPage
       title="AGB"
       path="/agb"
-      intro="Uebersicht der allgemeinen Geschaeftsbedingungen fuer Angebote, Bestellungen, Lieferung und Zahlung."
+      intro="Übersicht der allgemeinen Geschaeftsbedingungen für Angebote, Bestellungen, Lieferung und Zahlung."
       sections={sections}
     />
   );

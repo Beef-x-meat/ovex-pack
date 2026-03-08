@@ -15,7 +15,7 @@ export default function SeoHead({ title, description, path = '/', image = '/imag
       '@type': 'PostalAddress',
       streetAddress: 'Bahnhofstrasse 42',
       postalCode: '8001',
-      addressLocality: 'Zuerich',
+      addressLocality: 'Zürich',
       addressCountry: 'CH'
     },
     contactPoint: {

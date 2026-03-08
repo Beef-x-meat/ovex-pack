@@ -7,7 +7,7 @@ const sections = [
   },
   {
     heading: 'Einsatz auf dieser Website',
-    body: 'Wir verwenden technisch notwendige Cookies fuer grundlegende Funktionen wie Navigation und Warenkorb. Optionale Cookies werden nur nach Einwilligung eingesetzt.'
+    body: 'Wir verwenden technisch notwendige Cookies für grundlegende Funktionen wie Navigation und Warenkorb. Optionale Cookies werden nur nach Einwilligung eingesetzt.'
   },
   {
     heading: 'Steuerung',

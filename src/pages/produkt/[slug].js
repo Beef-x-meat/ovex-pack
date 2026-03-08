@@ -1,25 +1,23 @@
 import ProductDetailPage from '@/components/ProductDetailPage';
-import { fetchProductBySlug, fetchProducts } from '@/lib/cms';
+import { localProducts, getLocalProductBySlug } from '@/lib/products';
 
 export default ProductDetailPage;
 
-export async function getStaticPaths() {
-  const products = await fetchProducts();
+export function getStaticPaths() {
   return {
-    paths: products.map((product) => ({
+    paths: localProducts.map((product) => ({
       params: { slug: product.slug }
     })),
-    fallback: 'blocking'
+    fallback: false
   };
 }
 
-export async function getStaticProps({ params }) {
-  const product = await fetchProductBySlug(params.slug);
+export function getStaticProps({ params }) {
+  const product = getLocalProductBySlug(params.slug);
   if (!product) {
     return { notFound: true };
   }
   return {
-    props: { product },
-    revalidate: 300
+    props: { product }
   };
 }

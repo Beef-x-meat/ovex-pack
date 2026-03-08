@@ -7,18 +7,18 @@ const values = [
     icon: Recycle,
     title: 'Nachhaltigkeit',
     description:
-      'Wir setzen auf umweltfreundliche Materialien und nachhaltige Produktion fuer eine bessere Zukunft.'
+      'Wir setzen auf umweltfreundliche Materialien und nachhaltige Produktion für eine bessere Zukunft.'
   },
   {
     icon: Award,
-    title: 'Qualitaet',
+    title: 'Qualität',
     description:
-      'Unsere Produkte werden in Europa hergestellt und erfuellen hoechste Qualitaetsstandards.'
+      'Unsere Produkte werden in Europa hergestellt und erfüllen höchste Qualitätsstandards.'
   },
   {
     icon: Heart,
     title: 'Kundenservice',
-    description: 'Persoenliche Betreuung und kostenloses Design - wir sind fuer Sie da.'
+    description: 'Persönliche Betreuung und kostenloses Design - wir sind für Sie da.'
   },
   {
     icon: Globe,
@@ -33,7 +33,7 @@ const values = [
   {
     icon: Users,
     title: 'Partnerschaft',
-    description: 'Ueber 6.900 zufriedene Unternehmen vertrauen auf Ovex Pack.'
+    description: 'Über 6.900 zufriedene Unternehmen vertrauen auf Ovex Pack.'
   }
 ];
 
@@ -45,18 +45,18 @@ export default function AboutPage() {
   return (
     <div data-testid="page-about">
       <SeoHead
-        title="Ueber uns"
-        description="Erfahren Sie mehr ueber Ovex Pack - Ihr Partner fuer individuell bedruckte Verpackungen seit 2021."
-        path="/ueber-uns"
+        title="Über uns"
+        description="Erfahren Sie mehr über Ovex Pack - Ihr Partner für individuell bedruckte Verpackungen seit 2021."
+        path="/über-uns"
       />
 
       <section ref={heroRef} className="py-20 lg:py-28 reveal-section">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-6 fade-up">Seit 2021</p>
-          <h1 className="section-title mb-5 fade-up-delay-1" data-testid="text-about-title">Ueber Ovex Pack</h1>
+          <h1 className="section-title mb-5 fade-up-delay-1" data-testid="text-about-title">Über Ovex Pack</h1>
           <p className="section-copy leading-relaxed max-w-2xl mx-auto fade-up-delay-2">
-            Ovex Pack ist ein junges Unternehmen, das 2021 gegruendet wurde, mit einer klaren Mission:
-            Marken durch hochwertige, individuell bedruckte Verpackungen zu staerken.
+            Ovex Pack ist ein junges Unternehmen, das 2021 gegründet wurde, mit einer klaren Mission:
+            Marken durch hochwertige, individuell bedruckte Verpackungen zu stärken.
           </p>
         </div>
       </section>
@@ -67,12 +67,12 @@ export default function AboutPage() {
             <h2 className="text-2xl font-bold mb-4">Unsere Geschichte</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Ovex Pack ist ein junges Unternehmen, das 2021 gegruendet wurde, mit einer klaren Mission:
-                Marken durch hochwertige, individuell bedruckte Verpackungen zu staerken.
+                Ovex Pack ist ein junges Unternehmen, das 2021 gegründet wurde, mit einer klaren Mission:
+                Marken durch hochwertige, individuell bedruckte Verpackungen zu stärken.
               </p>
               <p>
-                Trotz seiner kurzen Geschichte hat sich Ovex Pack schnell als zuverlaessiger Partner fuer To-Go-Verpackungen etabliert.
-                Durch die Zusammenarbeit mit erstklassigen Herstellern in Europa bieten wir innovative Loesungen in hoechster Qualitaet
+                Trotz seiner kurzen Geschichte hat sich Ovex Pack schnell als zuverlässiger Partner für To-Go-Verpackungen etabliert.
+                Durch die Zusammenarbeit mit erstklassigen Herstellern in Europa bieten wir innovative Lösungen in höchster Qualität
                 zu fairen Preisen.
               </p>
               <p>
@@ -92,7 +92,7 @@ export default function AboutPage() {
             </article>
             <article className="p-6 text-center rounded-2xl apple-card">
               <div className="text-3xl font-bold text-primary mb-1">2021</div>
-              <div className="text-sm text-muted-foreground">Gegruendet</div>
+              <div className="text-sm text-muted-foreground">Gegründet</div>
             </article>
             <article className="p-6 text-center rounded-2xl apple-card">
               <div className="text-3xl font-bold text-primary mb-1">EU</div>

@@ -3,52 +3,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Package, Recycle, Search, X } from 'lucide-react';
 import SeoHead from '@/components/SeoHead';
-import { fetchProducts } from '@/lib/cms';
 import { categorySlugMap } from '@/lib/product-categories';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-
-const categoryImageMap = {
-  Pappbecher: '/images/pappbecher-basic-main.png',
-  Eisbecher: '/images/eisbecher-basic-100ml.png',
-  Plastikbecher: '/images/plastikbecher-basic-470ml.png',
-  Lebensmittelboxen: '/images/food-boxes.jpg',
-  Papiertragetaschen: '/images/paper-bags.jpg',
-  Lebensmittelpapier: '/images/lebensmittelpapier-standard.png'
-};
-
-const productImageMap = {
-  'pappbecher-basic': '/images/pappbecher-basic-main.png',
-  'pappbecher-individual': '/images/pappbecher-individual-main.png',
-  'pappbecher-deckel': '/images/pappbecher-deckel-weiss-new.jpeg',
-  'plastikbecher-standard': '/images/plastikbecher-basic-350ml.png',
-  'plastikbecher-individual': '/images/plastikbecher-550ml.png',
-  'deckel-plastik': '/images/plastikbecher-deckel-flach-new.png',
-  'deckel-standard': '/images/plastikbecher-deckel-flach-new.png',
-  'deckel-dome-papier': '/images/plastikbecher-deckel-smoothie-new.png',
-  'deckel-flat-papier': '/images/plastikbecher-deckel-sip-new.png',
-  papierstrohhalme: '/images/paper-straws.jpg',
-  'eisbecher-standard': '/images/eisbecher-basic-100ml.png',
-  'eisbecher-individual': '/images/eisbecher-200ml.png',
-  'lebensmittelpapier-standard': '/images/lebensmittelpapier-standard.png',
-  'lebensmittelpapier-premium': '/images/lebensmittelpapier-premium.png',
-  'doener-tuete-klassisch': '/images/doener-tuete-klassisch.png',
-  'doener-tuete-individual': '/images/doener-tuete-individual.png'
-};
-
-function getProductImage(product) {
-  if (productImageMap[product.slug]) {
-    return productImageMap[product.slug];
-  }
-  if (product.category === 'Zubehoer') {
-    return '';
-  }
-  return categoryImageMap[product.category] || '';
-}
+import { getProductImage } from '@/lib/product-images';
 
 function tierBadgeClass(tier) {
-  if (tier === 'premium') {
-    return 'border-[#7c6a38] bg-[#fff8e8] text-[#5a4720]';
-  }
   if (tier === 'individual') {
     return 'border-[#5c5ad6] bg-[#f4f3ff] text-[#3230a3]';
   }
@@ -57,17 +16,15 @@ function tierBadgeClass(tier) {
 
 function resolveTier(product) {
   if (product.tier) return product.tier;
-  const source = `${product.slug || ''} ${product.name || ''}`.toLowerCase();
-  if (source.includes('premium')) return 'premium';
-  if (source.includes('individual')) return 'individual';
+  if ((product.slug || '').includes('individual')) return 'individual';
   return 'standard';
 }
 
 function resolveBadgeLabel(product) {
   const tier = resolveTier(product);
-  if (tier === 'premium') return 'Premium';
-  if (tier === 'individual') return 'Individual';
-  return 'Eco / Standard';
+  if (tier === 'individual') return 'Individualisiert';
+  if (product.category === 'Plastikbecher') return 'Standard';
+  return 'Standard / Eco';
 }
 
 export default function Products({ products }) {
@@ -159,7 +116,7 @@ export default function Products({ products }) {
       <section ref={headerRef} className="mb-12 lg:mb-14 reveal-section">
         {!isBestsellerView && <span className="apple-kicker mb-4 fade-up">Produktkatalog</span>}
         <h1 className="section-title mb-4 fade-up-delay-1" data-testid="text-products-title">
-          {isBestsellerView ? 'Unsere Bestseller' : 'Verpackungen fuer Marken mit Anspruch.'}
+          {isBestsellerView ? 'Unsere Bestseller' : 'Verpackungen für Marken mit Anspruch.'}
         </h1>
         {isBestsellerView ? (
           <p className="section-copy max-w-3xl fade-up-delay-2">
@@ -169,7 +126,7 @@ export default function Products({ products }) {
           </p>
         ) : (
           <p className="section-copy max-w-3xl fade-up-delay-2">
-            Klare Kategorien, hochwertige Materialien, praezise Lieferlogik.
+            Klare Kategorien, hochwertige Materialien, präzise Lieferlogik.
             Filtern Sie gezielt und wechseln Sie direkt in die Detailansicht.
           </p>
         )}
@@ -312,52 +269,43 @@ export default function Products({ products }) {
           <p className="text-sm text-muted-foreground mb-6" data-testid="text-result-count">
             {filteredProducts.length} Produkt{filteredProducts.length !== 1 ? 'e' : ''} gefunden
           </p>
-          <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <section className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredProducts.map((product) => {
-              const priceValue = product.priceHint.replace('ab CHF ', '').replace(' / Stueck', '');
+              const priceValue = product.priceHint.replace('ab CHF ', '').replace(' / Stück', '');
               const tier = resolveTier(product);
-              const imageClass =
-                ['pappbecher-basic', 'pappbecher-individual'].includes(product.slug)
-                  ? 'catalog-shot-pappbecher brand-shot'
-                  : 'catalog-shot brand-shot';
+              const img = getProductImage(product);
               return (
                 <Link key={product.id} href={`/produkt/${product.slug}`}>
                   <article
-                    className="overflow-hidden group cursor-pointer rounded-2xl apple-card product-card-premium h-full"
+                    className="group cursor-pointer rounded-2xl bg-white border border-border overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 h-full flex flex-col"
                     data-testid={`card-product-${product.id}`}
                   >
-                    <div className="aspect-[4/3] overflow-hidden brand-frame">
-                      {getProductImage(product) ? (
+                    <div className="aspect-[4/3] overflow-hidden bg-[#f4f1eb] shrink-0">
+                      {img ? (
                         <img
-                          src={getProductImage(product)}
+                          src={img}
                           alt={product.name}
                           loading="lazy"
                           decoding="async"
-                          className={imageClass}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f6f2ea] to-[#ece4d6] text-muted-foreground">
-                          <div className="text-center px-4">
-                            <Package className="w-7 h-7 mx-auto mb-2" />
-                            <p className="text-xs font-medium tracking-wide uppercase">{product.category}</p>
-                          </div>
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                          <Package className="w-7 h-7" />
                         </div>
                       )}
                     </div>
-                    <div className="p-5 lg:p-6">
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="text-[1.03rem] font-semibold tracking-tight line-clamp-1">{product.name}</h3>
-                        <span
-                          className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-semibold shrink-0 ${tierBadgeClass(tier)}`}
-                        >
-                          <Recycle className="w-3 h-3 mr-1" />
+                    <div className="p-3.5 flex flex-col flex-1">
+                      <div className="flex items-start justify-between gap-1.5 mb-1.5">
+                        <h3 className="text-sm font-semibold leading-snug line-clamp-1">{product.name}</h3>
+                        <span className={`inline-flex items-center rounded-full border px-1.5 py-0.5 text-[10px] font-semibold shrink-0 ${tierBadgeClass(tier)}`}>
                           {resolveBadgeLabel(product)}
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">{product.shortDescription}</p>
-                      <div className="flex items-center justify-between gap-2 flex-wrap">
-                        <span className="product-price">ab CHF {priceValue}</span>
-                        <span className="text-xs text-muted-foreground">Min. {product.minOrder} St.</span>
+                      <p className="text-xs text-muted-foreground line-clamp-2 flex-1 mb-3 leading-relaxed">{product.shortDescription}</p>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-sm font-bold text-primary">ab CHF {priceValue}</span>
+                        <span className="text-[11px] text-muted-foreground">Min. {product.minOrder}</span>
                       </div>
                     </div>
                   </article>
@@ -371,10 +319,9 @@ export default function Products({ products }) {
   );
 }
 
-export async function getStaticProps() {
-  const products = await fetchProducts();
+export function getStaticProps() {
+  const { localProducts } = require('@/lib/products');
   return {
-    props: { products },
-    revalidate: 300
+    props: { products: localProducts || [] }
   };
 }

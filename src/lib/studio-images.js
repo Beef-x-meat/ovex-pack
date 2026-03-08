@@ -21,7 +21,7 @@ export const productCategoryImageMap = {
 
 export const homeCategoryImageMap = [
   { slug: 'pappbecher', name: 'Pappbecher', imageUrl: studioImages.cup },
-  { slug: 'papiertueten', name: 'Papiertueten', imageUrl: studioImages.bag },
+  { slug: 'papiertueten', name: 'Papiertüten', imageUrl: studioImages.bag },
   { slug: 'lebensmittelboxen', name: 'Lebensmittelboxen', imageUrl: studioImages.box },
   { slug: 'servietten', name: 'Servietten', imageUrl: studioImages.napkin },
   { slug: 'salat-schalen', name: 'Salat Schalen', imageUrl: studioImages.bowl },

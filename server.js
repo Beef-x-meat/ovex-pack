@@ -34,7 +34,7 @@ async function startServer() {
       const { company, name, email, message } = req.body || {};
 
       if (!company || !name || !email || !message) {
-        return res.status(400).json({ ok: false, error: 'Bitte alle Pflichtfelder ausfuellen.' });
+        return res.status(400).json({ ok: false, error: 'Bitte alle Pflichtfelder ausfüllen.' });
       }
 
       return res.status(200).json({ ok: true, inquiryId: `INQ-${Date.now()}` });

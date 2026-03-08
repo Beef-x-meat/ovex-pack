@@ -3,49 +3,9 @@ import { ChevronRight } from 'lucide-react';
 import SeoHead from '@/components/SeoHead';
 import { fetchProducts } from '@/lib/cms';
 import { categoryPageMeta, categorySlugMap, slugToCategoryMap } from '@/lib/product-categories';
-
-const categoryImageMap = {
-  Pappbecher: '/images/pappbecher-basic-main.png',
-  Eisbecher: '/images/eisbecher-basic-100ml.png',
-  Plastikbecher: '/images/plastikbecher-basic-470ml.png',
-  Lebensmittelboxen: '/images/food-boxes.jpg',
-  Papiertragetaschen: '/images/paper-bags.jpg',
-  Lebensmittelpapier: '/images/lebensmittelpapier-standard.png'
-};
-
-const productImageMap = {
-  'pappbecher-basic': '/images/pappbecher-basic-main.png',
-  'pappbecher-individual': '/images/pappbecher-individual-main.png',
-  'pappbecher-deckel': '/images/pappbecher-deckel-weiss-new.jpeg',
-  'plastikbecher-standard': '/images/plastikbecher-basic-350ml.png',
-  'plastikbecher-individual': '/images/plastikbecher-550ml.png',
-  'deckel-plastik': '/images/plastikbecher-deckel-flach-new.png',
-  'deckel-standard': '/images/plastikbecher-deckel-flach-new.png',
-  'deckel-dome-papier': '/images/plastikbecher-deckel-smoothie-new.png',
-  'deckel-flat-papier': '/images/plastikbecher-deckel-sip-new.png',
-  papierstrohhalme: '/images/paper-straws.jpg',
-  'eisbecher-standard': '/images/eisbecher-basic-100ml.png',
-  'eisbecher-individual': '/images/eisbecher-200ml.png',
-  'lebensmittelpapier-standard': '/images/lebensmittelpapier-standard.png',
-  'lebensmittelpapier-premium': '/images/lebensmittelpapier-premium.png',
-  'doener-tuete-klassisch': '/images/doener-tuete-klassisch.png',
-  'doener-tuete-individual': '/images/doener-tuete-individual.png'
-};
-
-function getProductImage(product) {
-  if (productImageMap[product.slug]) {
-    return productImageMap[product.slug];
-  }
-  if (product.category === 'Zubehoer') {
-    return '';
-  }
-  return categoryImageMap[product.category] || '';
-}
+import { getProductImage } from '@/lib/product-images';
 
 function tierBadgeClass(tier) {
-  if (tier === 'premium') {
-    return 'border-[#7c6a38] bg-[#fff8e8] text-[#5a4720]';
-  }
   if (tier === 'individual') {
     return 'border-[#5c5ad6] bg-[#f4f3ff] text-[#3230a3]';
   }
@@ -54,17 +14,15 @@ function tierBadgeClass(tier) {
 
 function resolveTier(product) {
   if (product.tier) return product.tier;
-  const source = `${product.slug || ''} ${product.name || ''}`.toLowerCase();
-  if (source.includes('premium')) return 'premium';
-  if (source.includes('individual')) return 'individual';
+  if ((product.slug || '').includes('individual')) return 'individual';
   return 'standard';
 }
 
 function resolveBadgeLabel(product) {
   const tier = resolveTier(product);
-  if (tier === 'premium') return 'Premium';
-  if (tier === 'individual') return 'Individual';
-  return 'Eco / Standard';
+  if (tier === 'individual') return 'Individualisiert';
+  if (product.category === 'Plastikbecher') return 'Standard';
+  return 'Standard / Eco';
 }
 
 export default function ProductCategoryPage({ categorySlug, categoryName, copy, products }) {
@@ -88,10 +46,10 @@ export default function ProductCategoryPage({ categorySlug, categoryName, copy, 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
         {products.map((product) => {
           const imageUrl = getProductImage(product);
-          const priceValue = String(product.priceHint).replace('ab CHF ', '').replace(' / Stueck', '');
+          const priceValue = String(product.priceHint).replace('ab CHF ', '').replace(' / Stück', '');
           const tier = resolveTier(product);
           const imageClass =
-            ['pappbecher-basic', 'pappbecher-individual'].includes(product.slug)
+            product.slug === 'pappbecher-basic'
               ? 'catalog-shot-pappbecher'
               : 'catalog-shot';
           return (
@@ -145,7 +103,7 @@ export async function getStaticProps({ params }) {
   const copy = categoryPageMeta[categorySlug] || {
     h1: `${categoryName} bedrucken - Hebe deine Marke hervor`,
     description:
-      'Diese Kategorie bietet hochwertige Verpackungsoptionen fuer professionelle Markenauftritte im B2B-Umfeld. Die Produkte sind auf planbare Beschaffung, klare Spezifikationen und stabile Qualitaet ausgerichtet. So setzt du dein Branding konsistent ueber alle Kontaktpunkte um. Gleichzeitig bleiben Prozesse im Einkauf einfach und effizient.'
+      'Diese Kategorie bietet hochwertige Verpackungsoptionen für professionelle Markenauftritte im B2B-Umfeld. Die Produkte sind auf planbare Beschaffung, klare Spezifikationen und stabile Qualität ausgerichtet. So setzt du dein Branding konsistent über alle Kontaktpunkte um. Gleichzeitig bleiben Prozesse im Einkauf einfach und effizient.'
   };
 
   return {

@@ -1,477 +1,623 @@
 const baseByCategory = {
-  Pappbecher: { leadTime: '7-10 Werktage', minOrder: 2500, basePrice: 0.11, materials: ['FSC-Karton'] },
-  Plastikbecher: { leadTime: '7-10 Werktage', minOrder: 1000, basePrice: 0.12, materials: ['rPET', 'PP'] },
-  Mehrwegbecher: { leadTime: '10-14 Werktage', minOrder: 500, basePrice: 0.29, materials: ['PP Mehrweg'] },
-  Eisbecher: { leadTime: '7-10 Werktage', minOrder: 2500, basePrice: 0.139, materials: ['FSC-Karton'] },
-  Deckel: { leadTime: '5-8 Werktage', minOrder: 1000, basePrice: 0.04, materials: ['CPLA', 'PET', 'Papier'] },
-  Lebensmittelpapier: { leadTime: '5-8 Werktage', minOrder: 2000, basePrice: 0.04, materials: ['Fettdichtes Papier'] },
-  Papiertragetaschen: { leadTime: '8-12 Werktage', minOrder: 1000, basePrice: 0.16, materials: ['Papier Weiss', 'Papier Kraft'] },
-  Lebensmittelboxen: { leadTime: '8-12 Werktage', minOrder: 800, basePrice: 0.24, materials: ['Karton Weiss', 'Karton Braun'] },
-  Schalen: { leadTime: '7-10 Werktage', minOrder: 1000, basePrice: 0.18, materials: ['Karton', 'Faserverbund'] },
-  Servietten: { leadTime: '10-14 Werktage', minOrder: 6000, basePrice: 0.08, materials: ['Papier'] },
-  Zubehoer: { leadTime: '5-8 Werktage', minOrder: 1000, basePrice: 0.03, materials: ['Diverse Materialien'] }
+  Pappbecher:        { leadTime: '7–10 Werktage',  minOrder: 2500, basePrice: 0.11,  materials: ['FSC-Karton'] },
+  Plastikbecher:     { leadTime: '7–10 Werktage',  minOrder: 2500, basePrice: 0.06,  materials: ['rPET'] },
+  Eisbecher:         { leadTime: '7–10 Werktage',  minOrder: 2500, basePrice: 0.139, materials: ['FSC-Karton'] },
+  Lebensmittelboxen: { leadTime: '8–12 Werktage',  minOrder: 3000, basePrice: 0.09,  materials: ['Karton', 'Kraft'] },
+  Papiertragetaschen:{ leadTime: '8–12 Werktage',  minOrder: 2500, basePrice: 0.125, materials: ['Papier 90g', 'Papier 70g'] },
+  Servietten:        { leadTime: '10–14 Werktage', minOrder: 25000,basePrice: 0.01,  materials: ['Papier'] },
+  Lebensmittelpapier:{ leadTime: '8–12 Werktage',  minOrder: 250,  basePrice: 3.29,  materials: ['Fettdichtes Papier'] },
 };
 
-function price(basePrice, delta = 0) {
-  return `ab CHF ${(basePrice + delta).toFixed(2)} / Stueck`;
+function price(base) {
+  return `ab CHF ${base.toFixed(base < 1 ? 3 : 2)} / Stück`;
 }
 
 function createProduct({
-  id,
-  slug,
-  name,
-  category,
-  tier = 'standard',
-  badge = 'Eco / Standard',
-  shortDescription,
-  longDescription,
-  leadTime,
-  minOrder,
-  priceHint,
-  materials,
-  features
+  id, slug, name, category, tier = 'standard', badge,
+  shortDescription, longDescription, leadTime, minOrder,
+  priceHint, materials, features = []
 }) {
-  const base = baseByCategory[category] || baseByCategory.Zubehoer;
+  const base = baseByCategory[category] || baseByCategory.Lebensmittelboxen;
   return {
-    id,
-    slug,
-    name,
-    category,
-    tier,
-    badge,
-    shortDescription: shortDescription || `${name} fuer professionelle B2B-Verpackungsprojekte.`,
-    longDescription:
-      longDescription ||
-      `${name} ist auf B2B-Bedarfe mit stabiler Qualitaet, klaren Spezifikationen und planbarer Lieferung ausgelegt.`,
+    id, slug, name, category, tier,
+    badge: badge || 'Standard',
+    shortDescription: shortDescription || `${name} – individuell bedruckt oder neutral, für Gastronomie & Retail.`,
+    longDescription: longDescription || `${name} für professionelle Gastronomie, Catering und Take-away.`,
     leadTime: leadTime || base.leadTime,
     minOrder: minOrder || base.minOrder,
     priceHint: priceHint || price(base.basePrice),
     materials: materials || base.materials,
-    features: features || [],
+    features,
     modelUrl: ''
   };
 }
 
-const products = [
-  // 1) Becher
+export const localProducts = [
+
+  /* ─── PAPPBECHER ────────────────────────────────────────── */
   createProduct({
     id: 'p-001',
     slug: 'pappbecher-basic',
     name: 'Pappbecher',
     category: 'Pappbecher',
     tier: 'standard',
-    badge: 'Eco / Standard',
+    badge: 'Standard / Eco',
     minOrder: 2500,
-    priceHint: 'ab CHF 0.11 / Stueck',
-    shortDescription: 'Pappbecher mit frei waehlbarer Groesse, Stabilitaet und Designstufe fuer den professionellen B2B-Einsatz.',
+    priceHint: 'ab CHF 0.11 / Stück',
+    shortDescription: 'FSC-zertifizierte Pappbecher in 5 Größen – einwandig oder doppelwandig, mit 1–3+ Druckfarben.',
+    longDescription: 'Unsere Pappbecher aus FSC-zertifiziertem Karton sind für Gastronomie, Catering und Take-away konzipiert. Wählbar in 5 Standardgrößen von 100 ml Espresso bis 470 ml sowie als Wunschgröße. Mit 1, 2 oder 3+ Druckfarben setzen Sie Ihre Marke gekonnt in Szene. Stabile Einwand- oder Doppelwandkonstruktion für heisse und kalte Getränke. Ab 2.500 Stück, Lieferzeit 7–10 Werktage.',
     features: [
-      'Groessen: 100ml Espresso, 200ml, 240ml, 400ml, 470ml',
-      'Wunschgroesse als Freitext moeglich',
-      'Stabilitaet: Einwandig oder Doppelwandig',
-      'Becherfarbe: Weiss, Schwarz oder Natur',
-      'Design: 1 Farbe, 2 Farben oder 3+ Farben'
+      'Größen: 100 ml Espresso, 200 ml, 240 ml, 400 ml, 470 ml',
+      'Wunschgröße als Freitext möglich',
+      'Stabilität: Einwandig oder Doppelwandig',
+      'Design: 1 Farbe, 2 Farben oder 3+ Farben',
+      'Mindestbestellung: 2.500 Stück'
     ]
   }),
+
   createProduct({
     id: 'p-001i',
     slug: 'pappbecher-individual',
-    name: 'Pappbecher Individual',
+    name: 'Pappbecher Individuell',
     category: 'Pappbecher',
     tier: 'individual',
-    badge: 'Individual',
+    badge: 'Individualisiert',
     minOrder: 2500,
-    priceHint: 'ab CHF 0.17 / Stueck',
-    shortDescription: 'Voll individualisierte Pappbecher mit frei waehlbarer Druckgestaltung fuer durchgaengige Markenpraesenz im B2B-Alltag.',
+    priceHint: 'ab CHF 0.13 / Stück',
+    shortDescription: 'Vollständig individuell bedruckte Pappbecher – Ihr Logo, Ihre Farben, in 5 Größen.',
+    longDescription: 'Heben Sie Ihre Marke mit vollständig individualisierten Pappbechern hervor. Wählen Sie Größe, Wandstärke und Druckfarben frei – inklusive Farbberatung und Druckfreigabe. FSC-zertifizierter Karton, produziert in der EU. Ab 2.500 Stück, Lieferzeit 7–10 Werktage.',
     features: [
-      'Groessen: 100ml Espresso, 200ml, 240ml, 400ml, 470ml',
-      'Wunschgroesse als Freitext moeglich',
-      'Stabilitaet: Einwandig oder Doppelwandig',
-      'Becherfarbe: Weiss, Schwarz oder Natur',
-      'Design: 1 Farbe, 2 Farben oder 3+ Farben'
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: 100 ml Espresso, 200 ml, 240 ml, 400 ml, 470 ml',
+      'Stabilität: Einwandig oder Doppelwandig',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 2.500 Stück'
     ]
   }),
+
   createProduct({
     id: 'p-002',
     slug: 'pappbecher-deckel',
-    name: 'Deckel fuer Pappbecher',
+    name: 'Deckel für Pappbecher',
     category: 'Pappbecher',
     tier: 'standard',
-    badge: 'Eco / Standard',
-    minOrder: 2500,
-    priceHint: 'ab CHF 0.04 / Stueck',
-    shortDescription: 'Deckelprogramm fuer Pappbecher mit Deckeltyp- und Farbauswahl fuer den professionellen B2B-Einsatz.',
-    materials: ['Standard', 'Karton', 'PLA', 'PET'],
+    badge: 'Zubehör',
+    minOrder: 1000,
+    priceHint: 'ab CHF 0.04 / Stück',
+    shortDescription: 'Passende Deckel für alle Pappbechergrößen – in Weiss, Schwarz oder Wunschfarbe, in 5 Materialvarianten.',
+    longDescription: 'Unser Deckelprogramm umfasst alle gängigen Becherformate von 200 ml bis 470 ml. Wählen Sie zwischen Karton-Flachdeckel, PLA-Biodeckel, PET flach (transparent) oder PET Dome – in Weiss, Schwarz oder Ihrer Wunschfarbe. Ab 1.000 Stück, Lieferzeit 5–8 Werktage.',
     features: [
-      'Groessen: 200ml, 240ml, 400ml, 470ml oder Wunschgroesse',
-      'Deckeltyp: Standard, Karton, PLA Bio, PET flach, PET Dome',
-      'Farben: Weiss, Schwarz oder Wunschfarbe',
-      'Passend fuer professionelle Heissgetraenke-Anwendungen'
+      'Größen: 200 ml, 240 ml, 400 ml, 470 ml, Wunschgröße',
+      'Farbe: Weiss, Schwarz, Wunschfarbe',
+      'Material: Standard, Karton (Flachdeckel), PLA Bio, PET flach, PET Dome',
+      'Mindestbestellung: 1.000 Stück'
     ]
   }),
+
+
+  /* ─── PLASTIKBECHER ─────────────────────────────────────── */
+  createProduct({
+    id: 'p-004',
+    slug: 'plastikbecher-standard',
+    name: 'Plastikbecher',
+    category: 'Plastikbecher',
+    tier: 'standard',
+    badge: 'Standard',
+    minOrder: 2500,
+    priceHint: 'ab CHF 0.06 / Stück',
+    shortDescription: 'Klare rPET-Plastikbecher in 5 Größen – Standard oder Budget-Gewicht, mit 1–3+ Druckfarben.',
+    longDescription: 'Unsere Plastikbecher aus recyceltem PET (rPET) sind für kalte Getränke konzipiert. Erhältlich in 5 Größen von 350 ml bis 700 ml, in Standard (12–15g) oder Budget (7–8g) Gewicht. Mit Druck in 1, 2 oder 3+ Farben oder ohne Logo. Ab 2.500 Stück, Lieferzeit 7–10 Werktage.',
+    features: [
+      'Größen: 350 ml, 400 ml, 470 ml, 550 ml, 700 ml, Wunschgröße',
+      'Gewicht: Standard (12–15g), Budget (7–8g)',
+      'Design: Ohne Logo, 1 Farbe, 2 Farben, 3+ Farben',
+      'Mindestbestellung: 2.500 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-004i',
+    slug: 'plastikbecher-individual',
+    name: 'Plastikbecher Individuell',
+    category: 'Plastikbecher',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 2500,
+    priceHint: 'ab CHF 0.085 / Stück',
+    shortDescription: 'Vollständig individuell bedruckte rPET-Plastikbecher – Ihr Design, Ihre Farben, in 5 Größen.',
+    longDescription: 'Setzen Sie Ihre Marke auf klaren rPET-Plastikbechern in Szene. Wählen Sie Größe, Gewicht und Druckfarben komplett frei. Inklusive kostenloser Designberatung und Druckfreigabe. Ab 2.500 Stück, Lieferzeit 7–10 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: 350 ml, 400 ml, 470 ml, 550 ml, 700 ml',
+      'Material: rPET recycelt',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 2.500 Stück'
+    ]
+  }),
+
   createProduct({
     id: 'p-005',
-    slug: 'plastikbecher-standard',
-    name: 'Plastikbecher Standard',
+    slug: 'plastikbecher-deckel',
+    name: 'Deckel für Plastikbecher',
     category: 'Plastikbecher',
     tier: 'standard',
-    badge: 'Eco / Standard',
-    features: ['Standard', 'Groessen: 350, 470, 500, 550, 700 ml']
+    badge: 'Zubehör',
+    minOrder: 2500,
+    priceHint: 'ab CHF 0.035 / Stück',
+    shortDescription: 'Passende Deckel für Plastikbecher – in 3 Formen: Standard, Smoothie und Sip.',
+    longDescription: 'Transparente Deckel für alle Plastikbechergrößen von 350 ml bis 700 ml. Wählen Sie zwischen Standard gerade, Smoothie (gewölbt) und Sip-Deckel. Ab 2.500 Stück, Lieferzeit 5–8 Werktage.',
+    features: [
+      'Größen: 350 ml, 400 ml, 470 ml, 550 ml, 700 ml, Wunschgröße',
+      'Form: Standard gerade, Smoothie, Sip',
+      'Mengen: 2.500 / 5.000 / 7.500 / 10.000 Stück',
+      'Mindestbestellung: 2.500 Stück'
+    ]
   }),
+
+  /* ─── EISBECHER ─────────────────────────────────────────── */
   createProduct({
     id: 'p-006',
-    slug: 'plastikbecher-individual',
-    name: 'Plastikbecher Individualisiert',
-    category: 'Plastikbecher',
-    tier: 'individual',
-    badge: 'Individual',
-    priceHint: price(baseByCategory.Plastikbecher.basePrice, 0.06),
-    leadTime: '6-9 Werktage',
-    minOrder: 2000,
-    features: ['Individualisiert', 'Max 6 Farben', 'Groessen: 350, 470, 500, 550, 700 ml']
-  }),
-  createProduct({
-    id: 'p-007',
-    slug: 'mehrwegbecher-basic',
-    name: 'Mehrwegbecher Basic',
-    category: 'Mehrwegbecher',
-    tier: 'standard',
-    badge: 'Eco / Standard',
-    features: ['Basic', 'Groessen: 250, 300, 400, 500 ml']
-  }),
-  createProduct({
-    id: 'p-008',
-    slug: 'mehrwegbecher-individual',
-    name: 'Mehrwegbecher Individualisiert',
-    category: 'Mehrwegbecher',
-    tier: 'individual',
-    badge: 'Individual',
-    priceHint: price(baseByCategory.Mehrwegbecher.basePrice, 0.06),
-    features: ['Eco Batch', 'Individualisiert', 'Groessen: 250, 300, 400, 500 ml']
-  }),
-  createProduct({
-    id: 'p-009',
     slug: 'eisbecher-standard',
     name: 'Eisbecher',
     category: 'Eisbecher',
     tier: 'standard',
-    badge: 'Eco / Standard',
+    badge: 'Standard / Eco',
     minOrder: 2500,
-    priceHint: 'ab CHF 0.139 / Stueck',
+    priceHint: 'ab CHF 0.139 / Stück',
+    shortDescription: 'FSC-zertifizierte Eisbecher in 4 Größen – fettdicht beschichtet, mit 1–3+ Druckfarben.',
+    longDescription: 'Unsere Eisbecher aus FSC-zertifiziertem Karton sind fettdicht beschichtet und ideal für Softeisanlagen, Eisdielen und Dessert-Counter. Erhältlich in 100 ml, 200 ml, 250 ml und 300 ml sowie auf Wunsch in individueller Größe. Mit 1, 2 oder 3+ Druckfarben für Ihr Branding. Ab 2.500 Stück, Lieferzeit 7–10 Werktage.',
     features: [
-      'Groessen: 100ml, 200ml, 250ml, 300ml',
-      'Wunschgroesse als Freitext moeglich',
-      'Design: 1 Farbe, 2 Farben, 3 und mehr Farben'
+      'Größen: 100 ml, 200 ml, 250 ml, 300 ml, Wunschgröße',
+      'Design: 1 Farbe, 2 Farben, 3+ Farben',
+      'Mengen: 2.500 / 5.000 / 7.500 / 10.000 Stück',
+      'Mindestbestellung: 2.500 Stück'
     ]
   }),
+
   createProduct({
-    id: 'p-010',
+    id: 'p-006i',
     slug: 'eisbecher-individual',
-    name: 'Eisbecher Individual',
+    name: 'Eisbecher Individuell',
     category: 'Eisbecher',
     tier: 'individual',
-    badge: 'Individual',
+    badge: 'Individualisiert',
     minOrder: 2500,
-    leadTime: '6-9 Werktage',
-    priceHint: 'ab CHF 0.169 / Stueck',
+    priceHint: 'ab CHF 0.165 / Stück',
+    shortDescription: 'Vollständig individuell bedruckte Eisbecher – Ihr Logo, Ihre Farben, in 4 Größen.',
+    longDescription: 'Verleihen Sie Ihrer Eistheke eine unverwechselbare Identität. Vollständig individualisierte Eisbecher aus FSC-Karton, fettdicht beschichtet. Mit unbegrenzten Farben und kostenloser Designberatung. Ab 2.500 Stück, Lieferzeit 7–10 Werktage.',
     features: [
-      'Groessen: 100ml, 200ml, 250ml, 300ml',
-      'Wunschgroesse als Freitext moeglich',
-      'Design: 1 Farbe, 2 Farben, 3 und mehr Farben'
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: 100 ml, 200 ml, 250 ml, 300 ml',
+      'FSC-zertifizierter Karton, fettdicht beschichtet',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 2.500 Stück'
     ]
   }),
 
-  // 2) Deckel
+  /* ─── LEBENSMITTELBOXEN ─────────────────────────────────── */
   createProduct({
-    id: 'p-011',
-    slug: 'deckel-standard',
-    name: 'Standard Deckel',
-    category: 'Deckel',
-    features: ['Filterbar nach Bechergroesse', 'Passend fuer Papp- und Plastikbecher']
-  }),
-  createProduct({
-    id: 'p-012',
-    slug: 'deckel-dome-papier',
-    name: 'Dome Deckel (Papier)',
-    category: 'Deckel',
-    tier: 'premium',
-    badge: 'Premium',
-    priceHint: price(baseByCategory.Deckel.basePrice, 0.02),
-    features: ['Dome Form', 'Papierbasiert', 'Filterbar nach Bechergroesse']
-  }),
-  createProduct({
-    id: 'p-013',
-    slug: 'deckel-flat-papier',
-    name: 'Flat Deckel (Papier)',
-    category: 'Deckel',
-    tier: 'premium',
-    badge: 'Premium',
-    priceHint: price(baseByCategory.Deckel.basePrice, 0.01),
-    features: ['Flat Form', 'Papierbasiert', 'Filterbar nach Bechergroesse']
-  }),
-  createProduct({
-    id: 'p-014',
-    slug: 'deckel-plastik',
-    name: 'Plastik Deckel',
-    category: 'Deckel',
-    features: ['Standard Kunststoff', 'Filterbar nach Bechergroesse']
-  }),
-
-  // 3) Papier & Einschlagmaterial
-  createProduct({
-    id: 'p-015',
-    slug: 'fettdichtes-papier',
-    name: 'Fettdichtes Papier',
-    category: 'Lebensmittelpapier',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 2000,
-    features: ['Groessen: 500x350, 250x335, 250x167, 167x167', 'Farben: Weiss, Kraft, Gefaerbt']
-  }),
-  createProduct({
-    id: 'p-016',
-    slug: 'lebensmittelpapier',
-    name: 'Lebensmittelpapier',
-    category: 'Lebensmittelpapier',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 2000,
-    features: ['Groessen: 500x350, 250x335, 250x167, 167x167', 'Farben: Weiss, Kraft, Gefaerbt']
-  }),
-
-  // 4) Tueten & Taschen
-  createProduct({
-    id: 'p-017',
-    slug: 'doenertaschen-standard',
-    name: 'Doenertaschen Standard',
-    category: 'Papiertragetaschen',
-    features: ['Doenertaschen', 'Farben: Weiss / Braun']
-  }),
-  createProduct({
-    id: 'p-018',
-    slug: 'doenertaschen-individual',
-    name: 'Doenertaschen Individualisiert',
-    category: 'Papiertragetaschen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 3000,
-    priceHint: price(baseByCategory.Papiertragetaschen.basePrice, 0.08),
-    features: ['Doenertaschen', 'Farben: Weiss / Braun', 'Individualisiert']
-  }),
-  createProduct({
-    id: 'p-019',
-    slug: 'blockboden-tueten-standard',
-    name: 'Blockboden-Tueten Standard',
-    category: 'Papiertragetaschen',
-    features: ['Groessen: 4L, 6L, 11L, 14L, 18L, 21L', 'Farben: Weiss / Braun']
-  }),
-  createProduct({
-    id: 'p-020',
-    slug: 'blockboden-tueten-individual',
-    name: 'Blockboden-Tueten Individualisiert',
-    category: 'Papiertragetaschen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 2500,
-    priceHint: price(baseByCategory.Papiertragetaschen.basePrice, 0.06),
-    features: ['Max 2 Farben Druck', 'Groessen: 4L, 6L, 11L, 14L, 18L, 21L']
-  }),
-  createProduct({
-    id: 'p-021',
-    slug: 'papiertueten-ohne-griff',
-    name: 'Papiertueten ohne Griff',
-    category: 'Papiertragetaschen',
-    features: ['Bis 4 Farben Druck']
-  }),
-  createProduct({
-    id: 'p-022',
-    slug: 'papiertueten-gedrehter-griff',
-    name: 'Papiertueten mit gedrehtem Griff',
-    category: 'Papiertragetaschen',
-    tier: 'premium',
-    badge: 'Premium',
-    priceHint: price(baseByCategory.Papiertragetaschen.basePrice, 0.05),
-    features: ['Bis 4 Farben Druck', 'Gedrehter Griff']
-  }),
-  createProduct({
-    id: 'p-023',
-    slug: 'brottueten-standard',
-    name: 'Brottueten Standard',
-    category: 'Papiertragetaschen',
-    features: ['Groessen: XS, S, M, L, L breit, XL, Sandwich, Baguette, 2x Baguette, Individuell', 'Farben: Weiss / Kraft']
-  }),
-  createProduct({
-    id: 'p-024',
-    slug: 'brottueten-individual',
-    name: 'Brottueten Individualisiert',
-    category: 'Papiertragetaschen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 3000,
-    priceHint: price(baseByCategory.Papiertragetaschen.basePrice, 0.08),
-    features: ['Max 2 Druckfarben', 'Farben: Weiss / Kraft']
-  }),
-
-  // 5) Schalen & Bowls
-  createProduct({
-    id: 'p-025',
-    slug: 'salatschalen-standard',
-    name: 'Salatschalen Standard / Eco',
-    category: 'Schalen',
-    features: ['Groessen: 750 ml, 1000 ml, 1300 ml', 'Deckel: Plastik oder Papier']
-  }),
-  createProduct({
-    id: 'p-026',
-    slug: 'salatschalen-individual',
-    name: 'Salatschalen Individualisiert',
-    category: 'Schalen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 1500,
-    priceHint: price(baseByCategory.Schalen.basePrice, 0.08),
-    features: ['Groessen: 750 ml, 1000 ml, 1300 ml', 'Deckel: Plastik oder Papier']
-  }),
-
-  // 6) Boxen
-  createProduct({
-    id: 'p-027',
-    slug: 'pizzakartons-eco',
-    name: 'Pizza Kartons Eco',
-    category: 'Lebensmittelboxen',
-    features: ['Groessen: 26x26 bis 52x52', 'Form: Regulaer oder Hexagon', 'Farben: Braun / Weiss', 'Druck: max 3 Farben']
-  }),
-  createProduct({
-    id: 'p-028',
-    slug: 'pizzakartons-premium',
-    name: 'Pizza Kartons Premium',
-    category: 'Lebensmittelboxen',
-    tier: 'premium',
-    badge: 'Premium',
-    minOrder: 1200,
-    priceHint: price(baseByCategory.Lebensmittelboxen.basePrice, 0.09),
-    features: ['All-over Druck', 'Premium Karton']
-  }),
-  createProduct({
-    id: 'p-029',
-    slug: 'takeaway-boxen-1-farbe',
-    name: 'Takeaway Boxen 1 Farbe',
-    category: 'Lebensmittelboxen',
-    features: ['Groessen: 145x85x60, 175x105x70, 220x120x80', 'Druck: 1 Farbe']
-  }),
-  createProduct({
-    id: 'p-030',
-    slug: 'takeaway-boxen-2-farben',
-    name: 'Takeaway Boxen 2 Farben',
-    category: 'Lebensmittelboxen',
-    tier: 'premium',
-    badge: 'Premium',
-    priceHint: price(baseByCategory.Lebensmittelboxen.basePrice, 0.04),
-    features: ['Groessen: 145x85x60, 175x105x70, 220x120x80', 'Druck: 2 Farben']
-  }),
-  createProduct({
-    id: 'p-031',
-    slug: 'takeaway-boxen-unbegrenzt',
-    name: 'Takeaway Boxen Unbegrenzt',
-    category: 'Lebensmittelboxen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 1800,
-    priceHint: price(baseByCategory.Lebensmittelboxen.basePrice, 0.08),
-    features: ['Groessen: 145x85x60, 175x105x70, 220x120x80', 'Druck: Unbegrenzt']
-  }),
-  createProduct({
-    id: 'p-032',
-    slug: 'nudelboxen-standard',
-    name: 'Nudelboxen Standard',
-    category: 'Lebensmittelboxen',
-    features: ['Groessen: 480 ml, 710 ml']
-  }),
-  createProduct({
-    id: 'p-033',
-    slug: 'nudelboxen-individual',
-    name: 'Nudelboxen Individualisiert',
-    category: 'Lebensmittelboxen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 1600,
-    priceHint: price(baseByCategory.Lebensmittelboxen.basePrice, 0.07),
-    features: ['Groessen: 480 ml, 710 ml']
-  }),
-  createProduct({
-    id: 'p-034',
+    id: 'p-007',
     slug: 'burgerboxen',
     name: 'Burgerboxen',
     category: 'Lebensmittelboxen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 1200,
-    priceHint: price(baseByCategory.Lebensmittelboxen.basePrice, 0.06),
-    features: ['Format: 117x117x80', 'Farben: Weiss / Braun', 'Unbegrenzt Druckfarben']
-  }),
-  createProduct({
-    id: 'p-035',
-    slug: 'pommes-boxen-standard',
-    name: 'Pommes Boxen Standard',
-    category: 'Lebensmittelboxen',
-    features: ['Format: 107x50x85']
-  }),
-  createProduct({
-    id: 'p-036',
-    slug: 'pommes-boxen-individual',
-    name: 'Pommes Boxen Individualisiert',
-    category: 'Lebensmittelboxen',
-    tier: 'individual',
-    badge: 'Individual',
-    minOrder: 1500,
-    priceHint: price(baseByCategory.Lebensmittelboxen.basePrice, 0.05),
-    features: ['Format: 107x50x85']
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 5000,
+    priceHint: 'ab CHF 0.11 / Stück',
+    shortDescription: 'Burgerboxen in S / M / L – in Kraft oder Weiss, ab 5.000 Stück.',
+    longDescription: 'Unsere Burgerboxen sind in drei Standardgrößen erhältlich: S (9,5×9,5×7,5 cm), M (11,5×11,5×9 cm) und L (13×13×10 cm). Erhältlich in Kraft oder Weiss. Ab 5.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: S (9,5×9,5×7,5 cm), M (11,5×11,5×9 cm), L (13×13×10 cm)',
+      'Ausführung: Kraft (braun), Weiss',
+      'Mengen: 5.000 / 7.500 / 10.000 Stück',
+      'Mindestbestellung: 5.000 Stück'
+    ]
   }),
 
-  // 7) Servietten & Hygiene
   createProduct({
-    id: 'p-037',
-    slug: 'servietten',
-    name: 'Servietten',
-    category: 'Servietten',
-    features: ['Groessen: 20x20, 24x24, 33x33, 40x40', 'Faltung: 1/4, 1/8', 'Druck: 1-2 Farben']
-  }),
-  createProduct({
-    id: 'p-038',
-    slug: 'serviettentaschen',
-    name: 'Serviettentaschen',
-    category: 'Servietten',
-    features: ['Groessen: 33x33, 33x40', 'Druck: 1-2 Farben']
-  }),
-  createProduct({
-    id: 'p-039',
-    slug: 'erfrischungstuecher',
-    name: 'Erfrischungstuecher',
-    category: 'Servietten',
-    features: ['Format: 60x100', 'Geschmack: Zitrone oder Seife']
+    id: 'p-007i',
+    slug: 'burgerboxen-individual',
+    name: 'Burgerboxen Individuell',
+    category: 'Lebensmittelboxen',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 5000,
+    priceHint: 'ab CHF 0.135 / Stück',
+    shortDescription: 'Individuell bedruckte Burgerboxen in S / M / L – mit Ihrem Design, ab 5.000 Stück.',
+    longDescription: 'Burgerboxen mit vollständig individuellem Design. Wählen Sie Größe und Druckfarben frei – mit kostenloser Designberatung. Ab 5.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: S, M, L, Wunschgröße',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 5.000 Stück'
+    ]
   }),
 
-  // Zubehoer
   createProduct({
-    id: 'p-040',
-    slug: 'alle-deckel-zubehoer',
-    name: 'Alle Deckel (Zubehoer)',
-    category: 'Zubehoer',
-    features: ['Sortimentsuebersicht aller Deckeltypen']
+    id: 'p-008',
+    slug: 'pommesbox',
+    name: 'Pommesbox',
+    category: 'Lebensmittelboxen',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 3000,
+    priceHint: 'ab CHF 0.09 / Stück',
+    shortDescription: 'Pommesboxen in Small & Standard – in Kraft, Farbe oder neutral.',
+    longDescription: 'Pommesboxen in zwei Größen (Small und Standard), erhältlich in Kraft oder Farbe, mit oder ohne Design. Ab 3.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: Small, Standard',
+      'Ausführung: Kraft, Farbige Box',
+      'Mengen: 3.000 / 5.000 / 8.000 / 10.000 Stück',
+      'Mindestbestellung: 3.000 Stück'
+    ]
   }),
+
   createProduct({
-    id: 'p-041',
-    slug: 'extra-verpackungsoptionen',
-    name: 'Extra Verpackungsoptionen',
-    category: 'Zubehoer',
-    tier: 'premium',
-    badge: 'Premium',
-    priceHint: 'Preis auf Anfrage',
-    features: ['Sonderoptionen fuer B2B-Projekte']
-  })
+    id: 'p-008i',
+    slug: 'pommesbox-individual',
+    name: 'Pommesbox Individuell',
+    category: 'Lebensmittelboxen',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 3000,
+    priceHint: 'ab CHF 0.115 / Stück',
+    shortDescription: 'Individuell bedruckte Pommesboxen in Small & Standard – mit Ihrem Logo.',
+    longDescription: 'Pommesboxen mit vollständig individuellem Druck auf farbigem Karton oder Kraft. Mit kostenloser Designberatung. Ab 3.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: Small, Standard',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 3.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-009',
+    slug: 'hamburger-menubox',
+    name: 'Hamburger Menübox',
+    category: 'Lebensmittelboxen',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 3000,
+    priceHint: 'ab CHF 0.125 / Stück',
+    shortDescription: 'Hamburger Menüboxen in Standard & Medium – in Weiss oder Kraft.',
+    longDescription: 'Hamburger Menüboxen in Standard (19×12×8 cm) und Medium (22×12×8 cm), erhältlich in Weiss oder Kraft, ohne Design. Ab 3.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: Standard (19×12×8 cm), Medium (22×12×8 cm)',
+      'Ausführung: Weiss, Kraft',
+      'Mengen: 3.000 / 5.000 / 8.000 / 10.000 Stück',
+      'Mindestbestellung: 3.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-009i',
+    slug: 'hamburger-menubox-individual',
+    name: 'Hamburger Menübox Individuell',
+    category: 'Lebensmittelboxen',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 3000,
+    priceHint: 'ab CHF 0.155 / Stück',
+    shortDescription: 'Individuell bedruckte Hamburger Menüboxen – Ihr Logo auf Weiss, Kraft oder Farbe.',
+    longDescription: 'Hamburger Menüboxen mit individuellem Branding auf Weiss, bunter Farbe oder Kraft. Kostenlose Designberatung inklusive. Ab 3.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: Standard, Medium, Wunschgröße',
+      'Ausführung: Auf Weiss, Auf bunter Farbe, Auf Kraft',
+      'Mindestbestellung: 3.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-010',
+    slug: 'noodle-doenerbox',
+    name: 'Noodle- & Dönerbox',
+    category: 'Lebensmittelboxen',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 5000,
+    priceHint: 'ab CHF 0.115 / Stück',
+    shortDescription: 'Döner- und Noodleboxen in Standardgröße – neutral.',
+    longDescription: 'Döner- und Noodleboxen in Standardgröße, erhältlich in Standard (neutral). Ab 5.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Typ: Dönerbox, Noodlebox',
+      'Ausführung: Standard (neutral)',
+      'Mengen: 5.000 / 10.000 / 15.000 Stück',
+      'Mindestbestellung: 5.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-010i',
+    slug: 'noodle-doenerbox-individual',
+    name: 'Noodle- & Dönerbox Individuell',
+    category: 'Lebensmittelboxen',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 5000,
+    priceHint: 'ab CHF 0.145 / Stück',
+    shortDescription: 'Individuell bedruckte Döner- und Noodleboxen – mit Ihrem Design.',
+    longDescription: 'Döner- und Noodleboxen mit vollständig individuellem Design. Mit kostenloser Designberatung. Ab 5.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Typ: Dönerbox, Noodlebox',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 5.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-011',
+    slug: 'lunchbox',
+    name: 'Lunchbox',
+    category: 'Lebensmittelboxen',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 2500,
+    priceHint: 'ab CHF 0.125 / Stück',
+    shortDescription: 'Lunchboxen in 3 Größen – Standard, Small und Flat.',
+    longDescription: 'Lunchboxen in drei Größen: Standard (12,5×17×9,5 cm), Small (9,5×11×9,5 cm) und Flat (15×21×6,5 cm). Ab 2.500 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: Standard (12,5×17×9,5 cm), Small (9,5×11×9,5 cm), Flat (15×21×6,5 cm)',
+      'Mengen: 2.500 / 5.000 / 8.000 / 10.000 Stück',
+      'Mindestbestellung: 2.500 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-011i',
+    slug: 'lunchbox-individual',
+    name: 'Lunchbox Individuell',
+    category: 'Lebensmittelboxen',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 2500,
+    priceHint: 'ab CHF 0.155 / Stück',
+    shortDescription: 'Individuell bedruckte Lunchboxen in 3 Größen – mit Ihrem Branding.',
+    longDescription: 'Lunchboxen mit vollständig individuellem Design in drei Größen. Kostenlose Designberatung inklusive. Ab 2.500 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: Standard, Small, Flat',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 2.500 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-012',
+    slug: 'pizzaboxen',
+    name: 'Pizzaboxen',
+    category: 'Lebensmittelboxen',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 3000,
+    priceHint: 'ab CHF 0.29 / Stück',
+    shortDescription: 'Pizzaboxen in 5 Größen von XXS bis L – in Weiss oder Kraft.',
+    longDescription: 'Pizzaboxen in 5 Standardgrößen: XXS (26×26×4 cm), XS (28×28×4 cm), S (30×30×4 cm), M (33×33×4 cm) und L (42×42×4 cm). Erhältlich in Weiss oder Kraft. Ab 3.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: XXS 26×26, XS 28×28, S 30×30, M 33×33, L 42×42 cm',
+      'Ausführung: Weiss, Kraft',
+      'Mengen: 3.000 / 5.000 / 8.000 / 10.000 Stück',
+      'Mindestbestellung: 3.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-012i',
+    slug: 'pizzaboxen-individual',
+    name: 'Pizzaboxen Individuell',
+    category: 'Lebensmittelboxen',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 3000,
+    priceHint: 'ab CHF 0.35 / Stück',
+    shortDescription: 'Individuell bedruckte Pizzaboxen in 5 Größen – mit Ihrem Logo und Design.',
+    longDescription: 'Pizzaboxen mit vollständig individuellem Design auf Weiss, Kraft oder Vollfarb. Kostenlose Designberatung inklusive. Ab 3.000 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: XXS 26×26, XS 28×28, S 30×30, M 33×33, L 42×42 cm',
+      'Ausführung: Weiss & Design, Kraft & Design, Ganz bunt',
+      'Mindestbestellung: 3.000 Stück'
+    ]
+  }),
+
+  /* ─── PAPIERTRAGETASCHEN ─────────────────────────────────── */
+  createProduct({
+    id: 'p-013',
+    slug: 'papiertragetasche',
+    name: 'Kraft Papiertragtasche',
+    category: 'Papiertragetaschen',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 2500,
+    priceHint: 'ab CHF 0.125 / Stück',
+    shortDescription: 'Papiertragtaschen in 5 Größen – in Kraft oder Weiss, mit 1–3+ Druckfarben.',
+    longDescription: 'Kraft-Papiertragtaschen in 5 Standardgrößen von S bis XXL. Erhältlich in 90g oder 70g Papier, in Kraft (braun) oder Weiss. Druck auf einer oder mehreren Seiten mit 1, 2 oder 3+ Farben. Ab 2.500 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: S (24×18×8 cm), M (28×22×10 cm), L (31×25×12 cm), XL (41×31×12 cm), XXL (50,5×45×15 cm)',
+      'Papier: 90g, 70g',
+      'Farbe: Kraft (braun), Weiss',
+      'Logo: 1 Farbe, 2 Farben, Keine Farben',
+      'Mindestbestellung: 2.500 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-013i',
+    slug: 'papiertragetasche-individual',
+    name: 'Papiertragtasche Individuell',
+    category: 'Papiertragetaschen',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 2500,
+    priceHint: 'ab CHF 0.155 / Stück',
+    shortDescription: 'Vollständig individuell bedruckte Papiertragtaschen – Ihre Farben auf jeder Seite.',
+    longDescription: 'Papiertragtaschen mit vollständig individuellem Design auf allen Seiten. Wählen Sie Größe, Papiergewicht und Druckfarben frei. Kostenlose Designberatung inklusive. Ab 2.500 Stück, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (3+ Farben, alle Seiten)',
+      'Größen: S, M, L, XL, XXL',
+      'Papier: 90g, 70g',
+      'Kostenlose Designberatung & Druckfreigabe',
+      'Mindestbestellung: 2.500 Stück'
+    ]
+  }),
+
+  /* ─── SERVIETTEN & FEUCHTTÜCHER ─────────────────────────── */
+  createProduct({
+    id: 'p-014',
+    slug: 'papiertuecher-bedruckt',
+    name: 'Bedruckte Papiertücher',
+    category: 'Servietten',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 25000,
+    priceHint: 'ab CHF 0.01 / Stück',
+    shortDescription: 'Bedruckte Papiertücher in ¼- oder 1/8-Faltung – in Weiss oder Kraft, ab 25.000 Stück.',
+    longDescription: 'Bedruckte Papiertücher (90g) in ¼-Faltung (12,5×12,5 cm) oder 1/8-Faltung (6,25×12,5 cm). Erhältlich in Weiss oder Kraft, mit 1–3+ Druckfarben oder ohne Druck. Ab 25.000 Stück, Lieferzeit 10–14 Werktage.',
+    features: [
+      'Stil: ¼-Faltung (12,5×12,5 cm), 1/8-Faltung (6,25×12,5 cm)',
+      'Farbe: Weiss, Kraft',
+      'Design: Ohne, 1 Farbe, 2 Farben, 3+ Farben',
+      'Mengen: 25.000 / 30.000 / 40.000 / 50.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-014i',
+    slug: 'papiertuecher-individual',
+    name: 'Papiertücher Individuell',
+    category: 'Servietten',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 25000,
+    priceHint: 'ab CHF 0.013 / Stück',
+    shortDescription: 'Vollständig individuell bedruckte Papiertücher – Ihr Logo auf jeder Serviette.',
+    longDescription: 'Papiertücher mit individuellem Vollfarb-Druck. Wählen Sie Faltung, Grundfarbe und Druckfarben frei. Kostenlose Designberatung inklusive. Ab 25.000 Stück, Lieferzeit 10–14 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Stil: ¼-Faltung, 1/8-Faltung',
+      'Farbe: Weiss, Kraft, Wunschfarbe',
+      'Mindestbestellung: 25.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-015',
+    slug: 'feuchttuecher-bedruckt',
+    name: 'Feuchttücher bedruckt',
+    category: 'Servietten',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 10000,
+    priceHint: 'ab CHF 0.03 / Stück',
+    shortDescription: 'Bedruckte Feuchttücher in 5 Größen – in Weiss, Schwarz oder Wunschfarbe.',
+    longDescription: 'Bedruckte Feuchttücher in 5 Größenvarianten, erhältlich in Weiss, Schwarz oder Ihrer Wunschfarbe. Mit 1, 2 oder 3+ Designfarben, in Dick oder Dünn. Ab 10.000 Stück, Lieferzeit 10–14 Werktage.',
+    features: [
+      'Größen: 8×6 cm, 10×5 cm, 12×5 cm, 13×5 cm, 14×6 cm',
+      'Grundfarbe: Weiss, Schwarz, Wunschfarbe',
+      'Design: 1 Farbe, 2 Farben, 3+ Farben',
+      'Mengen: 10.000 / 20.000 / 30.000 / 50.000 Stück'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-015i',
+    slug: 'feuchttuecher-individual',
+    name: 'Feuchttücher Individuell',
+    category: 'Servietten',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 10000,
+    priceHint: 'ab CHF 0.04 / Stück',
+    shortDescription: 'Vollständig individuell bedruckte Feuchttücher – Ihr Design auf jeder Packung.',
+    longDescription: 'Feuchttücher mit vollständig individuellem Design. Wählen Sie Größe, Grundfarbe und Druckfarben frei. Kostenlose Designberatung inklusive. Ab 10.000 Stück, Lieferzeit 10–14 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: 8×6 cm, 10×5 cm, 12×5 cm, 13×5 cm, 14×6 cm',
+      'Grundfarbe: Weiss, Schwarz, Wunschfarbe',
+      'Mindestbestellung: 10.000 Stück'
+    ]
+  }),
+
+  /* ─── VERPACKUNGSPAPIER ─────────────────────────────────── */
+  createProduct({
+    id: 'p-016',
+    slug: 'lebensmittelpapier-bedruckt',
+    name: 'Fettdichtes Lebensmittelpapier',
+    category: 'Lebensmittelpapier',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 250,
+    priceHint: 'ab CHF 3.29 / kg',
+    shortDescription: 'Fettdichtes Lebensmittelpapier in 5 Größen – in Weiss oder Braun, mit 1–3+ Druckfarben.',
+    longDescription: 'Fettdichtes Lebensmittelpapier für Food-Konzepte, erhältlich in 5 Größen von XXS bis Large sowie als Wunschgröße. In Weiss (40g) oder Braun/Kraft (42g), mit 1, 2, 3 oder mehr Druckfarben. Bestelleinheit: KG. Ab 250 kg, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: XXS 25×17 cm, XS 25×34 cm, S 20×30 cm, M 30×40 cm, L 40×50 cm',
+      'Papier: Weiss (40g), Braun/Kraft (42g)',
+      'Druckfarben: 1, 2, 3, 3+ Farben',
+      'Preis: ab CHF 3.29 / kg'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-016i',
+    slug: 'lebensmittelpapier-individual',
+    name: 'Lebensmittelpapier Individuell',
+    category: 'Lebensmittelpapier',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 250,
+    priceHint: 'ab CHF 3.89 / kg',
+    shortDescription: 'Vollständig individuell bedrucktes Lebensmittelpapier – Ihr Design, Ihre Farben.',
+    longDescription: 'Lebensmittelpapier mit vollständig individuellem Design auf Weiss oder Kraft. Kostenlose Designberatung inklusive. Bestelleinheit: KG. Ab 250 kg, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: XXS bis L, Wunschgröße',
+      'Papier: Weiss, Braun/Kraft',
+      'Kostenlose Designberatung & Druckfreigabe'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-017',
+    slug: 'verpackungspapier-takeaway',
+    name: 'Verpackungspapier Take-Away',
+    category: 'Lebensmittelpapier',
+    tier: 'standard',
+    badge: 'Standard / Eco',
+    minOrder: 20,
+    priceHint: 'ab CHF 13.65 / kg',
+    shortDescription: 'Bedruckte Take-Away Verpackungspapiere in 3 Größen – in Weiss oder Braun, ab 20 kg.',
+    longDescription: 'Bedrucktes Take-Away-Verpackungspapier in 3 Standardgrößen (12×23 cm, 12×28 cm, 12×25 cm). In Weiss oder Braun (Kraft), mit 1, 2 oder 3 Druckfarben. Bestelleinheit: KG. Ab 20 kg, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Größen: 12×23 cm, 12×28 cm, 12×25 cm, Wunschgröße',
+      'Papier: Weiss, Braun (Kraft)',
+      'Design: 1 Farbe, 2 Farben, 3 Farben',
+      'Mengen: 20 kg / 30 kg / 50 kg / 100 kg'
+    ]
+  }),
+
+  createProduct({
+    id: 'p-017i',
+    slug: 'verpackungspapier-individual',
+    name: 'Verpackungspapier Individuell',
+    category: 'Lebensmittelpapier',
+    tier: 'individual',
+    badge: 'Individualisiert',
+    minOrder: 20,
+    priceHint: 'ab CHF 16.50 / kg',
+    shortDescription: 'Vollständig individuell bedrucktes Take-Away Verpackungspapier – Ihr Logo auf jeder Rolle.',
+    longDescription: 'Take-Away Verpackungspapier mit vollständig individuellem Design. Wählen Sie Größe und Druckfarben frei. Kostenlose Designberatung inklusive. Ab 20 kg, Lieferzeit 8–12 Werktage.',
+    features: [
+      'Vollständig individuelles Design (unbegrenzte Farben)',
+      'Größen: 12×23 cm, 12×28 cm, 12×25 cm, Wunschgröße',
+      'Papier: Weiss, Braun (Kraft)',
+      'Mindestbestellung: 20 kg'
+    ]
+  }),
 ];
 
-export const localProducts = products;
-export const categories = ['Alle', ...new Set(localProducts.map((item) => item.category))];
-
 export function getLocalProductBySlug(slug) {
-  return localProducts.find((item) => item.slug === slug) || null;
+  return localProducts.find((p) => p.slug === slug) || null;
 }

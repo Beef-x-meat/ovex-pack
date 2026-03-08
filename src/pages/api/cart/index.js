@@ -1,37 +1,23 @@
-import { fetchProducts } from '@/lib/cms';
+import { localProducts } from '@/lib/products';
+import { getProductImage } from '@/lib/product-images';
 import { addCartItem, listCartItems } from '@/lib/cart-store';
 
-const categoryImageMap = {
-  Pappbecher: '/images/pappbecher-eco-paper.jpeg',
-  Plastikbecher: '/images/plastikbecher-basic-470ml.png',
-  Mehrwegbecher: '/images/plastikbecher-basic-470ml.png',
-  Eisbecher: '/images/eisbecher-100ml.png',
-  Lebensmittelboxen: '/images/food-boxes.jpg',
-  Papiertragetaschen: '/images/paper-bags.jpg',
-  Lebensmittelpapier: '/images/lebensmittelpapier-standard.png',
-  Schalen: '/images/food-boxes.jpg',
-  Servietten: '/images/napkins.jpg',
-  Deckel: '/images/pappbecher-deckel-weiss-new.jpeg',
-  Zubehoer: '/images/food-boxes.jpg'
-};
+const productMap = new Map(localProducts.map((p) => [p.id, p]));
 
-async function expandCartItems() {
-  const products = await fetchProducts();
-  const productMap = new Map(products.map((product) => [product.id, product]));
-
+function expandCartItems() {
   return listCartItems().map((item) => {
     const product = productMap.get(item.productId) || null;
     return {
       ...item,
       product,
-      imageUrl: product ? categoryImageMap[product.category] || '/images/food-boxes.jpg' : '/images/food-boxes.jpg'
+      imageUrl: product ? getProductImage(product) || '/images/food-boxes.jpg' : '/images/food-boxes.jpg'
     };
   });
 }
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   if (req.method === 'GET') {
-    const items = await expandCartItems();
+    const items = expandCartItems();
     return res.status(200).json({ ok: true, items });
   }
 
@@ -42,8 +28,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ ok: false, error: 'productId und quantity sind erforderlich.' });
     }
 
-    const products = await fetchProducts();
-    const exists = products.some((product) => product.id === productId);
+    const exists = productMap.has(productId);
     if (!exists) {
       return res.status(404).json({ ok: false, error: 'Produkt nicht gefunden.' });
     }

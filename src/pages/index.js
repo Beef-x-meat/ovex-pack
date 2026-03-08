@@ -1,289 +1,67 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-import { ArrowRight, BadgePercent, Building2, Factory, Truck, CheckCircle2, ShieldCheck, Euro, PlaneTakeoff } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Building2, Factory, ShieldCheck, Truck } from 'lucide-react';
 import SeoHead from '@/components/SeoHead';
 import { fetchProducts } from '@/lib/cms';
+import { getProductImage } from '@/lib/product-images';
 
 function useScrollReveal() {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('revealed');
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+    const io = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { el.classList.add('revealed'); io.unobserve(el); } },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
-    observer.observe(el);
-    return () => observer.disconnect();
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
   return ref;
 }
 
-const categoryImageMap = {
-  Pappbecher: '/images/pappbecher-basic-main.png',
-  Eisbecher: '/images/eisbecher-basic-100ml.png',
-  Plastikbecher: '/images/plastikbecher-basic-470ml.png',
-  Lebensmittelboxen: '/images/food-boxes.jpg',
-  Papiertragetaschen: '/images/paper-bags.jpg',
-  Lebensmittelpapier: '/images/lebensmittelpapier-standard.png'
-};
-
-const productImageMap = {
-  'pappbecher-basic': '/images/pappbecher-basic-main.png',
-  'pappbecher-individual': '/images/pappbecher-individual-main.png',
-  'plastikbecher-standard': '/images/plastikbecher-basic-350ml.png',
-  'plastikbecher-individual': '/images/plastikbecher-550ml.png',
-  'deckel-plastik': '/images/plastikbecher-deckel-flach-new.png',
-  papierstrohhalme: '/images/paper-straws.jpg',
-  'eisbecher-standard': '/images/eisbecher-basic-100ml.png',
-  'eisbecher-individual': '/images/eisbecher-200ml.png',
-  'lebensmittelpapier-standard': '/images/lebensmittelpapier-standard.png',
-  'lebensmittelpapier-premium': '/images/lebensmittelpapier-premium.png',
-  'doener-tuete-klassisch': '/images/doener-tuete-klassisch.png',
-  'doener-tuete-individual': '/images/doener-tuete-individual.png'
-};
-
-function getProductImage(product) {
-  if (productImageMap[product.slug]) {
-    return productImageMap[product.slug];
-  }
-  if (product.category === 'Zubehoer') {
-    return '';
-  }
-  return categoryImageMap[product.category] || '';
-}
-
-function tierBadgeClass(tier) {
-  if (tier === 'premium') {
-    return 'border-[#7c6a38] bg-[#fff8e8] text-[#5a4720]';
-  }
-  if (tier === 'individual') {
-    return 'border-[#5c5ad6] bg-[#f4f3ff] text-[#3230a3]';
-  }
-  return 'border-[#85f04b] bg-[#f4ffea] text-[#2e5d17]';
-}
-
-function resolveTier(product) {
-  if (product.tier) return product.tier;
-  const source = `${product.slug || ''} ${product.name || ''}`.toLowerCase();
-  if (source.includes('premium')) return 'premium';
-  if (source.includes('individual')) return 'individual';
-  return 'standard';
-}
-
-function resolveBadgeLabel(product) {
-  const tier = resolveTier(product);
-  if (tier === 'premium') return 'Premium';
-  if (tier === 'individual') return 'Individual';
-  return 'Eco / Standard';
-}
-
-const trustPoints = [
-  {
-    title: 'Schweizer Unternehmen',
-    description: 'Produktion & Support mit Sitz in Zuerich',
-    icon: Building2
-  },
-  {
-    title: 'Herstellung in Europa',
-    description: 'Kurze Lieferketten, gepruefte Qualitaet',
-    icon: Factory
-  },
-  {
-    title: 'Marktgerechte Preise',
-    description: 'Orientiert an fuehrenden Schweizer Anbietern',
-    icon: BadgePercent
-  },
-  {
-    title: 'Kostenloser Versand',
-    description: 'Ab 500 Einheiten innerhalb der Schweiz',
-    icon: Truck
-  }
-];
-
-function HeroSection() {
+/* ── Hero ─────────────────────────────────────────────────────── */
+function Hero() {
   return (
-    <section className="relative overflow-hidden" data-testid="section-hero">
+    <section className="relative h-[92vh] min-h-[560px] max-h-[860px] overflow-hidden flex items-end">
+      {/* video bg */}
       <div className="absolute inset-0">
-        <video
-          className="w-full h-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/images/hero-boxes-cloth.jpg"
-        >
+        <video className="w-full h-full object-cover" autoPlay muted loop playsInline preload="metadata"
+          poster="/images/hero-boxes-cloth.jpg">
           <source src="/videos/hero-packaging.mp4" type="video/mp4" />
-          <source src="/videos/hero-packaging.mov" type="video/quicktime" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
       </div>
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-28 lg:py-40">
-        <div className="max-w-2xl">
-          <p className="text-sm font-medium tracking-widest uppercase text-white/60 mb-6 fade-up" data-testid="badge-hero">
-            Premium Verpackungen aus der Schweiz
-          </p>
-          <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-8 text-white fade-up-delay-1" data-testid="text-hero-title">
-            Verpackungen, die <span className="hero-gradient-word">Eindruck</span> hinterlassen.
-          </h1>
-          <p className="text-lg lg:text-xl text-white/70 mb-10 max-w-lg leading-relaxed fade-up-delay-2" data-testid="text-hero-description">
-            Bedruckt oder neutral - immer in Premium-Qualitaet. Ovexpack.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 fade-up-delay-3">
-            <Link href="/produkte" className="apple-btn-primary text-base px-8" data-testid="button-hero-products">
-              Produkte entdecken
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-            <Link
-              href="/kontakt"
-              className="inline-flex h-[3.1rem] items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 text-base text-white backdrop-blur-sm hover:bg-white/20 transition-all"
-              data-testid="button-hero-contact"
-            >
-              Kontaktiere uns
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function TrustStripSection() {
-  const ref = useScrollReveal();
-  return (
-    <section ref={ref} className="bg-white border-y border-black/10 reveal-section" data-testid="section-trust-strip">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-          {trustPoints.map((item) => (
-            <article key={item.title} className="flex items-start gap-3">
-              <div className="relative shrink-0 w-10 h-10 rounded-xl border border-black/10 bg-[#f4f5ef] flex items-center justify-center">
-                <item.icon className="w-5 h-5 text-[#2f3a2c]" />
-                <CheckCircle2 className="w-4 h-4 text-[#c56b1a] absolute -right-1 -bottom-1 bg-white rounded-full" />
-              </div>
-              <div>
-                <h3 className="text-[1rem] font-semibold leading-tight">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-snug mt-1">{item.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function BestsellerSection({ products, totalProducts }) {
-  const ref = useScrollReveal();
-  const bestsellerSlugs = [
-    'pappbecher-basic',
-    'plastikbecher-standard',
-    'pizzakartons-eco',
-    'salatschalen-standard'
-  ];
-  const bestsellers = bestsellerSlugs
-    .map((slug) => products.find((product) => product.slug === slug))
-    .filter(Boolean);
-  const hasMoreProducts = totalProducts > bestsellers.length;
-  const buttonLabel = hasMoreProducts
-    ? `Weitere Produkte entdecken (${totalProducts})`
-    : 'Alle Produkte ansehen';
-
-  if (!bestsellers.length) {
-    return null;
-  }
-
-  return (
-    <section ref={ref} className="bg-card reveal-section" data-testid="section-bestseller">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
-        <div className="mb-10">
-          <h2 className="text-3xl lg:text-5xl font-bold tracking-tight mb-3">Unsere Bestseller</h2>
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-3xl">
-            Unsere Bestseller – aus gutem Grund. Diese Produkte werden am häufigsten gewählt.
-            Warum? Weil sie zuverlässig liefern, was sie versprechen: stabile Qualität,
-            schnelle Verfügbarkeit und faire Preise.
-          </p>
-        </div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {bestsellers.map((product) => {
-            const imageUrl = getProductImage(product);
-            const priceValue = String(product.priceHint).replace('ab CHF ', '').replace(' / Stueck', '');
-            const tier = resolveTier(product);
-            const imageClass =
-              ['pappbecher-basic', 'pappbecher-individual'].includes(product.slug)
-                ? 'catalog-shot-pappbecher'
-                : 'catalog-shot';
-
-            return (
-              <Link key={product.id} href={`/produkt/${product.slug}`}>
-                <article
-                  className="rounded-xl overflow-hidden border border-border bg-card transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_30px_50px_-34px_rgba(27,18,7,0.45)]"
-                  data-testid={`card-bestseller-${product.id}`}
-                >
-                  <div className="aspect-[4/3] overflow-hidden bg-muted/20">
-                    {imageUrl ? (
-                      <img src={imageUrl} alt={product.name} className={imageClass} loading="lazy" decoding="async" />
-                    ) : (
-                      <div className="w-full h-full bg-[#f2eee6]" aria-hidden="true" />
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold mb-3 ${tierBadgeClass(tier)}`}>
-                      {resolveBadgeLabel(product)}
-                    </span>
-                    <h3 className="font-semibold text-base mb-2 line-clamp-1">{product.name}</h3>
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <span className="text-lg font-semibold">ab CHF {priceValue}</span>
-                      <span className="text-xs text-muted-foreground">Min. {product.minOrder} St.</span>
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className="mt-10 flex justify-center">
-          <Link
-            href="/produkte"
-            className="inline-flex h-[4.6rem] items-center justify-center rounded-full border border-[#4f46e5] bg-gradient-to-r from-[#6366f1] via-[#4f46e5] to-[#4338ca] px-10 text-[2rem] font-semibold tracking-tight text-white shadow-[0_22px_38px_-22px_rgba(67,56,202,0.52)]"
-            data-testid="button-bestseller-more"
-          >
-            {buttonLabel}
-            <ArrowRight className="w-7 h-7 ml-3" />
+      {/* content bottom-left */}
+      <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20">
+        <p className="text-[11px] tracking-[0.22em] uppercase font-semibold text-white/50 mb-3">
+          Swiss Packaging Studio · Zürich
+        </p>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.06] mb-5 max-w-2xl">
+          Verpackungen,<br />
+          die <span className="hero-gradient-word">Eindruck</span> hinterlassen.
+        </h1>
+        <p className="text-base text-white/60 mb-7 max-w-md leading-relaxed">
+          Individuell bedruckt oder neutral – in Premium-Qualität. Für Gastronomie &amp; Retail.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/produkte" className="inline-flex items-center gap-2 h-11 px-6 rounded-full bg-white text-black text-sm font-semibold hover:bg-white/90 transition-all shadow-lg">
+            Produkte entdecken <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link href="/kontakt" className="inline-flex items-center h-11 px-6 rounded-full border border-white/25 text-white text-sm font-medium hover:bg-white/10 transition-all backdrop-blur-sm">
+            Offerte anfragen
           </Link>
         </div>
       </div>
-    </section>
-  );
-}
 
-const whyPoints = [
-  { title: 'Schweizer Unternehmen', icon: ShieldCheck },
-  { title: 'Produktion in Europa', icon: Factory },
-  { title: 'Marktgerechte Preise', icon: Euro },
-  { title: 'Kostenloser Versand ab 500 Einheiten', icon: PlaneTakeoff }
-];
-
-function WhyOvexPackSection() {
-  const ref = useScrollReveal();
-  return (
-    <section ref={ref} className="bg-card reveal-section" data-testid="section-why-ovex">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-12 lg:pb-14">
-        <h2 className="text-2xl lg:text-3xl font-semibold tracking-tight mb-8">Warum OvexPack?</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6">
-          {whyPoints.map((item) => (
-            <div key={item.title} className="flex items-center gap-3">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-white">
-                <item.icon className="h-4 w-4 text-foreground" />
-              </span>
-              <p className="text-sm lg:text-[0.96rem] font-medium text-foreground/90">{item.title}</p>
+      {/* trust strip inside hero bottom */}
+      <div className="absolute bottom-0 left-0 right-0 hidden lg:block border-t border-white/10 bg-black/40 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-10 py-3 flex items-center gap-10">
+          {[['6.900+', 'Kunden'], ['EU', 'Produktion'], ['48h', 'Reaktionszeit'], ['Kostenlos', 'Versand ab 500 St.']].map(([v, l]) => (
+            <div key={l} className="flex items-center gap-2.5">
+              <BadgeCheck className="w-4 h-4 text-primary shrink-0" />
+              <span className="text-xs text-white/80"><span className="font-semibold text-white">{v}</span> {l}</span>
             </div>
           ))}
         </div>
@@ -292,27 +70,235 @@ function WhyOvexPackSection() {
   );
 }
 
-export default function Home({ products }) {
-  const totalProducts = products.length;
+/* ── Category Grid ────────────────────────────────────────────── */
+const cats = [
+  { label: 'Pappbecher', sub: 'ab CHF 0.11 / St.', href: '/produkte/pappbecher', img: '/images/pappbecher-470ml-weiss.png', span: 'col-span-2 row-span-2' },
+  { label: 'Plastikbecher', sub: 'ab CHF 0.06 / St.', href: '/produkte/plastikbecher', img: '/images/plastikbecher-470ml-neu.png' },
+  { label: 'Eisbecher', sub: 'ab CHF 0.139 / St.', href: '/produkte/eisbecher', img: '/images/eisbecher-100ml-neu.png' },
+  { label: 'Burger- & Foodboxen', sub: 'ab CHF 0.09 / St.', href: '/produkte/lebensmittelboxen', img: '/images/burgerboxen.png', span: 'col-span-2' },
+  { label: 'Tragtaschen & Tüten', sub: 'ab CHF 0.125 / St.', href: '/produkte/papiertragetaschen', img: '/images/papiertuete-braun-hero.jpg' },
+  { label: 'Servietten & Feuchttücher', sub: 'ab CHF 0.01 / St.', href: '/produkte/servietten', img: '/images/serviette-apex-hero.jpg' },
+];
 
+function CategoryGrid() {
+  const ref = useScrollReveal();
+  return (
+    <section ref={ref} className="reveal-section max-w-7xl mx-auto px-6 lg:px-10 py-14 lg:py-20">
+      <div className="flex items-end justify-between mb-8">
+        <div>
+          <p className="text-[11px] tracking-[0.2em] uppercase font-semibold text-muted-foreground mb-1.5">Sortiment</p>
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Alles für Ihre Gastronomie.</h2>
+        </div>
+        <Link href="/produkte" className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+          Alle ansehen <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[160px] md:auto-rows-[180px] gap-3">
+        {cats.map((c) => (
+          <Link key={c.label} href={c.href} className={`group relative overflow-hidden rounded-2xl bg-[#f0ede8] ${c.span || ''}`}>
+            <img src={c.img} alt={c.label}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <p className="text-white font-semibold text-sm leading-tight">{c.label}</p>
+              <p className="text-white/60 text-xs mt-0.5">{c.sub}</p>
+            </div>
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200">
+              <span className="flex items-center gap-1 text-[11px] font-semibold bg-white text-black rounded-full px-2.5 py-1">
+                Ansehen <ArrowRight className="w-3 h-3" />
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── Feature Strip ────────────────────────────────────────────── */
+const features = [
+  { icon: Building2, title: 'Schweizer Unternehmen', desc: 'Sitz in Zürich, direkte Ansprechpartner' },
+  { icon: Factory, title: 'EU-Produktion', desc: 'Kurze Lieferketten, geprüfte Qualität' },
+  { icon: Truck, title: 'Kostenloser Versand', desc: 'Ab 500 Einheiten in die Schweiz' },
+  { icon: ShieldCheck, title: 'FSC-zertifiziert', desc: 'Nachhaltige Materialien & Produktion' },
+];
+
+function FeatureStrip() {
+  const ref = useScrollReveal();
+  return (
+    <section ref={ref} className="reveal-section border-y border-border bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {features.map((f) => (
+          <div key={f.title} className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-xl bg-[#f4f1eb] border border-black/8 flex items-center justify-center shrink-0">
+              <f.icon className="w-4 h-4 text-foreground/70" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold leading-snug">{f.title}</p>
+              <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{f.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── Bestseller ───────────────────────────────────────────────── */
+const BESTSELLER_SLUGS = ['pappbecher-basic', 'plastikbecher-standard', 'burgerboxen', 'eisbecher-standard'];
+
+function tierLabel(tier) {
+  if (tier === 'premium') return { label: 'Premium', cls: 'bg-amber-50 text-amber-700 border-amber-200' };
+  if (tier === 'individual') return { label: 'Individual', cls: 'bg-indigo-50 text-indigo-700 border-indigo-200' };
+  return { label: 'Standard', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+}
+
+function Bestsellers({ products }) {
+  const ref = useScrollReveal();
+  const items = BESTSELLER_SLUGS.map((s) => products.find((p) => p.slug === s)).filter(Boolean);
+  if (!items.length) return null;
+
+  return (
+    <section ref={ref} className="reveal-section max-w-7xl mx-auto px-6 lg:px-10 py-14 lg:py-20">
+      <div className="flex items-end justify-between mb-8">
+        <div>
+          <p className="text-[11px] tracking-[0.2em] uppercase font-semibold text-muted-foreground mb-1.5">Bestseller</p>
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Meistbestellte Produkte.</h2>
+        </div>
+        <Link href="/produkte?view=bestseller" className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+          Alle ansehen <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {items.map((p) => {
+          const img = getProductImage(p);
+          const price = String(p.priceHint).replace('ab CHF ', '').replace(' / Stück', '');
+          const { label, cls } = tierLabel(p.tier || 'standard');
+          return (
+            <Link key={p.id} href={`/produkt/${p.slug}`}>
+              <article className="group bg-white rounded-2xl border border-border overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                <div className="aspect-[4/3] bg-[#f4f1eb] overflow-hidden">
+                  {img
+                    ? <img src={img} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    : <div className="w-full h-full" />}
+                </div>
+                <div className="p-4">
+                  <span className={`inline-block text-[10px] font-semibold border rounded-full px-2 py-0.5 mb-2 ${cls}`}>{label}</span>
+                  <p className="text-sm font-semibold leading-snug mb-1 line-clamp-1">{p.name}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-primary">ab CHF {price}</span>
+                    <span className="text-[11px] text-muted-foreground">Min. {p.minOrder} St.</span>
+                  </div>
+                </div>
+              </article>
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className="mt-8 text-center">
+        <Link href="/produkte" className="inline-flex items-center gap-2 h-11 px-8 rounded-full bg-foreground text-white text-sm font-semibold hover:bg-foreground/85 transition-all">
+          Alle {products.length} Produkte ansehen <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+/* ── Product Showcase (3 photos side by side) ─────────────────── */
+function ShowcaseRow() {
+  const ref = useScrollReveal();
+  return (
+    <section ref={ref} className="reveal-section bg-[#f7f4ef]">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <p className="text-[11px] tracking-[0.2em] uppercase font-semibold text-muted-foreground mb-3">Individualisierung</p>
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight mb-4">
+              Ihr Logo. Ihre Farben.<br />Ihre Verpackung.
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-sm">
+              Von 1 Farbe bis Vollfarb-Druck — wir produzieren Ihre Verpackung genau nach Ihren Vorgaben.
+              Mindestabnahme ab 800 Stück.
+            </p>
+            <div className="flex flex-col gap-3 text-sm">
+              {['Druck ab 1 Farbe bis unbegrenzt', 'Lieferzeit 5–14 Werktage', 'Kostenlose Designberatung', 'FSC-zertifizierte Materialien'].map((t) => (
+                <div key={t} className="flex items-center gap-2.5">
+                  <BadgeCheck className="w-4 h-4 text-primary shrink-0" />
+                  <span>{t}</span>
+                </div>
+              ))}
+            </div>
+            <Link href="/kontakt" className="mt-8 inline-flex items-center gap-2 h-11 px-6 rounded-full bg-foreground text-white text-sm font-semibold hover:bg-foreground/85 transition-all">
+              Jetzt Muster anfragen <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-2xl overflow-hidden aspect-[3/4] bg-[#ebe7e0]">
+              <img src="/images/papiertuete-farbig-hero.jpg" alt="Individuelle Papiertüten" className="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div className="flex flex-col gap-3">
+              <div className="rounded-2xl overflow-hidden aspect-square bg-[#ebe7e0]">
+                <img src="/images/serviette-apex-hero.jpg" alt="Individuelle Serviette" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div className="rounded-2xl overflow-hidden aspect-square bg-[#ebe7e0]">
+                <img src="/images/pappbecher-475ml-branded.jpg" alt="Individueller Pappbecher" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── CTA dark ─────────────────────────────────────────────────── */
+function CtaDark() {
+  const ref = useScrollReveal();
+  return (
+    <section ref={ref} className="reveal-section bg-[#111] text-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div>
+          <h2 className="text-xl lg:text-2xl font-bold mb-1 text-white">Bereit für Ihre Bestellung?</h2>
+          <p className="text-white/50 text-sm">Offerte in 24 h – kostenlos und unverbindlich.</p>
+        </div>
+        <div className="flex gap-3 shrink-0">
+          <Link href="/produkte" className="inline-flex items-center gap-2 h-10 px-5 rounded-full border border-white/20 text-white text-sm font-medium hover:bg-white/10 transition-all">
+            Produkte
+          </Link>
+          <Link href="/kontakt" className="inline-flex items-center gap-2 h-10 px-5 rounded-full bg-white text-black text-sm font-semibold hover:bg-white/90 transition-all">
+            Offerte anfragen <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Page ─────────────────────────────────────────────────────── */
+export default function Home({ products = [] }) {
   return (
     <div>
       <SeoHead
         title="Startseite"
-        description="Ovex Pack - Verpackungen, die Eindruck hinterlassen. Bedruckt oder neutral, immer in Premium-Qualitaet."
+        description="OvexPack – Premium Verpackungen aus der Schweiz. Bedruckt oder neutral, für Gastronomie und Retail."
       />
-      <HeroSection />
-      <TrustStripSection />
-      <BestsellerSection products={products} totalProducts={totalProducts} />
-      <WhyOvexPackSection />
+      <Hero />
+      <FeatureStrip />
+      <CategoryGrid />
+      <Bestsellers products={products} />
+      <ShowcaseRow />
+      <CtaDark />
     </div>
   );
 }
 
-export async function getStaticProps() {
-  const products = await fetchProducts();
-  return {
-    props: { products },
-    revalidate: 300
-  };
+export function getStaticProps() {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { localProducts } = require('@/lib/products');
+  return { props: { products: localProducts || [] } };
 }

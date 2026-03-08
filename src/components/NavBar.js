@@ -1,42 +1,39 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
+  Boxes,
   ChevronDown,
   Coffee,
   CupSoda,
-  Flame,
   IceCreamBowl,
   Menu,
   Package,
   PackageOpen,
-  Salad,
   ShoppingBag,
   ShoppingCart,
   Square,
-  UtensilsCrossed,
   WrapText,
   X
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useCart } from '@/hooks/useCart';
 
 const navLinks = [
   { href: '/', label: 'Startseite' },
   { href: '/produkte', label: 'Produkte' },
-  { href: '/ueber-uns', label: 'Ueber uns' },
+  { href: '/ueber-uns', label: 'Über uns' },
   { href: '/kontakt', label: 'Kontakt' }
 ];
 
 const productMenuItems = [
-  { label: 'Bestseller', href: '/produkte?view=bestseller', icon: Flame },
+  { label: 'Alle Produkte', href: '/produkte', icon: Boxes },
   { label: 'Pappbecher', href: '/produkte/pappbecher', icon: Coffee },
   { label: 'Plastikbecher', href: '/produkte/plastikbecher', icon: CupSoda },
   { label: 'Eisbecher', href: '/produkte/eisbecher', icon: IceCreamBowl },
-  { label: 'Einschlagpapier', href: '/produkte/lebensmittelpapier', icon: WrapText },
-  { label: 'Papiertueten', href: '/produkte/papiertragetaschen', icon: ShoppingBag },
-  { label: 'Salatschaalen', href: '/produkte/lebensmittelboxen', icon: Salad },
-  { label: 'Lebensmittelboxen / Pizza Boxen', href: '/produkte/lebensmittelboxen', icon: PackageOpen },
-  { label: 'Servietten', href: '/produkte/zubehoer', icon: Square },
-  { label: 'Zubehoer', href: '/produkte/zubehoer', icon: UtensilsCrossed }
+  { label: 'Burger- & Foodboxen', href: '/produkte/lebensmittelboxen', icon: PackageOpen },
+  { label: 'Tragtaschen & Tüten', href: '/produkte/papiertragetaschen', icon: ShoppingBag },
+  { label: 'Servietten & Feuchttücher', href: '/produkte/servietten', icon: Square },
+  { label: 'Verpackungspapier', href: '/produkte/lebensmittelpapier', icon: WrapText },
 ];
 
 function isActive(pathname, href) {
@@ -49,49 +46,24 @@ function isActive(pathname, href) {
 export default function NavBar() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [productsPinned, setProductsPinned] = useState(false);
+  const { cartCount } = useCart();
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function loadCart() {
-      try {
-        const response = await fetch('/api/cart');
-        const payload = await response.json();
-        if (!cancelled && response.ok) {
-          setCartItems(payload.items || []);
-        }
-      } catch {
-        if (!cancelled) {
-          setCartItems([]);
-        }
-      }
-    }
-
-    loadCart();
-
     const handleRoute = (url) => {
-      loadCart();
       setMobileOpen(false);
       const path = typeof url === 'string' ? url.split('?')[0] : router.pathname;
       const inProductsContext = path.startsWith('/produkte') || path.startsWith('/produkt');
       setProductsPinned(inProductsContext);
       setProductsOpen(inProductsContext);
     };
-    const handleCartUpdated = () => {
-      loadCart();
-    };
 
     router.events.on('routeChangeComplete', handleRoute);
-    window.addEventListener('cart-updated', handleCartUpdated);
     return () => {
-      cancelled = true;
       router.events.off('routeChangeComplete', handleRoute);
-      window.removeEventListener('cart-updated', handleCartUpdated);
     };
   }, [router.events]);
 
@@ -148,10 +120,6 @@ export default function NavBar() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [productsOpen]);
 
-  const cartCount = useMemo(
-    () => cartItems.reduce((sum, item) => sum + (item.quantity || 0), 0),
-    [cartItems]
-  );
   const onProductsRoute = router.pathname.startsWith('/produkte') || router.pathname.startsWith('/produkt');
   const showProductDropdown = productsOpen || onProductsRoute || productsPinned;
 
@@ -174,6 +142,7 @@ export default function NavBar() {
   }
 
   return (
+    <>
     <header
       className={`sticky top-0 z-50 border-b backdrop-blur-2xl transition-all duration-300 ${isScrolled
           ? 'border-black/12 bg-[#faf8f4]/[0.94] shadow-[0_18px_46px_-34px_rgba(27,18,7,0.38)]'
@@ -297,66 +266,68 @@ export default function NavBar() {
           </div>
         </div>
       )}
-
-      {mobileOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] mobile-overlay-enter"
-            onClick={() => setMobileOpen(false)}
-            aria-hidden="true"
-          />
-          <aside className="fixed right-0 top-0 z-50 h-full w-80 border-l border-black/12 bg-[#fcfaf6] shadow-2xl mobile-menu-enter overflow-y-auto">
-            <div className="flex items-center justify-between p-6 pb-4 sticky top-0 bg-[#fcfaf6]/95 backdrop-blur-md z-10 border-b border-black/5">
-              <span className="font-semibold">Navigation</span>
-              <button
-                type="button"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 hover:bg-black/[0.03] transition-colors"
-                onClick={() => setMobileOpen(false)}
-                aria-label="Menue schliessen"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <nav className="flex flex-col gap-0.5 px-4 pt-4 pb-2" data-testid="nav-mobile">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`inline-flex h-11 items-center rounded-xl px-3.5 text-[0.92rem] font-medium transition-all ${isActive(router.pathname, link.href)
-                      ? 'bg-primary text-primary-foreground shadow-sm'
-                      : 'hover:bg-black/[0.04] text-foreground'
-                    }`}
-                  onClick={() => setMobileOpen(false)}
-                  data-testid={`link-mobile-${link.label.toLowerCase()}`}
-                  aria-current={isActive(router.pathname, link.href) ? 'page' : undefined}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="px-4 pb-6">
-              <div className="border-t border-black/8 pt-4 mt-2">
-                <p className="text-xs font-semibold tracking-wider uppercase text-muted-foreground mb-3 px-3.5">Kategorien</p>
-                <nav className="grid grid-cols-2 gap-1.5">
-                  {productMenuItems.map((item) => (
-                    <Link
-                      key={item.href + item.label}
-                      href={item.href}
-                      className="flex flex-col items-center gap-1.5 rounded-xl border border-black/6 bg-white/60 p-3 text-center transition-all hover:bg-white hover:border-black/12 hover:shadow-sm active:scale-[0.97]"
-                      onClick={() => setMobileOpen(false)}
-                      data-testid={`link-mobile-cat-${item.label.toLowerCase()}`}
-                    >
-                      <item.icon className="w-6 h-6 stroke-[1.5] text-[#5f5f5f]" />
-                      <span className="text-[0.72rem] font-semibold leading-tight text-[#595959]">{item.label}</span>
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-            </div>
-          </aside>
-        </>
-      )}
     </header>
+
+    {mobileOpen && (
+      <>
+        <div
+          className="fixed inset-0 z-[998] bg-black/40 backdrop-blur-[2px] mobile-overlay-enter"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+        <aside className="fixed right-0 top-0 z-[999] h-full w-80 border-l border-black/12 bg-[#fcfaf6] shadow-2xl mobile-menu-enter overflow-y-auto">
+          <div className="flex items-center justify-between p-6 pb-4 sticky top-0 bg-[#fcfaf6]/95 backdrop-blur-md z-10 border-b border-black/5">
+            <span className="font-semibold">Navigation</span>
+            <button
+              type="button"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 hover:bg-black/[0.03] transition-colors"
+              onClick={() => setMobileOpen(false)}
+              aria-label="Menü schließen"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <nav className="flex flex-col gap-0.5 px-4 pt-4 pb-2" data-testid="nav-mobile">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`inline-flex h-11 items-center rounded-xl px-3.5 text-[0.92rem] font-medium transition-all ${isActive(router.pathname, link.href)
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'hover:bg-black/[0.04] text-foreground'
+                  }`}
+                onClick={() => setMobileOpen(false)}
+                data-testid={`link-mobile-${link.label.toLowerCase()}`}
+                aria-current={isActive(router.pathname, link.href) ? 'page' : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="px-4 pb-6">
+            <div className="border-t border-black/8 pt-4 mt-2">
+              <p className="text-xs font-semibold tracking-wider uppercase text-muted-foreground mb-3 px-3.5">Kategorien</p>
+              <nav className="grid grid-cols-2 gap-1.5">
+                {productMenuItems.map((item) => (
+                  <Link
+                    key={item.href + item.label}
+                    href={item.href}
+                    className="flex flex-col items-center gap-1.5 rounded-xl border border-black/6 bg-white/60 p-3 text-center transition-all hover:bg-white hover:border-black/12 hover:shadow-sm active:scale-[0.97]"
+                    onClick={() => setMobileOpen(false)}
+                    data-testid={`link-mobile-cat-${item.label.toLowerCase()}`}
+                  >
+                    <item.icon className="w-6 h-6 stroke-[1.5] text-[#5f5f5f]" />
+                    <span className="text-[0.72rem] font-semibold leading-tight text-[#595959]">{item.label}</span>
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </aside>
+      </>
+    )}
+    </>
   );
 }
+
